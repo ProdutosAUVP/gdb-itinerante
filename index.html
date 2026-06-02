@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-PT" class="scroll-smooth">
+<html lang="pt-PT" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -551,18 +551,6 @@
     <script>
         lucide.createIcons();
 
-        // --- SISTEMA DE TEMA CLARO/ESCURO ---
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        function updateTheme(e) {
-            if (e.matches) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
-        updateTheme(mediaQuery);
-        mediaQuery.addEventListener('change', updateTheme);
-
         // --- SCROLL SPY PARA MENU LATERAL FLUTUANTE ---
         const sections = document.querySelectorAll("section[id]");
         const navItems = document.querySelectorAll(".floating-nav-item");
@@ -663,14 +651,14 @@
 
         // --- GALERIA DE FOTOS (MURAL ESPALHADO) ---
         const galleryPhotos = [
-            { id: 1, city: 'Goiânia', label: 'Goiânia, GO', ed: 'Ed. 01', src: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-12deg', mt: 'mt-0' },
-            { id: 2, city: 'Belo Horizonte', label: 'Belo Horizonte', ed: 'Ed. 02', src: 'https://images.unsplash.com/photo-1565363887761-729cb907293b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '5deg', mt: 'md:mt-16' },
-            { id: 3, city: 'Goiânia', label: 'Networking', ed: 'GO', src: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-4deg', isHighlight: true, mt: 'md:-mt-10' },
-            { id: 4, city: 'Belo Horizonte', label: 'Bastidores', ed: 'MG', src: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '15deg', mt: 'md:mt-12' },
-            { id: 5, city: 'Goiânia', label: 'O Palco', ed: 'GO', src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '8deg', mt: 'md:-mt-6' },
-            { id: 6, city: 'Belo Horizonte', label: 'A Plateia', ed: 'MG', src: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-10deg', mt: 'md:mt-8' },
-            { id: 7, city: 'Goiânia', label: 'A Turma', ed: 'GO', src: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '10deg', mt: 'md:-mt-8' },
-            { id: 8, city: 'Belo Horizonte', label: 'Encerramento', ed: 'MG', src: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-7deg', mt: 'md:mt-4' },
+            { id: 1, city: 'Goiânia', label: 'Goiânia, GO', ed: 'Ed. 01', src: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-12deg', mt: 'mt-2 md:mt-0' },
+            { id: 2, city: 'Belo Horizonte', label: 'Belo Horizonte', ed: 'Ed. 02', src: 'https://images.unsplash.com/photo-1565363887761-729cb907293b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '5deg', mt: 'mt-8 md:mt-16' },
+            { id: 3, city: 'Goiânia', label: 'Networking', ed: 'GO', src: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-4deg', isHighlight: true, mt: '-mt-4 md:-mt-10' },
+            { id: 4, city: 'Belo Horizonte', label: 'Bastidores', ed: 'MG', src: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '15deg', mt: 'mt-6 md:mt-12' },
+            { id: 5, city: 'Goiânia', label: 'O Palco', ed: 'GO', src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '8deg', mt: '-mt-2 md:-mt-6' },
+            { id: 6, city: 'Belo Horizonte', label: 'A Plateia', ed: 'MG', src: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-10deg', mt: 'mt-4 md:mt-8' },
+            { id: 7, city: 'Goiânia', label: 'A Turma', ed: 'GO', src: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '10deg', mt: '-mt-4 md:-mt-8' },
+            { id: 8, city: 'Belo Horizonte', label: 'Encerramento', ed: 'MG', src: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-7deg', mt: 'mt-2 md:mt-4' },
         ];
 
         const filterOptions = ['Todos', 'Goiânia', 'Belo Horizonte'];
@@ -684,19 +672,20 @@
             const filtered = galleryPhotos.filter(p => activeFilter === 'Todos' || p.city === activeFilter);
             
             filtered.forEach((photo, index) => {
-                const marginClass = index === 0 ? '' : '-ml-12 md:-ml-20';
+                // Margem simétrica nos dois lados (-mx-*) resolve matematicamente o wrap e mantém centrado
+                const marginClass = '-mx-3 sm:-mx-4 md:-mx-8 lg:-mx-10';
                 const zIndex = photo.isHighlight ? 'z-40 scale-105' : `z-[${index + 10}]`;
                 const textClasses = photo.isHighlight ? 'text-lg' : '';
                 const edClasses = photo.isHighlight ? 'text-red-600 font-bold' : 'text-zinc-500';
                 const staggerDelay = index * 100;
 
                 galleryContainer.innerHTML += `
-                    <div class="polaroid-card animate-pop-in relative bg-white p-2 md:p-3 pb-10 md:pb-12 shadow-2xl border border-zinc-200 w-44 md:w-60 ${marginClass} ${photo.mt} ${zIndex}" 
+                    <div class="polaroid-card animate-pop-in relative bg-white p-2 md:p-3 pb-10 md:pb-12 shadow-2xl border border-zinc-200 w-36 sm:w-44 md:w-60 ${marginClass} ${photo.mt} ${zIndex}" 
                          style="--card-rot: ${photo.rot}; opacity: 0; animation-delay: ${staggerDelay}ms;">
-                        <img src="${photo.src}" alt="${photo.city}" class="w-full h-40 md:h-56 object-cover" />
+                        <img src="${photo.src}" alt="${photo.city}" class="w-full h-36 sm:h-40 md:h-56 object-cover" />
                         <div class="absolute bottom-2 md:bottom-3 left-3 md:left-4 right-3 md:right-4 flex justify-between items-center font-serif text-zinc-800">
-                            <span class="font-bold text-sm md:text-base ${textClasses}">${photo.label}</span>
-                            <span class="text-xs md:text-sm ${edClasses}">${photo.ed}</span>
+                            <span class="font-bold text-xs sm:text-sm md:text-base ${textClasses}">${photo.label}</span>
+                            <span class="text-[10px] sm:text-xs md:text-sm ${edClasses}">${photo.ed}</span>
                         </div>
                     </div>
                 `;
