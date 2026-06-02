@@ -1,342 +1,790 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giro da Bolsa Itinerante — Próxima Parada: Salvador</title>
-  <meta name="description" content="O Giro da Bolsa Itinerante chega a Salvador, Bahia. Episódios gravados ao vivo com plateia. Garanta seu ingresso.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <!-- Google Charts — GeoChart (Brasil) -->
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript">
-    window.isGeoChartLoaded = false;
-    google.charts.load('current', { packages: ['geochart'] });
-    google.charts.setOnLoadCallback(function() {
-      window.isGeoChartLoaded = true;
-      if (window.renderMap) window.renderMap();
-    });
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giro da Bolsa - Turnê Nacional</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', 
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        'greece-green': '#0a1a15',
+                        'greece-yellow': '#facc15',
+                    },
+                    animation: {
+                        'pop-in': 'popIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        popIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.8) translateY(50px) rotate(var(--card-rot))' },
+                            '100%': { opacity: '1', transform: 'scale(1) translateY(0) rotate(var(--card-rot))' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- D3.js e Lucide Icons -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Estilos Customizados & Classes de Animação Performantes -->
+    <style>
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.06;
+        }
+        
+        html.dark .noise-overlay { opacity: 0.04; }
+
+        .dash-anim {
+            stroke-dasharray: 8 8;
+            animation: dash 10s linear infinite;
+        }
+        @keyframes dash { to { stroke-dashoffset: -200; } }
+
+        .polaroid-card { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; }
+        .polaroid-card:hover {
+            transform: scale(1.15) rotate(0deg) translateY(-15px) !important;
+            z-index: 50 !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Lógica do Acordeão em CSS Grid (À prova de bugs) */
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .accordion-content.open {
+            grid-template-rows: 1fr;
+        }
+        .accordion-inner {
+            min-height: 0;
+        }
+
+        /* --- CLASSES BASE DO INTERSECTION OBSERVER --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-left { transform: translateX(-40px); }
+        .reveal-right { transform: translateX(40px); }
+        .reveal-scale { transform: scale(0.9) translateY(20px); }
+        
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+        
+        /* Delays Prolongados para a Hero */
+        .delay-1000 { transition-delay: 1000ms; }
+        .delay-1200 { transition-delay: 1200ms; }
+        .delay-1500 { transition-delay: 1500ms; }
+        .delay-1800 { transition-delay: 1800ms; }
+        .delay-2000 { transition-delay: 2000ms; }
+
+        .delay-3000 { transition-delay: 3000ms; }
+        .delay-3200 { transition-delay: 3200ms; }
+        .delay-3500 { transition-delay: 3500ms; }
+        .delay-3800 { transition-delay: 3800ms; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal, .animate-pop-in {
+                transition: none !important;
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="font-sans transition-colors duration-300 bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 overflow-x-hidden">
+    
+    <div class="noise-overlay"></div>
 
-  <!-- Tooltip flutuante do mapa -->
-  <div id="custom-map-tooltip" class="hidden fixed z-[9999] pointer-events-none -translate-x-1/2 -translate-y-full"></div>
-
-  <!-- ═══ NAVIGATION ═══ -->
-  <nav class="nav" id="nav">
-    <a class="nav-logo" href="#">GDB<span class="accent">·</span>ITINERANTE</a>
-    <ul class="nav-links">
-      <li><a href="#roteiro">Roteiro</a></li>
-      <li><a href="#edicoes">Edições</a></li>
-      <li><a href="#ingressos">Ingressos</a></li>
-    </ul>
-    <a href="https://wa.me/5511999999999?text=Quero%20informações%20sobre%20o%20Giro%20da%20Bolsa%20em%20Salvador" class="btn btn-nav" target="_blank" rel="noopener">WhatsApp →</a>
-    <button class="nav-menu-btn" aria-label="Menu" id="menuBtn">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <!-- ═══ HERO ═══ -->
-  <section id="hero">
-    <!-- Video background — substitua o src pelo vídeo do evento -->
-    <div class="hero-media">
-      <video class="hero-video" autoplay muted loop playsinline
-             poster="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&h=1080&fit=crop&auto=format">
-        <!-- <source src="video-salvador.mp4" type="video/mp4"> -->
-      </video>
-      <div class="hero-overlay"></div>
-      <div class="hero-grain"></div>
-    </div>
-
-    <div class="hero-content">
-      <div class="hero-top-row">
-        <div class="hero-tag-row">
-          <span class="hero-tag">Próxima Parada</span>
-          <span class="hero-sep">—</span>
-          <span class="hero-episode">Episódio 05</span>
+    <!-- --- FLOATING SIDEBAR (Menu Flutuante à Esquerda) --- -->
+    <nav id="floating-menu" class="fixed left-6 xl:left-12 top-1/2 -translate-y-1/2 z-50 flex-col gap-8 hidden lg:flex opacity-0 pointer-events-none transition-all duration-700 drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] dark:drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] w-48">
+        <div class="font-serif text-xl font-bold tracking-tighter flex items-center gap-2 mb-4 text-zinc-900 dark:text-white">
+            <span class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-xs shrink-0 drop-shadow-none">IS</span>
         </div>
-        <span class="hero-channel">Canal AUVP · YouTube</span>
-      </div>
+        <a href="#hero" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-red-600">
+            <span class="w-4 h-[2px] bg-red-600 transition-all duration-300 shadow-md"></span> Início
+        </a>
+        <a href="#roteiro" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
+            <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> O Roteiro
+        </a>
+        <a href="#galeria" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
+            <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Histórico
+        </a>
+        <a href="#edicoes" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
+            <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Edições
+        </a>
+        <a href="#ingressos" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
+            <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Ingressos
+        </a>
+    </nav>
 
-      <div class="hero-title-block">
-        <h1 class="hero-city">SALVADOR</h1>
-        <div class="hero-state-row">
-          <span class="hero-state">Bahia</span>
-          <span class="hero-state-sep accent">—</span>
-          <span class="hero-state-abbr">BA</span>
-          <span class="hero-date">Em breve · 2025</span>
-        </div>
-      </div>
-
-      <div class="hero-bottom-row">
-        <p class="hero-desc">
-          A capital baiana recebe o Giro da Bolsa Itinerante. Um episódio gravado ao vivo, com plateia, debates e educação financeira de verdade.
-        </p>
-        <div class="hero-actions">
-          <a href="#ingressos" class="btn btn-primary">Ver Ingressos</a>
-          <a href="#roteiro" class="btn btn-ghost">Ver Roteiro →</a>
-        </div>
-      </div>
-
-      <!-- Trail of past cities -->
-      <div class="hero-trail">
-        <span class="trail-item trail-done">Goiânia · GO</span>
-        <span class="trail-arrow">→</span>
-        <span class="trail-item trail-done">Belo Horizonte · MG</span>
-        <span class="trail-arrow">→</span>
-        <span class="trail-item trail-done">São Paulo · SP</span>
-        <span class="trail-arrow">→</span>
-        <span class="trail-item trail-done">Rio de Janeiro · RJ</span>
-        <span class="trail-arrow">→</span>
-        <span class="trail-item trail-next">Salvador · BA ●</span>
-      </div>
-    </div>
-
-    <div class="hero-scroll" aria-hidden="true">↓</div>
-  </section>
-
-  <!-- ═══ NUMBERS ═══ -->
-  <section id="numeros" class="section section-numbers">
-    <div class="container">
-      <div class="numbers-grid">
-        <div class="number-item reveal">
-          <span class="number-idx">01</span>
-          <span class="number-value"><span class="counter" data-target="4">0</span></span>
-          <span class="number-label">Edições Realizadas</span>
-        </div>
-        <div class="number-item reveal">
-          <span class="number-idx">02</span>
-          <span class="number-value"><span class="counter" data-target="4">0</span></span>
-          <span class="number-label">Capitais Visitadas</span>
-        </div>
-        <div class="number-item reveal">
-          <span class="number-idx">03</span>
-          <span class="number-value"><span class="counter" data-target="1200">0</span><span class="accent">+</span></span>
-          <span class="number-label">Espectadores Presenciais</span>
-        </div>
-        <div class="number-item reveal">
-          <span class="number-idx">04</span>
-          <span class="number-value">5<span class="number-star accent">★</span></span>
-          <span class="number-label">Avaliação Média</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ MAP / ROTEIRO ═══ -->
-  <section id="roteiro" class="section section-map">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">Roteiro</span>
-        <h2 class="section-title">A jornada pelo <em>Brasil</em></h2>
-        <p class="section-desc">De Goiás ao Nordeste — o Giro da Bolsa está percorrendo o país, levando educação financeira a cada canto.</p>
-      </div>
-
-      <div class="map-layout reveal">
-        <div class="map-legend">
-          <div class="legend-item">
-            <span class="legend-dot legend-done"></span>
-            <span>Edição realizada</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot legend-next"></span>
-            <span>Próxima parada</span>
-          </div>
-        </div>
-
-        <!-- Google Charts GeoChart container -->
-        <div class="map-chart-outer" id="map-wrapper">
-          <div id="brazil-map-chart">
-            <div id="map-loading">
-              <div class="spinner"></div>
+    <!-- --- HERO FOLD (Largura Total) --- -->
+    <div class="p-3 md:p-6 min-h-screen flex flex-col w-full relative z-10">
+        <section id="hero" class="relative flex-1 rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-zinc-950 flex flex-col justify-between border border-zinc-200 dark:border-zinc-800 shadow-2xl reveal active">
+            
+            <div class="absolute inset-0 z-0 bg-zinc-950">
+                <video 
+                    id="hero-video"
+                    src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/0602(1).mp4" 
+                    autoplay loop muted playsinline
+                    class="absolute inset-0 w-full h-full object-cover opacity-50 transition-opacity duration-1000"
+                ></video>
+                <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/95 pointer-events-none"></div>
             </div>
-          </div>
-        </div>
 
-        <!-- Stops list -->
-        <div class="stops-list">
-          <div class="stop-item stop-done">
-            <span class="stop-num">01</span>
-            <div class="stop-info">
-              <strong>Goiânia</strong>
-              <span>GO · Edição realizada</span>
+            <!-- Cabeçalho Original -->
+            <header class="relative z-10 w-full pt-8 px-6 md:px-12 flex items-center justify-between text-zinc-100 reveal delay-3000">
+                <div class="font-serif text-xl font-bold tracking-tighter flex items-center gap-2">
+                    <span class="w-10 h-10 border border-zinc-100 rounded-full flex items-center justify-center text-xs text-zinc-950 bg-zinc-100">IS</span>
+                </div>
+                <nav class="hidden md:flex gap-12 text-xs font-medium tracking-widest uppercase text-zinc-300">
+                    <a href="#roteiro" class="hover:text-red-500 transition-colors">O Roteiro</a>
+                    <a href="#galeria" class="hover:text-red-500 transition-colors">Histórico</a>
+                    <a href="#edicoes" class="hover:text-red-500 transition-colors">Edições</a>
+                    <a href="#ingressos" class="hover:text-red-500 transition-colors">Ingressos</a>
+                </nav>
+                <a href="#ingressos" class="flex items-center gap-4 text-xs font-medium tracking-widest uppercase hover:text-red-500 transition-colors">
+                    <span class="hidden md:block w-8 h-[1px] bg-current"></span>
+                    Comprar
+                </a>
+            </header>
+
+            <!-- Espaço central livre para o vídeo + Grid de duas colunas na base -->
+            <div class="relative z-10 w-full mt-auto pb-8 pt-24 px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-end">
+                
+                <!-- Coluna Esquerda: Título e Destino (Centralizado no mobile/tablet, Esquerda no desktop) -->
+                <div class="flex flex-col items-center justify-center lg:items-start lg:justify-end text-center lg:text-left reveal reveal-left delay-3200">
+                    <h1 class="font-serif text-[18vw] sm:text-[15vw] lg:text-[8rem] xl:text-[9.5rem] 2xl:text-[11rem] font-bold leading-[0.85] tracking-tighter text-white flex flex-col items-center lg:items-start drop-shadow-2xl">
+                        <span class="flex items-center gap-4">
+                            GIRO <span class="italic font-light text-red-600">DA</span>
+                        </span>
+                        <span>BOLSA</span>
+                    </h1>
+                    <div class="mt-6 md:mt-8 inline-flex items-center gap-3 px-6 py-2 border rounded-full backdrop-blur-md shadow-xl border-red-600/50 bg-red-950/40 reveal reveal-left delay-3500">
+                        <span class="w-2 h-2 rounded-full animate-pulse bg-red-500"></span>
+                        <span class="text-sm font-semibold tracking-widest uppercase text-red-500 font-bold">
+                            Destino: <span class="text-white">São Paulo, SP</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Informações e Status (Centralizado no mobile/tablet, Esquerda no desktop) -->
+                <div class="max-w-lg w-full reveal reveal-right delay-3800 mx-auto lg:mx-0 lg:justify-self-end flex flex-col items-center lg:items-start text-center lg:text-left">
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 md:gap-3 text-xs font-medium uppercase tracking-widest text-zinc-500 mb-8">
+                        <span>Goiânia</span>
+                        <i data-lucide="arrow-right" class="w-[14px] h-[14px] opacity-40"></i>
+                        <span>B. Horizonte</span>
+                        <i data-lucide="arrow-right" class="w-[14px] h-[14px] opacity-40"></i>
+                        <span class="text-red-500 font-bold">São Paulo</span>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-zinc-400 text-xs md:text-sm font-medium tracking-wider uppercase mb-2">A turnê nacional</p>
+                        <p class="text-zinc-100 text-xl md:text-2xl font-serif leading-snug">
+                            O mercado financeiro <br class="hidden lg:block" />na sua cidade.
+                        </p>
+                    </div>
+                    <div class="h-[1px] w-full bg-zinc-800/80 my-6"></div>
+                    
+                    <p class="text-zinc-400 text-sm leading-relaxed lg:pr-4">
+                        A capital paulista vai tremer. Saímos dos estúdios para levar os bastidores da bolsa na prática. O maior canal de investimentos do Brasil agora ao vivo com os paulistanos, trazendo aquela resenha e o networking de alto nível que você já conhece.
+                    </p>
+                    
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-8 md:gap-12 mt-8">
+                        <div>
+                            <p class="text-zinc-500 text-xs uppercase tracking-wider mb-1">Cidades</p>
+                            <p class="text-zinc-100 font-bold text-lg">03</p>
+                        </div>
+                        <div>
+                            <p class="text-zinc-500 text-xs uppercase tracking-wider mb-1">Vagas Padrão</p>
+                            <p class="text-red-500 font-bold text-lg">Últimas</p>
+                        </div>
+                        <div>
+                            <p class="text-zinc-500 text-xs uppercase tracking-wider mb-1">Vagas AUVP</p>
+                            <p class="text-red-500 font-bold text-lg">Limitadas</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <span class="stop-check accent">✓</span>
-          </div>
-          <div class="stop-item stop-done">
-            <span class="stop-num">02</span>
-            <div class="stop-info">
-              <strong>Belo Horizonte</strong>
-              <span>MG · Edição realizada</span>
+        </section>
+    </div>
+
+    <!-- --- MAP SECTION --- -->
+    <section id="roteiro" class="py-24 bg-zinc-100 dark:bg-zinc-900 relative border-y border-zinc-200 dark:border-zinc-800 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:pl-56 xl:pl-64">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                
+                <div class="text-center md:text-left mb-12 md:mb-0 reveal reveal-left">
+                    <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                        A Rota do <br class="hidden md:block" />Dinheiro
+                    </h2>
+                    <p class="text-zinc-500 max-w-md mx-auto md:mx-0 text-lg">
+                        Acompanhe por onde o Giro da Bolsa já passou e qual será o nosso próximo destino. O mapa está sendo traçado.
+                    </p>
+                </div>
+
+                <div class="relative w-full min-h-[300px] md:min-h-[450px] flex items-center justify-center reveal reveal-right delay-200" id="map-container">
+                    <div id="map-loader" class="flex flex-col items-center justify-center text-zinc-500">
+                        <div class="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+                        <p class="font-semibold uppercase tracking-wider text-xs animate-pulse">Sincronizando satélites...</p>
+                    </div>
+                </div>
             </div>
-            <span class="stop-check accent">✓</span>
-          </div>
-          <div class="stop-item stop-done">
-            <span class="stop-num">03</span>
-            <div class="stop-info">
-              <strong>São Paulo</strong>
-              <span>SP · Edição realizada</span>
+        </div>
+    </section>
+
+    <!-- --- PAST EDITIONS (POLAROID MURAL) --- -->
+    <section id="galeria" class="pt-24 pb-12 px-6">
+        <div class="max-w-7xl mx-auto text-center mb-16 lg:pl-56 xl:pl-64">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4 reveal">Arquivos da Aventura</h2>
+            <p class="text-zinc-500 max-w-2xl mx-auto mb-10 reveal delay-100">Uma mesa de memórias. Fotografias espalhadas das edições que já marcaram a história da nossa comunidade.</p>
+            
+            <div id="filter-container" class="flex flex-wrap justify-center gap-3 mb-12 reveal delay-200"></div>
+        </div>
+
+        <div id="gallery-container" class="max-w-7xl mx-auto flex flex-wrap justify-center items-center py-12 min-h-[400px] lg:pl-56 xl:pl-64"></div>
+    </section>
+
+    <!-- --- COLLAPSIBLE FOLDS (Refatorados para Grid) --- -->
+    <section id="edicoes" class="pb-24 px-6 reveal">
+        <div class="max-w-7xl mx-auto lg:pl-56 xl:pl-64 relative">
+            
+            <!-- Acordeão 1: Goiânia -->
+            <div class="accordion-item relative border border-zinc-700/50 rounded-3xl mb-4 bg-[#07130e] shadow-lg group z-10 transition-colors">
+                <!-- Wrapper do Fundo Escuro Isolado -->
+                <div class="absolute inset-0 z-0 overflow-hidden rounded-3xl pointer-events-none">
+                    <img src="https://images.unsplash.com/photo-1591115765373-5207764f72e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Goiânia" class="w-full h-full object-cover opacity-40 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-greece-green via-[#0a1a15]/80 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-greece-green via-[#0a1a15]/60 to-[#0a1a15]/20"></div>
+                </div>
+
+                <button onclick="toggleAccordion(this)" class="relative z-10 w-full px-6 py-8 md:px-10 flex justify-between items-center text-left focus:outline-none">
+                    <div>
+                        <span class="text-greece-yellow font-bold tracking-widest uppercase text-xs shadow-black drop-shadow-md">Edição 01</span>
+                        <h3 class="font-serif text-3xl md:text-4xl mt-1 text-white shadow-black drop-shadow-md">Goiânia, GO</h3>
+                    </div>
+                    <i data-lucide="chevron-down" class="acc-icon transform transition-transform duration-500 w-8 h-8 text-white/50"></i>
+                </button>
+                
+                <div class="accordion-content relative z-10">
+                    <div class="overflow-hidden accordion-inner">
+                        <div class="px-6 pb-8 md:px-10 md:pb-12 flex flex-col justify-between">
+                            <div class="flex flex-col md:flex-row justify-between items-start gap-8 mt-4">
+                                <i data-lucide="map" class="w-10 h-10 text-greece-yellow/50 shrink-0"></i>
+                                <div class="max-w-md text-[#88a89b] text-sm leading-relaxed">
+                                    Goiânia foi o marco zero. Onde o calor do cerrado encontrou o universo dos investimentos. Mais de 500 pessoas reunidas no teatro Rio Vermelho para entender que a bolsa não é um bicho de sete cabeças. Uma atmosfera única que moldou as edições seguintes.
+                                </div>
+                            </div>
+
+                            <div class="mt-16 md:mt-24 flex flex-col lg:flex-row justify-between items-end gap-12">
+                                <div class="w-full lg:w-auto">
+                                    <div class="flex gap-4 md:gap-8 text-[#88a89b] text-xs uppercase tracking-widest mb-4 md:mb-6 border-b border-[#1a382c] pb-4">
+                                        <span>Goiás <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span>Brasil <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span class="text-greece-yellow">Edição 1</span>
+                                    </div>
+                                    <h4 class="font-serif text-[3.5rem] md:text-[8rem] leading-none tracking-tighter text-greece-yellow drop-shadow-lg uppercase">
+                                        Goiânia
+                                    </h4>
+                                    <button class="mt-6 md:mt-8 px-6 md:px-8 py-3 bg-greece-yellow text-[#0a1a15] rounded-full font-bold text-xs md:text-sm tracking-wider uppercase flex items-center gap-3 hover:bg-yellow-400 transition-colors">
+                                        <span class="w-6 h-[1px] bg-[#0a1a15]"></span> Assistir Resumo
+                                    </button>
+                                </div>
+
+                                <div class="w-full lg:w-3/5 overflow-x-auto no-scrollbar pb-4 -mb-4">
+                                    <div class="flex gap-4 min-w-max">
+                                        <div class="w-40 md:w-48 h-64 rounded-2xl overflow-hidden relative group/card cursor-pointer border border-white/10">
+                                            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Palco">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                            <div class="absolute bottom-4 left-4 right-4 text-white">
+                                                <p class="text-xs text-greece-yellow mb-1">Destaque</p>
+                                                <p class="text-sm font-semibold">O Grande Palco</p>
+                                            </div>
+                                        </div>
+                                        <div class="w-40 md:w-48 h-64 rounded-2xl overflow-hidden relative group/card cursor-pointer border border-white/10">
+                                            <img src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Networking">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                            <div class="absolute bottom-4 left-4 right-4 text-white">
+                                                <p class="text-xs text-greece-yellow mb-1">Conexões</p>
+                                                <p class="text-sm font-semibold">Networking VIP</p>
+                                            </div>
+                                        </div>
+                                        <div class="w-40 md:w-48 h-64 rounded-2xl overflow-hidden relative group/card cursor-pointer border border-white/10">
+                                            <img src="https://images.unsplash.com/photo-1470229722913-7c090be5bc3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Resenha">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                            <div class="absolute bottom-4 left-4 right-4 text-white">
+                                                <p class="text-xs text-greece-yellow mb-1">Conteúdo</p>
+                                                <p class="text-sm font-semibold">A Resenha</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-            <span class="stop-check accent">✓</span>
-          </div>
-          <div class="stop-item stop-done">
-            <span class="stop-num">04</span>
-            <div class="stop-info">
-              <strong>Rio de Janeiro</strong>
-              <span>RJ · Edição realizada</span>
+
+            <!-- Acordeão 2: Belo Horizonte -->
+            <div class="accordion-item relative border border-zinc-700/50 rounded-3xl mb-4 bg-[#0c1014] shadow-lg group z-10 transition-colors">
+                <div class="absolute inset-0 z-0 overflow-hidden rounded-3xl pointer-events-none">
+                    <img src="https://images.unsplash.com/photo-1565363887761-729cb907293b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="BH" class="w-full h-full object-cover opacity-40 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-[#0c1014] via-[#0c1014]/80 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0c1014] via-[#0c1014]/60 to-[#0c1014]/20"></div>
+                </div>
+
+                <button onclick="toggleAccordion(this)" class="relative z-10 w-full px-6 py-8 md:px-10 flex justify-between items-center text-left focus:outline-none">
+                    <div>
+                        <span class="text-[#38bdf8] font-bold tracking-widest uppercase text-xs shadow-black drop-shadow-md">Edição 02</span>
+                        <h3 class="font-serif text-3xl md:text-4xl mt-1 text-white shadow-black drop-shadow-md">Belo Horizonte, MG</h3>
+                    </div>
+                    <i data-lucide="chevron-down" class="acc-icon transform transition-transform duration-500 w-8 h-8 text-white/50"></i>
+                </button>
+                
+                <div class="accordion-content relative z-10">
+                    <div class="overflow-hidden accordion-inner">
+                        <div class="px-6 pb-8 md:px-10 md:pb-12 flex flex-col justify-between">
+                            
+                            <div class="flex flex-col md:flex-row justify-between items-start gap-8 mt-4">
+                                <i data-lucide="map" class="w-10 h-10 text-[#38bdf8]/50 shrink-0"></i>
+                                <div class="max-w-md text-[#94a3b8] text-sm leading-relaxed">
+                                    Minas Gerais recebeu o Giro da Bolsa com lotação esgotada. Trouxemos pão de queijo, café forte e análises profundas sobre o mercado. Uma edição marcada por participações especiais e um engajamento estrondoso da plateia mineira.
+                                </div>
+                            </div>
+
+                            <div class="mt-16 md:mt-24 flex flex-col lg:flex-row justify-between items-end gap-12">
+                                <div class="w-full lg:w-auto">
+                                    <div class="flex gap-4 md:gap-8 text-[#94a3b8] text-xs uppercase tracking-widest mb-4 md:mb-6 border-b border-white/10 pb-4">
+                                        <span>Minas <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span class="text-[#38bdf8]">Edição 2</span>
+                                    </div>
+                                    <h4 class="font-serif text-[3.5rem] md:text-[8rem] leading-none tracking-tighter text-[#38bdf8] drop-shadow-lg uppercase">
+                                        B. Horizonte
+                                    </h4>
+                                    <button class="mt-6 md:mt-8 px-6 md:px-8 py-3 bg-[#38bdf8] text-[#0c1014] rounded-full font-bold text-xs md:text-sm tracking-wider uppercase flex items-center gap-3 hover:bg-blue-400 transition-colors">
+                                        <span class="w-6 h-[1px] bg-[#0c1014]"></span> Ver Galeria
+                                    </button>
+                                </div>
+
+                                <div class="w-full lg:w-3/5 overflow-x-auto no-scrollbar pb-4 -mb-4">
+                                    <div class="flex gap-4 min-w-max">
+                                        <div class="w-40 md:w-48 h-64 rounded-2xl overflow-hidden relative group/card cursor-pointer border border-white/10">
+                                            <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Estúdio">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                            <div class="absolute bottom-4 left-4 right-4 text-white">
+                                                <p class="text-xs text-[#38bdf8] mb-1">Bastidores</p>
+                                                <p class="text-sm font-semibold">Montagem</p>
+                                            </div>
+                                        </div>
+                                        <div class="w-40 md:w-48 h-64 rounded-2xl overflow-hidden relative group/card cursor-pointer border border-white/10">
+                                            <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Equipe">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                            <div class="absolute bottom-4 left-4 right-4 text-white">
+                                                <p class="text-xs text-[#38bdf8] mb-1">Ao Vivo</p>
+                                                <p class="text-sm font-semibold">Gravação</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-            <span class="stop-check accent">✓</span>
-          </div>
-          <div class="stop-item stop-next">
-            <span class="stop-num accent">05</span>
-            <div class="stop-info">
-              <strong>Salvador</strong>
-              <span>BA · Próxima parada</span>
+
+            <!-- Acordeão 3: São Paulo (Em Breve) -->
+            <div class="accordion-item relative border border-red-900/30 rounded-3xl mb-4 bg-[#120505] shadow-lg group z-10 transition-colors">
+                <div class="absolute inset-0 z-0 overflow-hidden rounded-3xl pointer-events-none">
+                    <img src="https://images.unsplash.com/photo-1628189871626-d6682705a676?auto=format&fit=crop&w=2000&q=80" alt="São Paulo" class="w-full h-full object-cover opacity-30 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-[#120505] via-[#120505]/80 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#120505] via-[#120505]/60 to-[#120505]/20"></div>
+                </div>
+
+                <button onclick="toggleAccordion(this)" class="relative z-10 w-full px-6 py-8 md:px-10 flex justify-between items-center text-left focus:outline-none">
+                    <div>
+                        <span class="text-red-500 font-bold tracking-widest uppercase text-xs shadow-black drop-shadow-md flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Próxima Parada
+                        </span>
+                        <h3 class="font-serif text-3xl md:text-4xl mt-1 text-white shadow-black drop-shadow-md">São Paulo, SP</h3>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="hidden md:inline-block px-4 py-1 border border-red-500/50 rounded-full text-red-400 text-xs tracking-widest uppercase font-bold bg-red-500/10 backdrop-blur-sm">Em Breve</span>
+                        <i data-lucide="chevron-down" class="acc-icon transform transition-transform duration-500 w-8 h-8 text-white/50"></i>
+                    </div>
+                </button>
+                
+                <div class="accordion-content relative z-10">
+                    <div class="overflow-hidden accordion-inner">
+                        <div class="px-6 pb-8 md:px-10 md:pb-12 flex flex-col justify-center">
+                            <div class="max-w-2xl mt-4 py-8">
+                                <h4 class="font-serif text-4xl md:text-5xl text-white mb-6">Aguarde o impacto.</h4>
+                                <p class="text-[#fca5a5] opacity-80 text-lg leading-relaxed mb-8">
+                                    O coração financeiro do Brasil será o palco da nossa maior edição. Estamos a preparar uma experiência sem precedentes para encerrar este ciclo com chave de ouro. As vagas serão estritamente limitadas.
+                                </p>
+                                <a href="#ingressos" class="inline-flex px-8 py-4 bg-red-600 text-white rounded-full font-bold text-xs md:text-sm tracking-wider uppercase items-center gap-3 hover:bg-red-700 transition-colors shadow-[0_0_20px_-5px_rgba(220,38,38,0.5)]">
+                                    <span class="w-6 h-[1px] bg-white"></span> Garantir o meu lugar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <span class="stop-badge">Em breve</span>
-          </div>
+
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ═══ PAST EDITIONS ═══ -->
-  <section id="edicoes" class="section section-editions">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">Memórias</span>
-        <h2 class="section-title">Edições <em>Passadas</em></h2>
-        <p class="section-desc">Momentos que ficam — cada cidade, uma história.</p>
-      </div>
+    <!-- --- PRICING SECTION --- -->
+    <section id="ingressos" class="py-24 bg-zinc-950 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-700 via-zinc-950 to-zinc-950"></div>
+        <div class="max-w-7xl mx-auto px-6 lg:pl-56 xl:pl-64 relative z-10">
+            
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4">Seu Passaporte</h2>
+                <p class="text-zinc-400 max-w-2xl mx-auto">Escolha como você quer vivenciar essa experiência única em São Paulo.</p>
+            </div>
 
-      <div class="polaroids-row">
-        <div class="polaroid reveal" style="--rot: -4deg; --delay: 0s">
-          <div class="polaroid-img">
-            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=360&h=440&fit=crop&auto=format" alt="Edição Goiânia" loading="lazy">
-          </div>
-          <div class="polaroid-caption">
-            <span class="pol-city">Goiânia, GO</span>
-            <span class="pol-edition">Edição 01</span>
-          </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                
+                <!-- Ingresso Padrão -->
+                <div class="flex flex-col p-8 md:p-12 border border-zinc-800 rounded-3xl bg-zinc-900/50 backdrop-blur hover:border-zinc-700 transition-colors reveal reveal-scale">
+                    <div class="mb-8">
+                        <h3 class="font-serif text-3xl font-bold mb-2">Público Geral</h3>
+                        <p class="text-zinc-400">A experiência completa do Giro da Bolsa ao vivo.</p>
+                    </div>
+                    <div class="mb-8 flex items-baseline gap-2">
+                        <span class="text-2xl font-bold text-zinc-500">R$</span>
+                        <span class="text-6xl font-black tracking-tighter">997</span>
+                    </div>
+                    <ul class="space-y-4 mb-10 text-zinc-300">
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Entrada para o evento presencial</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Gravação do episódio ao vivo</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Q&A aberto para a plateia</li>
+                        <li class="flex items-center gap-3 opacity-40"><i data-lucide="x" class="w-5 h-5 shrink-0"></i> Sem acesso a coquetel VIP</li>
+                    </ul>
+                    <button class="mt-auto w-full py-4 border border-zinc-700 hover:bg-zinc-800 rounded-full font-bold uppercase tracking-wider transition-colors">
+                        Garantir Padrão
+                    </button>
+                </div>
+
+                <!-- Ingresso VIP -->
+                <div class="flex flex-col p-8 md:p-12 border-2 border-red-600 rounded-3xl bg-red-950/10 backdrop-blur relative shadow-[0_0_50px_-12px_rgba(220,38,38,0.3)] transform md:-translate-y-4 reveal reveal-scale delay-200">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap">
+                        Exclusivo Alunos AUVP Escola
+                    </div>
+                    <div class="mb-8">
+                        <h3 class="font-serif text-3xl font-bold mb-2 text-white">Ingresso VIP AUVP</h3>
+                        <p class="text-zinc-400">Condição especial e vantagens premium apenas para alunos ativos da escola.</p>
+                    </div>
+                    <div class="mb-8 flex items-center gap-4">
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-2xl font-bold text-red-500">R$</span>
+                            <span class="text-6xl font-black tracking-tighter text-white">297</span>
+                        </div>
+                        <div class="text-xs text-red-400 uppercase tracking-widest line-through">R$ 997</div>
+                    </div>
+                    <ul class="space-y-4 mb-10 text-zinc-300">
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Assentos reservados na VIP Area</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Meet & Greet exclusivo pós-evento</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Coquetel de Networking AUVP</li>
+                        <li class="flex items-start gap-3 bg-red-950/30 p-3 rounded-lg border border-red-900/50">
+                            <i data-lucide="star" class="text-red-500 mt-1 shrink-0 w-5 h-5"></i> 
+                            <span class="text-sm">Acesso a bastidores e camarim antes da gravação do episódio.</span>
+                        </li>
+                    </ul>
+                    <button class="mt-auto w-full py-4 bg-red-600 hover:bg-red-700 rounded-full font-bold uppercase tracking-wider transition-colors text-white shadow-xl shadow-red-900/20">
+                        Sou Aluno AUVP
+                    </button>
+                </div>
+
+            </div>
         </div>
+    </section>
 
-        <div class="polaroid reveal" style="--rot: 3deg; --delay: 0.1s">
-          <div class="polaroid-img">
-            <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=360&h=440&fit=crop&auto=format" alt="Edição Belo Horizonte" loading="lazy">
-          </div>
-          <div class="polaroid-caption">
-            <span class="pol-city">Belo Horizonte, MG</span>
-            <span class="pol-edition">Edição 02</span>
-          </div>
+    <!-- --- FOOTER --- -->
+    <footer class="bg-zinc-100 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-900 py-12 px-6 text-center text-zinc-500 text-sm reveal">
+        <div class="max-w-7xl mx-auto lg:pl-56 xl:pl-64 flex flex-col items-center gap-6">
+            <div class="font-serif text-2xl font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-2">
+                <span class="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-white text-xs">IS</span>
+                GIRO DA BOLSA
+            </div>
+            <p>© 2026 Investidor Sardinha. Todos os direitos reservados.</p>
         </div>
+    </footer>
 
-        <div class="polaroid reveal" style="--rot: -2deg; --delay: 0.2s">
-          <div class="polaroid-img">
-            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=360&h=440&fit=crop&auto=format" alt="Edição São Paulo" loading="lazy">
-          </div>
-          <div class="polaroid-caption">
-            <span class="pol-city">São Paulo, SP</span>
-            <span class="pol-edition">Edição 03</span>
-          </div>
-        </div>
+    <!-- Lógica JavaScript Dinâmica e Animações -->
+    <script>
+        lucide.createIcons();
 
-        <div class="polaroid reveal" style="--rot: 5deg; --delay: 0.3s">
-          <div class="polaroid-img">
-            <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=360&h=440&fit=crop&auto=format" alt="Edição Rio de Janeiro" loading="lazy">
-          </div>
-          <div class="polaroid-caption">
-            <span class="pol-city">Rio de Janeiro, RJ</span>
-            <span class="pol-edition">Edição 04</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+        // --- SISTEMA DE TEMA CLARO/ESCURO ---
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        function updateTheme(e) {
+            if (e.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+        updateTheme(mediaQuery);
+        mediaQuery.addEventListener('change', updateTheme);
 
-  <!-- ═══ TICKETS ═══ -->
-  <section id="ingressos" class="section section-tickets">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">Garanta seu lugar</span>
-        <h2 class="section-title">Ingressos para <em>Salvador</em></h2>
-        <p class="section-desc">Vagas limitadas. Seja parte da plateia do próximo episódio do Giro da Bolsa.</p>
-      </div>
+        // --- SCROLL SPY PARA MENU LATERAL FLUTUANTE ---
+        const sections = document.querySelectorAll("section[id]");
+        const navItems = document.querySelectorAll(".floating-nav-item");
+        const floatingMenu = document.getElementById("floating-menu");
+        const heroVideo = document.getElementById('hero-video');
 
-      <div class="tickets-grid">
-        <!-- Standard -->
-        <div class="ticket-card reveal">
-          <div class="ticket-type-row">
-            <span class="ticket-type">Padrão</span>
-          </div>
-          <div class="ticket-price-block">
-            <span class="ticket-currency">R$</span>
-            <span class="ticket-value">97</span>
-            <span class="ticket-period">por pessoa</span>
-          </div>
-          <ul class="ticket-features">
-            <li><span class="feat-check">✓</span> Acesso ao evento ao vivo</li>
-            <li><span class="feat-check">✓</span> Conteúdo com especialistas</li>
-            <li><span class="feat-check">✓</span> Networking com investidores</li>
-            <li><span class="feat-check">✓</span> Certificado de participação</li>
-          </ul>
-          <a href="https://wa.me/5511999999999?text=Quero%20o%20ingresso%20Padrão%20para%20Salvador"
-             class="btn btn-outline btn-full" target="_blank" rel="noopener">
-            Garantir Ingresso
-          </a>
-        </div>
+        window.addEventListener("scroll", () => {
+            let current = "hero";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 250) {
+                    current = section.getAttribute("id");
+                }
+            });
 
-        <!-- VIP -->
-        <div class="ticket-card ticket-vip reveal">
-          <div class="ticket-badge-top">Mais popular</div>
-          <div class="ticket-type-row">
-            <span class="ticket-type">VIP</span>
-          </div>
-          <div class="ticket-price-block">
-            <span class="ticket-currency">R$</span>
-            <span class="ticket-value">197</span>
-            <span class="ticket-period">por pessoa</span>
-          </div>
-          <ul class="ticket-features">
-            <li><span class="feat-check">✓</span> Tudo do Padrão</li>
-            <li><span class="feat-check">✓</span> Assento preferencial</li>
-            <li><span class="feat-check">✓</span> Meet &amp; greet com os apresentadores</li>
-            <li><span class="feat-check">✓</span> Kit exclusivo do evento</li>
-            <li><span class="feat-check">✓</span> Acesso ao conteúdo gravado</li>
-          </ul>
-          <a href="https://wa.me/5511999999999?text=Quero%20o%20ingresso%20VIP%20para%20Salvador"
-             class="btn btn-primary btn-full" target="_blank" rel="noopener">
-            Garantir VIP
-          </a>
-        </div>
-      </div>
+            if (current === "hero" || window.scrollY < window.innerHeight * 0.5) {
+                floatingMenu.classList.add("opacity-0", "pointer-events-none", "-translate-y-[45%]");
+                floatingMenu.classList.remove("opacity-100", "pointer-events-auto", "-translate-y-1/2");
+            } else {
+                floatingMenu.classList.remove("opacity-0", "pointer-events-none", "-translate-y-[45%]");
+                floatingMenu.classList.add("opacity-100", "pointer-events-auto", "-translate-y-1/2");
+            }
 
-      <p class="tickets-note reveal">
-        Dúvidas? <a href="https://wa.me/5511999999999" target="_blank" rel="noopener" class="link-accent">Fale com a gente no WhatsApp →</a>
-      </p>
-    </div>
-  </section>
+            const roteiroSection = document.getElementById('roteiro');
+            if (window.scrollY >= (roteiroSection.offsetTop - 300)) {
+                heroVideo.pause();
+            } else {
+                heroVideo.play().catch(e => console.log(e));
+            }
 
-  <!-- ═══ FOOTER ═══ -->
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <span class="footer-logo">GDB<span class="accent">·</span>ITINERANTE</span>
-        <p>O Giro da Bolsa levando educação financeira para todo o Brasil — um episódio ao vivo de cada vez.</p>
-      </div>
-      <nav class="footer-links" aria-label="Links do rodapé">
-        <a href="https://youtube.com/@girosdabolsa" target="_blank" rel="noopener">YouTube</a>
-        <a href="https://instagram.com/auvp.oficial" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://wa.me/5511999999999" target="_blank" rel="noopener">WhatsApp</a>
-      </nav>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2025 Giro da Bolsa Itinerante · AUVP</span>
-    </div>
-  </footer>
+            navItems.forEach(item => {
+                item.classList.remove("text-red-600");
+                item.classList.add("text-zinc-400");
+                item.querySelector('span').classList.remove("w-4", "bg-red-600");
+                item.querySelector('span').classList.add("w-0", "bg-zinc-400");
+                
+                if (item.getAttribute("href") === `#${current}`) {
+                    item.classList.remove("text-zinc-400");
+                    item.classList.add("text-red-600");
+                    item.querySelector('span').classList.remove("w-0", "bg-zinc-400");
+                    item.querySelector('span').classList.add("w-4", "bg-red-600");
+                }
+            });
+        });
 
-  <script src="script.js"></script>
+        // --- NOVA LÓGICA DO ACORDEÃO (Baseada em CSS Grid e Z-index Nativo) ---
+        function toggleAccordion(btn) {
+            const item = btn.closest('.accordion-item');
+            const content = item.querySelector('.accordion-content');
+            const icon = btn.querySelector('.acc-icon');
+            
+            const isOpen = content.classList.contains('open');
+            
+            // Fecha todos
+            document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('open'));
+            document.querySelectorAll('.acc-icon').forEach(el => el.style.transform = 'rotate(0deg)');
+            document.querySelectorAll('.accordion-item').forEach(el => {
+                el.classList.remove('z-50');
+                el.classList.add('z-10');
+            });
+
+            // Abre apenas o clicado (se não estivesse já aberto)
+            if (!isOpen) {
+                content.classList.add('open');
+                icon.style.transform = 'rotate(180deg)';
+                item.classList.remove('z-10');
+                item.classList.add('z-50');
+            }
+        }
+
+        // --- INTERSECTION OBSERVER ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -10% 0px',
+            threshold: 0.1
+        };
+
+        const scrollObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            if (!el.closest('#hero')) {
+                scrollObserver.observe(el);
+            }
+        });
+
+        setTimeout(() => {
+            document.querySelectorAll('#hero .reveal').forEach(el => {
+                el.classList.add('active');
+            });
+        }, 100);
+
+        // --- GALERIA DE FOTOS (MURAL ESPALHADO) ---
+        const galleryPhotos = [
+            { id: 1, city: 'Goiânia', label: 'Goiânia, GO', ed: 'Ed. 01', src: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-12deg', mt: 'mt-0' },
+            { id: 2, city: 'Belo Horizonte', label: 'Belo Horizonte', ed: 'Ed. 02', src: 'https://images.unsplash.com/photo-1565363887761-729cb907293b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '5deg', mt: 'md:mt-16' },
+            { id: 3, city: 'Goiânia', label: 'Networking', ed: 'GO', src: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-4deg', isHighlight: true, mt: 'md:-mt-10' },
+            { id: 4, city: 'Belo Horizonte', label: 'Bastidores', ed: 'MG', src: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '15deg', mt: 'md:mt-12' },
+            { id: 5, city: 'Goiânia', label: 'O Palco', ed: 'GO', src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '8deg', mt: 'md:-mt-6' },
+            { id: 6, city: 'Belo Horizonte', label: 'A Plateia', ed: 'MG', src: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-10deg', mt: 'md:mt-8' },
+            { id: 7, city: 'Goiânia', label: 'A Turma', ed: 'GO', src: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '10deg', mt: 'md:-mt-8' },
+            { id: 8, city: 'Belo Horizonte', label: 'Encerramento', ed: 'MG', src: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-7deg', mt: 'md:mt-4' },
+        ];
+
+        const filterOptions = ['Todos', 'Goiânia', 'Belo Horizonte'];
+        let activeFilter = 'Todos';
+
+        const filterContainer = document.getElementById('filter-container');
+        const galleryContainer = document.getElementById('gallery-container');
+
+        function renderGallery() {
+            galleryContainer.innerHTML = '';
+            const filtered = galleryPhotos.filter(p => activeFilter === 'Todos' || p.city === activeFilter);
+            
+            filtered.forEach((photo, index) => {
+                const marginClass = index === 0 ? '' : '-ml-12 md:-ml-20';
+                const zIndex = photo.isHighlight ? 'z-40 scale-105' : `z-[${index + 10}]`;
+                const textClasses = photo.isHighlight ? 'text-lg' : '';
+                const edClasses = photo.isHighlight ? 'text-red-600 font-bold' : 'text-zinc-500';
+                const staggerDelay = index * 100;
+
+                galleryContainer.innerHTML += `
+                    <div class="polaroid-card animate-pop-in relative bg-white p-2 md:p-3 pb-10 md:pb-12 shadow-2xl border border-zinc-200 w-44 md:w-60 ${marginClass} ${photo.mt} ${zIndex}" 
+                         style="--card-rot: ${photo.rot}; opacity: 0; animation-delay: ${staggerDelay}ms;">
+                        <img src="${photo.src}" alt="${photo.city}" class="w-full h-40 md:h-56 object-cover" />
+                        <div class="absolute bottom-2 md:bottom-3 left-3 md:left-4 right-3 md:right-4 flex justify-between items-center font-serif text-zinc-800">
+                            <span class="font-bold text-sm md:text-base ${textClasses}">${photo.label}</span>
+                            <span class="text-xs md:text-sm ${edClasses}">${photo.ed}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderFilters() {
+            filterContainer.innerHTML = '';
+            filterOptions.forEach(option => {
+                const btn = document.createElement('button');
+                const isActive = activeFilter === option;
+                
+                btn.className = `px-5 py-2 rounded-full text-xs md:text-sm font-semibold tracking-wider uppercase transition-all duration-300 ${
+                    isActive 
+                    ? 'bg-red-600 text-white shadow-lg shadow-red-600/30 transform scale-105' 
+                    : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-300 dark:hover:bg-zinc-700'
+                }`;
+                btn.innerText = option;
+                
+                btn.onclick = () => {
+                    activeFilter = option;
+                    renderFilters(); 
+                    renderGallery(); 
+                };
+                
+                filterContainer.appendChild(btn);
+            });
+        }
+
+        renderFilters();
+        renderGallery();
+
+        // --- MAPA DINÂMICO (D3.JS) ---
+        fetch('https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson')
+            .then(res => res.json())
+            .then(geoData => {
+                const mapContainer = document.getElementById('map-container');
+                mapContainer.innerHTML = ''; 
+                
+                const width = 800;
+                const height = 800;
+                
+                const projection = d3.geoMercator().fitSize([width, height], geoData);
+                const pathGenerator = d3.geoPath().projection(projection);
+
+                const pts = {
+                    goiania: projection([-49.2648, -16.6869]),
+                    bh: projection([-43.9387, -19.9227]),
+                    sp: projection([-46.6333, -23.5505])
+                };
+
+                let statesPathHTML = '';
+                geoData.features.forEach(feature => {
+                    statesPathHTML += `<path d="${pathGenerator(feature)}" class="fill-zinc-200 dark:fill-zinc-800 stroke-white dark:stroke-zinc-700 stroke-[1.5px] transition-colors duration-300 hover:fill-zinc-300 dark:hover:fill-zinc-700 cursor-crosshair"></path>`;
+                });
+
+                const svgHTML = `
+                    <svg class="w-full h-auto drop-shadow-2xl overflow-visible" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <filter id="text-shadow">
+                                <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.8" flood-color="#000" />
+                            </filter>
+                        </defs>
+                        <g class="brazil-states">${statesPathHTML}</g>
+                        <path d="M ${pts.goiania[0]} ${pts.goiania[1]} L ${pts.bh[0]} ${pts.bh[1]}" fill="none" stroke="#dc2626" stroke-width="3"></path>
+                        <path d="M ${pts.bh[0]} ${pts.bh[1]} L ${pts.sp[0]} ${pts.sp[1]}" fill="none" stroke="#dc2626" stroke-width="3.5" class="dash-anim" opacity="0.9"></path>
+
+                        <g transform="translate(${pts.goiania[0]}, ${pts.goiania[1]})">
+                            <circle r="5" fill="#dc2626" />
+                            <circle r="16" fill="#dc2626" opacity="0.2" class="animate-ping" />
+                            <text x="-16" y="-8" class="fill-zinc-900 dark:fill-white text-base font-bold" text-anchor="end" filter="url(#text-shadow)">Goiânia, GO</text>
+                            <text x="-16" y="8" class="fill-zinc-500 text-xs" text-anchor="end" filter="url(#text-shadow)">Ponto de Partida</text>
+                        </g>
+                        <g transform="translate(${pts.bh[0]}, ${pts.bh[1]})">
+                            <circle r="5" fill="#dc2626" />
+                            <text x="16" y="-8" class="fill-zinc-900 dark:fill-white text-base font-bold" text-anchor="start" filter="url(#text-shadow)">B. Horizonte, MG</text>
+                            <text x="16" y="8" class="fill-zinc-500 text-xs" text-anchor="start" filter="url(#text-shadow)">Realizado</text>
+                        </g>
+                        <g transform="translate(${pts.sp[0]}, ${pts.sp[1]})">
+                            <circle r="8" class="fill-white dark:fill-zinc-900" stroke="#dc2626" stroke-width="3" />
+                            <text x="0" y="32" class="fill-zinc-900 dark:fill-white text-xl font-bold" text-anchor="middle" filter="url(#text-shadow)">São Paulo, SP</text>
+                            <text x="0" y="52" fill="#dc2626" class="text-[13px] font-bold uppercase tracking-widest" text-anchor="middle" filter="url(#text-shadow)">Próximo Destino</text>
+                        </g>
+                    </svg>
+                `;
+                mapContainer.innerHTML = svgHTML;
+            })
+            .catch(err => console.error("Erro ao desenhar o mapa:", err));
+    </script>
 </body>
 </html>
