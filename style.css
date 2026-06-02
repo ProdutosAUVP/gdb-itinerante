@@ -448,81 +448,73 @@ ul { list-style: none; }
   box-shadow: 0 0 0 4px rgba(232,32,42,0.15);
 }
 
-/* Brazil SVG */
-.brazil-map {
+/* ── GeoChart Brasil ── */
+
+/* Remove native Google tooltip (cortado pelo overflow) */
+.google-visualization-tooltip { display: none !important; }
+
+/* Tooltip customizado flutuante */
+#custom-map-tooltip {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Container externo: recorta países vizinhos */
+.map-chart-outer {
+  position: relative;
   width: 100%;
-  max-width: 480px;
-  height: auto;
-}
-.brazil-outline {
-  fill: var(--bg-3);
-  stroke: var(--border);
-  stroke-width: 1.5;
-}
-@media (prefers-color-scheme: dark) {
-  .brazil-outline { fill: #1e1e1e; stroke: rgba(255,255,255,0.12); }
+  aspect-ratio: 1 / 1.1;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--bg-3);
+  min-height: 320px;
 }
 
-/* Travel paths */
-.travel-path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.path-done {
-  stroke: var(--accent);
-  stroke-width: 2.5;
-  stroke-dasharray: 8 5;
-  stroke-dashoffset: 200;
-  transition: stroke-dashoffset 0.05s;
-}
-.path-done.animated { stroke-dashoffset: 0; transition: stroke-dashoffset 2s ease; }
-.path-next {
-  stroke: var(--text-muted);
-  stroke-width: 1.5;
-  stroke-dasharray: 6 6;
-  opacity: 0.45;
+/* GeoChart ligeiramente deslocado para centralizar o Brasil */
+#brazil-map-chart {
+  position: absolute;
+  top: 50%;
+  left: 57%;
+  width: 190%;
+  height: 190%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
 }
 
-/* City dots & labels */
-.city-dot {
-  transition: r var(--transition);
+/* Loading spinner no centro */
+#map-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
 }
-.dot-done {
-  fill: var(--accent);
-  stroke: var(--bg);
-  stroke-width: 2;
+.spinner {
+  width: 28px; height: 28px;
+  border: 2px solid var(--accent);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
-.dot-next {
-  fill: var(--accent);
-  stroke: var(--bg);
-  stroke-width: 2;
-}
-.dot-next-ring {
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 1.5;
-  opacity: 0.4;
-  animation: pulseRing 2s ease infinite;
-}
-@keyframes pulseRing {
-  0%   { r: 10; opacity: 0.4; }
-  100% { r: 20; opacity: 0; }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.city-label {
-  font-family: var(--font-sans);
-  font-size: 8px;
-  font-weight: 600;
-  fill: var(--text);
+/* Estados — stroke de borda */
+#brazil-map-chart path:not([fill="transparent"]):not([fill="none"]) {
+  stroke: var(--bg) !important;
+  stroke-width: 0.8px !important;
+  transition: opacity 0.2s ease;
 }
-.city-state-lbl {
-  font-family: var(--font-sans);
-  font-size: 7px;
-  font-weight: 400;
-  fill: var(--text-muted);
-}
-.city-label-next { fill: var(--accent); font-weight: 700; }
-
-@media (prefers-color-scheme: dark) {
-  .city-label { fill: #f0ede8; }
-  .city-state-lbl { fill: #888; }
+#brazil-map-chart path:hover:not([fill="transparent"]):not([fill="none"]) {
+  opacity: 0.8;
 }
 
 /* Stops list (sidebar) */

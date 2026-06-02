@@ -9,8 +9,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- Google Charts — GeoChart (Brasil) -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    window.isGeoChartLoaded = false;
+    google.charts.load('current', { packages: ['geochart'] });
+    google.charts.setOnLoadCallback(function() {
+      window.isGeoChartLoaded = true;
+      if (window.renderMap) window.renderMap();
+    });
+  </script>
 </head>
 <body>
+
+  <!-- Tooltip flutuante do mapa -->
+  <div id="custom-map-tooltip" class="hidden fixed z-[9999] pointer-events-none -translate-x-1/2 -translate-y-full"></div>
 
   <!-- ═══ NAVIGATION ═══ -->
   <nav class="nav" id="nav">
@@ -134,71 +147,14 @@
           </div>
         </div>
 
-        <svg class="brazil-map" id="brazilMap" viewBox="0 0 500 560" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa do Brasil com roteiro do Giro da Bolsa">
-
-          <!-- Brazil outline (simplified) -->
-          <path class="brazil-outline" d="
-            M 85,25
-            L 115,15 L 155,8 L 200,5 L 240,2 L 280,3 L 300,8
-            L 325,28 L 355,45 L 380,62 L 405,82
-            L 430,100 L 455,120 L 480,138
-            L 495,155 L 495,178 L 480,200 L 462,222
-            L 455,245 L 442,278 L 422,320
-            L 418,355 L 408,385 L 388,405 L 358,428
-            L 335,450 L 305,475 L 278,498 L 255,512
-            L 228,508 L 200,500 L 170,482 L 148,455
-            L 128,428 L 112,400 L 98,368 L 90,335
-            L 78,298 L 62,262 L 45,225 L 28,188
-            L 18,152 L 12,115 L 15,82 L 28,55
-            L 48,35 L 65,25 L 85,25 Z
-          "/>
-
-          <!-- Travel path: GO → BH → SP → RJ (completed) -->
-          <path id="pathDone" class="travel-path path-done"
-                d="M312,320 L382,367 L347,420 L392,411"
-                fill="none"/>
-
-          <!-- Travel path: RJ → Salvador (next, faded dashes) -->
-          <path id="pathNext" class="travel-path path-next"
-                d="M392,411 L450,252"
-                fill="none"/>
-
-          <!-- City: GO -->
-          <g class="city-group">
-            <circle class="city-dot dot-done" cx="312" cy="320" r="5"/>
-            <text class="city-label" x="296" y="315">Goiânia</text>
-            <text class="city-state-lbl" x="296" y="327">GO</text>
-          </g>
-
-          <!-- City: BH -->
-          <g class="city-group">
-            <circle class="city-dot dot-done" cx="382" cy="367" r="5"/>
-            <text class="city-label" x="389" y="362">Belo Horizonte</text>
-            <text class="city-state-lbl" x="389" y="374">MG</text>
-          </g>
-
-          <!-- City: SP -->
-          <g class="city-group">
-            <circle class="city-dot dot-done" cx="347" cy="420" r="5"/>
-            <text class="city-label" x="311" y="415">São Paulo</text>
-            <text class="city-state-lbl" x="311" y="427">SP</text>
-          </g>
-
-          <!-- City: RJ -->
-          <g class="city-group">
-            <circle class="city-dot dot-done" cx="392" cy="411" r="5"/>
-            <text class="city-label" x="399" y="406">Rio de Janeiro</text>
-            <text class="city-state-lbl" x="399" y="418">RJ</text>
-          </g>
-
-          <!-- City: Salvador (next) -->
-          <g class="city-group city-next-group">
-            <circle class="city-dot dot-next" cx="450" cy="252" r="7"/>
-            <circle class="city-dot dot-next-ring" cx="450" cy="252" r="12"/>
-            <text class="city-label city-label-next" x="459" y="247">Salvador</text>
-            <text class="city-state-lbl city-label-next" x="459" y="259">BA</text>
-          </g>
-        </svg>
+        <!-- Google Charts GeoChart container -->
+        <div class="map-chart-outer" id="map-wrapper">
+          <div id="brazil-map-chart">
+            <div id="map-loading">
+              <div class="spinner"></div>
+            </div>
+          </div>
+        </div>
 
         <!-- Stops list -->
         <div class="stops-list">

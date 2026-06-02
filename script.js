@@ -84,29 +84,111 @@ const counterObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
 
-// ── Brazil map path animation ──
+// ── GeoChart Brasil ──
+let mapInstance = null;
+
+const VISITED_STATES = ['BR-GO', 'BR-MG', 'BR-SP', 'BR-RJ'];
+const NEXT_STATE     = 'BR-BA';
+const ALL_STATES     = [
+  'BR-AC','BR-AL','BR-AM','BR-AP','BR-BA','BR-CE','BR-DF','BR-ES',
+  'BR-GO','BR-MA','BR-MG','BR-MS','BR-MT','BR-PA','BR-PB','BR-PE',
+  'BR-PI','BR-PR','BR-RJ','BR-RN','BR-RO','BR-RR','BR-RS','BR-SC',
+  'BR-SE','BR-SP','BR-TO'
+];
+const STATE_LABELS = {
+  GO: 'Goiânia · GO', MG: 'Belo Horizonte · MG',
+  SP: 'São Paulo · SP', RJ: 'Rio de Janeiro · RJ',
+  BA: 'Salvador · BA'
+};
+
+window.renderMap = () => {
+  if (!window.isGeoChartLoaded || typeof google === 'undefined') return;
+  const container = document.getElementById('brazil-map-chart');
+  if (!container) return;
+
+  const loadingEl = document.getElementById('map-loading');
+  if (loadingEl) loadingEl.style.display = 'none';
+
+  const rows = ALL_STATES.map(state => {
+    const val = VISITED_STATES.includes(state) ? 1 : (state === NEXT_STATE ? 2 : 0);
+    return [{ v: state, f: state.replace('BR-', '') }, val, ''];
+  });
+  const data = google.visualization.arrayToDataTable(
+    [['State', 'Valor', { role: 'tooltip', p: { html: true } }], ...rows]
+  );
+
+  const isLight = document.documentElement.classList.contains('light');
+  const options = {
+    region: 'BR',
+    resolution: 'provinces',
+    backgroundColor: 'transparent',
+    datalessRegionColor: 'transparent',
+    defaultColor: isLight ? '#d0d0d0' : '#1e1e1e',
+    legend: 'none',
+    keepAspectRatio: true,
+    tooltip: { trigger: 'none' },
+    colorAxis: {
+      colors: isLight
+        ? ['#d0d0d0', '#a04040', '#cc1a22']
+        : ['#1e1e1e', '#5a1010', '#e8202a'],
+      minValue: 0, maxValue: 2
+    }
+  };
+
+  if (!mapInstance) {
+    mapInstance = new google.visualization.GeoChart(container);
+    google.visualization.events.addListener(mapInstance, 'select', () => mapInstance.setSelection([]));
+
+    google.visualization.events.addListener(mapInstance, 'onmouseover', (evt) => {
+      const stateCode = ALL_STATES[evt.row]?.replace('BR-', '');
+      if (!stateCode || !(stateCode in STATE_LABELS)) return;
+      const tooltip = document.getElementById('custom-map-tooltip');
+      const isNext = `BR-${stateCode}` === NEXT_STATE;
+      tooltip.innerHTML = isNext
+        ? `<strong style="color:var(--accent)">${STATE_LABELS[stateCode]}</strong><br><span style="font-size:0.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.1em">Próxima parada</span>`
+        : `<strong>${STATE_LABELS[stateCode]}</strong><br><span style="font-size:0.7rem;color:var(--text-muted)">Edição realizada ✓</span>`;
+      tooltip.classList.remove('hidden');
+    });
+
+    google.visualization.events.addListener(mapInstance, 'onmouseout', () => {
+      document.getElementById('custom-map-tooltip').classList.add('hidden');
+    });
+  }
+
+  mapInstance.draw(data, options);
+};
+
+// Track mouse for floating tooltip
+document.addEventListener('mousemove', (e) => {
+  const tooltip = document.getElementById('custom-map-tooltip');
+  if (tooltip && !tooltip.classList.contains('hidden')) {
+    tooltip.style.left = `${e.clientX}px`;
+    tooltip.style.top  = `${e.clientY - 12}px`;
+  }
+});
+
+// Trigger renderMap when roteiro section enters view
 const mapSection = document.getElementById('roteiro');
-const pathDone = document.getElementById('pathDone');
-
-if (pathDone && mapSection) {
-  // Use pathLength="1" trick: normalize dasharray to total length
-  const totalLength = pathDone.getTotalLength();
-  pathDone.style.strokeDasharray = `8 5`;
-  pathDone.style.strokeDashoffset = String(totalLength + 50);
-
+if (mapSection) {
   const mapObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // Animate dash offset to 0
-        pathDone.style.transition = 'stroke-dashoffset 2.2s cubic-bezier(0.4, 0, 0.2, 1)';
-        pathDone.style.strokeDashoffset = '0';
+        if (window.isGeoChartLoaded) window.renderMap();
         mapObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.25 });
-
+  }, { threshold: 0.15 });
   mapObserver.observe(mapSection);
 }
+
+// Re-draw on resize
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (window.isGeoChartLoaded && mapInstance) window.renderMap();
+  }, 250);
+});
 
 // ── Smooth anchor scrolling (for older browsers) ──
 document.querySelectorAll('a[href^="#"]').forEach(link => {
