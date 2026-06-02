@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giro da Bolsa Itinerante — Próxima Parada: Salvador</title>
+  <meta name="description" content="O Giro da Bolsa Itinerante chega a Salvador, Bahia. Episódios gravados ao vivo com plateia. Garanta seu ingresso.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ═══ -->
+  <nav class="nav" id="nav">
+    <a class="nav-logo" href="#">GDB<span class="accent">·</span>ITINERANTE</a>
+    <ul class="nav-links">
+      <li><a href="#roteiro">Roteiro</a></li>
+      <li><a href="#edicoes">Edições</a></li>
+      <li><a href="#ingressos">Ingressos</a></li>
+    </ul>
+    <a href="https://wa.me/5511999999999?text=Quero%20informações%20sobre%20o%20Giro%20da%20Bolsa%20em%20Salvador" class="btn btn-nav" target="_blank" rel="noopener">WhatsApp →</a>
+    <button class="nav-menu-btn" aria-label="Menu" id="menuBtn">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero">
+    <!-- Video background — substitua o src pelo vídeo do evento -->
+    <div class="hero-media">
+      <video class="hero-video" autoplay muted loop playsinline
+             poster="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&h=1080&fit=crop&auto=format">
+        <!-- <source src="video-salvador.mp4" type="video/mp4"> -->
+      </video>
+      <div class="hero-overlay"></div>
+      <div class="hero-grain"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-top-row">
+        <div class="hero-tag-row">
+          <span class="hero-tag">Próxima Parada</span>
+          <span class="hero-sep">—</span>
+          <span class="hero-episode">Episódio 05</span>
+        </div>
+        <span class="hero-channel">Canal AUVP · YouTube</span>
+      </div>
+
+      <div class="hero-title-block">
+        <h1 class="hero-city">SALVADOR</h1>
+        <div class="hero-state-row">
+          <span class="hero-state">Bahia</span>
+          <span class="hero-state-sep accent">—</span>
+          <span class="hero-state-abbr">BA</span>
+          <span class="hero-date">Em breve · 2025</span>
+        </div>
+      </div>
+
+      <div class="hero-bottom-row">
+        <p class="hero-desc">
+          A capital baiana recebe o Giro da Bolsa Itinerante. Um episódio gravado ao vivo, com plateia, debates e educação financeira de verdade.
+        </p>
+        <div class="hero-actions">
+          <a href="#ingressos" class="btn btn-primary">Ver Ingressos</a>
+          <a href="#roteiro" class="btn btn-ghost">Ver Roteiro →</a>
+        </div>
+      </div>
+
+      <!-- Trail of past cities -->
+      <div class="hero-trail">
+        <span class="trail-item trail-done">Goiânia · GO</span>
+        <span class="trail-arrow">→</span>
+        <span class="trail-item trail-done">Belo Horizonte · MG</span>
+        <span class="trail-arrow">→</span>
+        <span class="trail-item trail-done">São Paulo · SP</span>
+        <span class="trail-arrow">→</span>
+        <span class="trail-item trail-done">Rio de Janeiro · RJ</span>
+        <span class="trail-arrow">→</span>
+        <span class="trail-item trail-next">Salvador · BA ●</span>
+      </div>
+    </div>
+
+    <div class="hero-scroll" aria-hidden="true">↓</div>
+  </section>
+
+  <!-- ═══ NUMBERS ═══ -->
+  <section id="numeros" class="section section-numbers">
+    <div class="container">
+      <div class="numbers-grid">
+        <div class="number-item reveal">
+          <span class="number-idx">01</span>
+          <span class="number-value"><span class="counter" data-target="4">0</span></span>
+          <span class="number-label">Edições Realizadas</span>
+        </div>
+        <div class="number-item reveal">
+          <span class="number-idx">02</span>
+          <span class="number-value"><span class="counter" data-target="4">0</span></span>
+          <span class="number-label">Capitais Visitadas</span>
+        </div>
+        <div class="number-item reveal">
+          <span class="number-idx">03</span>
+          <span class="number-value"><span class="counter" data-target="1200">0</span><span class="accent">+</span></span>
+          <span class="number-label">Espectadores Presenciais</span>
+        </div>
+        <div class="number-item reveal">
+          <span class="number-idx">04</span>
+          <span class="number-value">5<span class="number-star accent">★</span></span>
+          <span class="number-label">Avaliação Média</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MAP / ROTEIRO ═══ -->
+  <section id="roteiro" class="section section-map">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Roteiro</span>
+        <h2 class="section-title">A jornada pelo <em>Brasil</em></h2>
+        <p class="section-desc">De Goiás ao Nordeste — o Giro da Bolsa está percorrendo o país, levando educação financeira a cada canto.</p>
+      </div>
+
+      <div class="map-layout reveal">
+        <div class="map-legend">
+          <div class="legend-item">
+            <span class="legend-dot legend-done"></span>
+            <span>Edição realizada</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot legend-next"></span>
+            <span>Próxima parada</span>
+          </div>
+        </div>
+
+        <svg class="brazil-map" id="brazilMap" viewBox="0 0 500 560" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa do Brasil com roteiro do Giro da Bolsa">
+
+          <!-- Brazil outline (simplified) -->
+          <path class="brazil-outline" d="
+            M 85,25
+            L 115,15 L 155,8 L 200,5 L 240,2 L 280,3 L 300,8
+            L 325,28 L 355,45 L 380,62 L 405,82
+            L 430,100 L 455,120 L 480,138
+            L 495,155 L 495,178 L 480,200 L 462,222
+            L 455,245 L 442,278 L 422,320
+            L 418,355 L 408,385 L 388,405 L 358,428
+            L 335,450 L 305,475 L 278,498 L 255,512
+            L 228,508 L 200,500 L 170,482 L 148,455
+            L 128,428 L 112,400 L 98,368 L 90,335
+            L 78,298 L 62,262 L 45,225 L 28,188
+            L 18,152 L 12,115 L 15,82 L 28,55
+            L 48,35 L 65,25 L 85,25 Z
+          "/>
+
+          <!-- Travel path: GO → BH → SP → RJ (completed) -->
+          <path id="pathDone" class="travel-path path-done"
+                d="M312,320 L382,367 L347,420 L392,411"
+                fill="none"/>
+
+          <!-- Travel path: RJ → Salvador (next, faded dashes) -->
+          <path id="pathNext" class="travel-path path-next"
+                d="M392,411 L450,252"
+                fill="none"/>
+
+          <!-- City: GO -->
+          <g class="city-group">
+            <circle class="city-dot dot-done" cx="312" cy="320" r="5"/>
+            <text class="city-label" x="296" y="315">Goiânia</text>
+            <text class="city-state-lbl" x="296" y="327">GO</text>
+          </g>
+
+          <!-- City: BH -->
+          <g class="city-group">
+            <circle class="city-dot dot-done" cx="382" cy="367" r="5"/>
+            <text class="city-label" x="389" y="362">Belo Horizonte</text>
+            <text class="city-state-lbl" x="389" y="374">MG</text>
+          </g>
+
+          <!-- City: SP -->
+          <g class="city-group">
+            <circle class="city-dot dot-done" cx="347" cy="420" r="5"/>
+            <text class="city-label" x="311" y="415">São Paulo</text>
+            <text class="city-state-lbl" x="311" y="427">SP</text>
+          </g>
+
+          <!-- City: RJ -->
+          <g class="city-group">
+            <circle class="city-dot dot-done" cx="392" cy="411" r="5"/>
+            <text class="city-label" x="399" y="406">Rio de Janeiro</text>
+            <text class="city-state-lbl" x="399" y="418">RJ</text>
+          </g>
+
+          <!-- City: Salvador (next) -->
+          <g class="city-group city-next-group">
+            <circle class="city-dot dot-next" cx="450" cy="252" r="7"/>
+            <circle class="city-dot dot-next-ring" cx="450" cy="252" r="12"/>
+            <text class="city-label city-label-next" x="459" y="247">Salvador</text>
+            <text class="city-state-lbl city-label-next" x="459" y="259">BA</text>
+          </g>
+        </svg>
+
+        <!-- Stops list -->
+        <div class="stops-list">
+          <div class="stop-item stop-done">
+            <span class="stop-num">01</span>
+            <div class="stop-info">
+              <strong>Goiânia</strong>
+              <span>GO · Edição realizada</span>
+            </div>
+            <span class="stop-check accent">✓</span>
+          </div>
+          <div class="stop-item stop-done">
+            <span class="stop-num">02</span>
+            <div class="stop-info">
+              <strong>Belo Horizonte</strong>
+              <span>MG · Edição realizada</span>
+            </div>
+            <span class="stop-check accent">✓</span>
+          </div>
+          <div class="stop-item stop-done">
+            <span class="stop-num">03</span>
+            <div class="stop-info">
+              <strong>São Paulo</strong>
+              <span>SP · Edição realizada</span>
+            </div>
+            <span class="stop-check accent">✓</span>
+          </div>
+          <div class="stop-item stop-done">
+            <span class="stop-num">04</span>
+            <div class="stop-info">
+              <strong>Rio de Janeiro</strong>
+              <span>RJ · Edição realizada</span>
+            </div>
+            <span class="stop-check accent">✓</span>
+          </div>
+          <div class="stop-item stop-next">
+            <span class="stop-num accent">05</span>
+            <div class="stop-info">
+              <strong>Salvador</strong>
+              <span>BA · Próxima parada</span>
+            </div>
+            <span class="stop-badge">Em breve</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PAST EDITIONS ═══ -->
+  <section id="edicoes" class="section section-editions">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Memórias</span>
+        <h2 class="section-title">Edições <em>Passadas</em></h2>
+        <p class="section-desc">Momentos que ficam — cada cidade, uma história.</p>
+      </div>
+
+      <div class="polaroids-row">
+        <div class="polaroid reveal" style="--rot: -4deg; --delay: 0s">
+          <div class="polaroid-img">
+            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=360&h=440&fit=crop&auto=format" alt="Edição Goiânia" loading="lazy">
+          </div>
+          <div class="polaroid-caption">
+            <span class="pol-city">Goiânia, GO</span>
+            <span class="pol-edition">Edição 01</span>
+          </div>
+        </div>
+
+        <div class="polaroid reveal" style="--rot: 3deg; --delay: 0.1s">
+          <div class="polaroid-img">
+            <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=360&h=440&fit=crop&auto=format" alt="Edição Belo Horizonte" loading="lazy">
+          </div>
+          <div class="polaroid-caption">
+            <span class="pol-city">Belo Horizonte, MG</span>
+            <span class="pol-edition">Edição 02</span>
+          </div>
+        </div>
+
+        <div class="polaroid reveal" style="--rot: -2deg; --delay: 0.2s">
+          <div class="polaroid-img">
+            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=360&h=440&fit=crop&auto=format" alt="Edição São Paulo" loading="lazy">
+          </div>
+          <div class="polaroid-caption">
+            <span class="pol-city">São Paulo, SP</span>
+            <span class="pol-edition">Edição 03</span>
+          </div>
+        </div>
+
+        <div class="polaroid reveal" style="--rot: 5deg; --delay: 0.3s">
+          <div class="polaroid-img">
+            <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=360&h=440&fit=crop&auto=format" alt="Edição Rio de Janeiro" loading="lazy">
+          </div>
+          <div class="polaroid-caption">
+            <span class="pol-city">Rio de Janeiro, RJ</span>
+            <span class="pol-edition">Edição 04</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TICKETS ═══ -->
+  <section id="ingressos" class="section section-tickets">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Garanta seu lugar</span>
+        <h2 class="section-title">Ingressos para <em>Salvador</em></h2>
+        <p class="section-desc">Vagas limitadas. Seja parte da plateia do próximo episódio do Giro da Bolsa.</p>
+      </div>
+
+      <div class="tickets-grid">
+        <!-- Standard -->
+        <div class="ticket-card reveal">
+          <div class="ticket-type-row">
+            <span class="ticket-type">Padrão</span>
+          </div>
+          <div class="ticket-price-block">
+            <span class="ticket-currency">R$</span>
+            <span class="ticket-value">97</span>
+            <span class="ticket-period">por pessoa</span>
+          </div>
+          <ul class="ticket-features">
+            <li><span class="feat-check">✓</span> Acesso ao evento ao vivo</li>
+            <li><span class="feat-check">✓</span> Conteúdo com especialistas</li>
+            <li><span class="feat-check">✓</span> Networking com investidores</li>
+            <li><span class="feat-check">✓</span> Certificado de participação</li>
+          </ul>
+          <a href="https://wa.me/5511999999999?text=Quero%20o%20ingresso%20Padrão%20para%20Salvador"
+             class="btn btn-outline btn-full" target="_blank" rel="noopener">
+            Garantir Ingresso
+          </a>
+        </div>
+
+        <!-- VIP -->
+        <div class="ticket-card ticket-vip reveal">
+          <div class="ticket-badge-top">Mais popular</div>
+          <div class="ticket-type-row">
+            <span class="ticket-type">VIP</span>
+          </div>
+          <div class="ticket-price-block">
+            <span class="ticket-currency">R$</span>
+            <span class="ticket-value">197</span>
+            <span class="ticket-period">por pessoa</span>
+          </div>
+          <ul class="ticket-features">
+            <li><span class="feat-check">✓</span> Tudo do Padrão</li>
+            <li><span class="feat-check">✓</span> Assento preferencial</li>
+            <li><span class="feat-check">✓</span> Meet &amp; greet com os apresentadores</li>
+            <li><span class="feat-check">✓</span> Kit exclusivo do evento</li>
+            <li><span class="feat-check">✓</span> Acesso ao conteúdo gravado</li>
+          </ul>
+          <a href="https://wa.me/5511999999999?text=Quero%20o%20ingresso%20VIP%20para%20Salvador"
+             class="btn btn-primary btn-full" target="_blank" rel="noopener">
+            Garantir VIP
+          </a>
+        </div>
+      </div>
+
+      <p class="tickets-note reveal">
+        Dúvidas? <a href="https://wa.me/5511999999999" target="_blank" rel="noopener" class="link-accent">Fale com a gente no WhatsApp →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">GDB<span class="accent">·</span>ITINERANTE</span>
+        <p>O Giro da Bolsa levando educação financeira para todo o Brasil — um episódio ao vivo de cada vez.</p>
+      </div>
+      <nav class="footer-links" aria-label="Links do rodapé">
+        <a href="https://youtube.com/@girosdabolsa" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://instagram.com/auvp.oficial" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://wa.me/5511999999999" target="_blank" rel="noopener">WhatsApp</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Giro da Bolsa Itinerante · AUVP</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
