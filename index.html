@@ -1080,17 +1080,10 @@
         const form = document.getElementById('city-suggestion-form');
         const submitBtn = document.getElementById('submit-btn');
 
-        // IMPORTANTE: Cole aqui a URL gerada no Passo 5 do tutorial
-        const scriptURL = 'COLE_AQUI_A_URL_DO_SEU_WEB_APP';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbw36yFRC07PVbzJ167tRiTY5eooCx4cLWEXvUoB5asA3mKefhjAcP2m4yxYOnwOf2Pb6w/exec';
 
         form.addEventListener('submit', e => {
-            e.preventDefault(); // Evita que a página recarregue
-            
-            // Trava de segurança para lembrar de colar a URL
-            if (scriptURL === 'https://script.google.com/macros/s/AKfycbw36yFRC07PVbzJ167tRiTY5eooCx4cLWEXvUoB5asA3mKefhjAcP2m4yxYOnwOf2Pb6w/exec') {
-                alert('Atenção: A integração ainda não foi configurada no código. Siga o tutorial!');
-                return;
-            }
+            e.preventDefault();
 
             // Estado de "Carregando"
             const originalText = submitBtn.innerText;
@@ -1098,8 +1091,12 @@
             submitBtn.disabled = true;
             submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
 
+            // Garante que o campo "aluno" seja enviado mesmo quando desmarcado
+            const formData = new FormData(form);
+            if (!formData.has('aluno')) formData.append('aluno', 'Não');
+
             // Envia os dados nativamente pelo Fetch API
-            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+            fetch(scriptURL, { method: 'POST', body: formData })
                 .then(response => {
                     alert('Sua sugestão foi enviada com sucesso! Obrigado.');
                     form.reset(); // Limpa o formulário
