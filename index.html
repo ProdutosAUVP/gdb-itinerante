@@ -225,13 +225,28 @@
                             GIRO <span class="italic font-light text-red-600">DA</span>
                         </span>
                         <span>BOLSA</span>
-                        <span class="font-sans font-light italic text-red-600 text-[9.5vw] sm:text-[7.5vw] lg:text-[4rem] xl:text-[4.7rem] 2xl:text-[5.4rem] leading-[0.8] tracking-[0.15em] mt-1 lg:mt-1">itinerante</span>
                     </h1>
-                    <div class="mt-6 md:mt-8 inline-flex items-center gap-3 px-6 py-2 border rounded-full backdrop-blur-md shadow-xl border-red-600/50 bg-red-950/40 reveal reveal-left delay-1500">
-                        <span class="w-2 h-2 rounded-full animate-pulse bg-red-500"></span>
-                        <span class="text-sm font-semibold tracking-widest uppercase text-red-500 font-bold">
-                            Destino: <span class="text-white">São Paulo, SP</span>
-                        </span>
+                    
+                    <!-- Tag Dinâmica com Largura Flexível e Gacha Slot -->
+                    <div id="dynamic-destination-tag" class="mt-6 md:mt-8 inline-flex items-center px-6 py-2 border rounded-full backdrop-blur-md shadow-xl border-red-600/50 bg-red-950/40 reveal reveal-left delay-1500 transition-all duration-500 ease-out origin-left">
+                        <span class="w-2 h-2 rounded-full animate-pulse bg-red-500 shrink-0 mr-3"></span>
+                        
+                        <!-- Wrapper Animado que adapta a largura -->
+                        <div id="tag-content-wrapper" class="relative overflow-hidden transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center h-5 w-[105px]"> 
+                            <!-- Texto Inicial -->
+                            <div id="dynamic-destination-text" class="text-sm tracking-widest uppercase text-red-500 font-bold whitespace-nowrap absolute left-0 flex items-center transition-all duration-300 transform translate-y-0 opacity-100">
+                                ITINERANTE
+                            </div>
+                            <!-- Roleta Gacha Oculta -->
+                            <div id="dynamic-destination-slot" class="text-sm tracking-widest uppercase text-white font-bold whitespace-nowrap absolute left-0 flex items-center opacity-0 transition-all duration-300 transform translate-y-full">
+                                <span class="text-red-500 mr-2">Destino:</span>
+                                <div style="height: 20px; overflow: hidden; position: relative; flex-1;">
+                                    <div id="gacha-reel" class="flex flex-col" style="transition: transform 3s cubic-bezier(0.15, 0.85, 0.1, 1); transform: translateY(0px);">
+                                        <!-- Cidades inseridas via JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -279,7 +294,7 @@
     <!-- --- PRICING SECTION --- -->
     <section id="ingressos" class="py-24 bg-zinc-950 text-white relative overflow-hidden">
         <div class="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-700 via-zinc-950 to-zinc-950"></div>
-        <div class="max-w-7xl mx-auto px-6 lg:pl-56 xl:pl-64 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
             
             <div class="text-center mb-16 reveal">
                 <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4">Seu Passaporte</h2>
@@ -366,7 +381,7 @@
 
     <!-- --- MAP SECTION --- -->
     <section id="roteiro" class="py-24 bg-zinc-100 dark:bg-zinc-900 relative border-y border-zinc-200 dark:border-zinc-800 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 lg:pl-56 xl:pl-64">
+        <div class="max-w-7xl mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 
                 <div class="text-center md:text-left mb-12 md:mb-0 reveal reveal-left">
@@ -395,19 +410,19 @@
 
     <!-- --- PAST EDITIONS (POLAROID MURAL) --- -->
     <section id="galeria" class="pt-24 pb-12 px-6">
-        <div class="max-w-7xl mx-auto text-center mb-16 lg:pl-56 xl:pl-64">
+        <div class="max-w-7xl mx-auto text-center mb-16">
             <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4 reveal">Arquivos da Aventura</h2>
             <p class="text-zinc-500 max-w-2xl mx-auto mb-10 reveal delay-100">Uma mesa de memórias. Fotografias espalhadas das edições que já marcaram a história da nossa comunidade.</p>
             
             <div id="filter-container" class="flex flex-wrap justify-center gap-3 mb-12 reveal delay-200"></div>
         </div>
 
-        <div id="gallery-container" class="max-w-7xl mx-auto flex flex-wrap justify-center items-center py-12 min-h-[400px] lg:pl-56 xl:pl-64"></div>
+        <div id="gallery-container" class="max-w-7xl mx-auto flex flex-wrap justify-center items-center py-12 min-h-[400px]"></div>
     </section>
 
     <!-- --- COLLAPSIBLE FOLDS (Refatorados com Topo Gigante) --- -->
     <section id="edicoes" class="pb-24 px-6 reveal">
-        <div class="max-w-7xl mx-auto lg:pl-56 xl:pl-64 relative">
+        <div class="max-w-7xl mx-auto relative">
             
             <!-- Acordeão 1: Goiânia -->
             <div class="accordion-item relative border border-zinc-700/50 rounded-3xl mb-4 bg-[#07130e] shadow-lg group z-10 transition-colors">
@@ -651,7 +666,7 @@
 
     <!-- --- FOOTER --- -->
     <footer class="bg-zinc-100 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-900 py-12 px-6 text-center text-zinc-500 text-sm reveal">
-        <div class="max-w-7xl mx-auto lg:pl-56 xl:pl-64 flex flex-col items-center gap-8">
+        <div class="max-w-7xl mx-auto flex flex-col items-center gap-8">
             <div class="flex items-center justify-center gap-8 md:gap-12 flex-wrap">
                 <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/Prancheta%202_12.svg" alt="Giro da Bolsa" class="h-10 md:h-16 w-auto object-contain" />
                 <div class="h-8 w-[1px] bg-zinc-300 dark:bg-zinc-800 hidden md:block"></div>
@@ -1026,6 +1041,84 @@
                 mapContainer.innerHTML = svgHTML;
             })
             .catch(err => console.error("Erro ao desenhar o mapa:", err));
+
+        // --- EFEITO GACHA DINÂMICO DA TAG DE DESTINO ---
+        setTimeout(() => {
+            const destTag = document.getElementById('dynamic-destination-tag');
+            const wrapper = document.getElementById('tag-content-wrapper');
+            const textInitial = document.getElementById('dynamic-destination-text');
+            const slotContainer = document.getElementById('dynamic-destination-slot');
+            const reel = document.getElementById('gacha-reel');
+            if (!destTag || !wrapper || !textInitial || !slotContainer || !reel) return;
+
+            // Garante que o invólucro tem exatamente o tamanho da palavra ITINERANTE antes de animar
+            wrapper.style.width = textInitial.offsetWidth + 'px';
+
+            const cidades = [
+                'Rio de Janeiro, RJ', 'Salvador, BA', 'Curitiba, PR',
+                'Fortaleza, CE', 'Brasília, DF', 'Porto Alegre, RS',
+                'Manaus, AM', 'Recife, PE', 'Vitória, ES', 'Florianópolis, SC',
+                'Goiânia, GO', 'Belo Horizonte, MG',
+                'São Paulo, SP' // Parada final
+            ];
+
+            const itemHeight = 20; 
+
+            // Construir HTML da roleta
+            const reelHTML = cidades.map((city, index) => {
+                const isLast = index === cidades.length - 1;
+                const textClass = isLast ? 'text-white' : 'text-white/40 blur-[0.5px]';
+                return `<div style="height: ${itemHeight}px;" class="flex items-center ${textClass}">${city}</div>`;
+            }).join('');
+            reel.innerHTML = reelHTML;
+
+            // Medir largura invisivelmente baseada na maior cidade da lista (Belo Horizonte) para expandir o card sem quebras
+            const tempSpan = document.createElement('span');
+            tempSpan.className = 'text-sm tracking-widest uppercase font-bold whitespace-nowrap invisible absolute';
+            tempSpan.innerHTML = '<span class="mr-2">Destino:</span>Belo Horizonte, MG';
+            document.body.appendChild(tempSpan);
+            const maxWidth = tempSpan.offsetWidth;
+            document.body.removeChild(tempSpan);
+
+            // 1. Oculta ITINERANTE (sobe e desaparece suavemente)
+            textInitial.style.opacity = '0';
+            textInitial.style.transform = 'translateY(-100%)';
+
+            setTimeout(() => {
+                // 2. Expande o invólucro para a largura máxima calculada
+                wrapper.style.width = maxWidth + 'px';
+                
+                setTimeout(() => {
+                    // 3. Mostra o Slot Machine (vem de baixo)
+                    slotContainer.style.opacity = '1';
+                    slotContainer.style.transform = 'translateY(0)';
+
+                    // 4. Inicia o giro da roleta
+                    setTimeout(() => {
+                        const targetY = (cidades.length - 1) * itemHeight;
+                        reel.style.transform = `translateY(-${targetY}px)`;
+
+                        // 5. Quando terminar de rodar (3s), trava e ajusta a largura cirurgicamente para "São Paulo, SP"
+                        setTimeout(() => {
+                            const spSpan = document.createElement('span');
+                            spSpan.className = 'text-sm tracking-widest uppercase font-bold whitespace-nowrap invisible absolute';
+                            spSpan.innerHTML = '<span class="mr-2">Destino:</span>São Paulo, SP';
+                            document.body.appendChild(spSpan);
+                            const finalWidth = spSpan.offsetWidth;
+                            document.body.removeChild(spSpan);
+                            
+                            wrapper.style.width = finalWidth + 'px';
+
+                            // Efeito visual de impacto (Thud)
+                            destTag.classList.add('scale-105', 'bg-red-900/70', 'border-red-500', 'shadow-red-500/30');
+                            setTimeout(() => {
+                                destTag.classList.remove('scale-105', 'bg-red-900/70', 'border-red-500', 'shadow-red-500/30');
+                            }, 400);
+                        }, 3000); 
+                    }, 50);
+                }, 400); // Tempo da expansão lateral
+            }, 300); // Tempo do fade out
+        }, 4000);
     </script>
 </body>
 </html>
