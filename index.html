@@ -876,7 +876,8 @@
                     const marginClass = index === 0 ? '' : '-mx-3 sm:-mx-4 md:-mx-8 lg:-mx-10';
                     const zIndex = photo.isHighlight ? 'z-40 scale-105' : `z-[${index + 10}]`;
                     const textClasses = photo.isHighlight ? 'text-lg' : '';
-                    const edClasses = photo.isHighlight ? 'text-red-600 font-bold' : 'text-zinc-500';
+                    // Mantendo a consistência da cor para todos os estados, sem o vermelho no destaque
+                    const edClasses = 'text-zinc-500';
                     const globalIndex = rowIndex * Math.ceil(filtered.length / 2) + index;
                     const staggerDelay = globalIndex * 100;
 
