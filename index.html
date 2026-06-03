@@ -78,11 +78,57 @@
             grid-template-rows: 0fr;
             transition: grid-template-rows 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .accordion-content.open {
+        .accordion-item.is-open .accordion-content {
             grid-template-rows: 1fr;
         }
         .accordion-inner {
             min-height: 0;
+        }
+
+        /* Animações de Morphing do Cabeçalho (Pequeno -> Grande) */
+        .header-small {
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, padding 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 150px;
+            opacity: 1;
+            overflow: hidden;
+        }
+        .accordion-item.is-open .header-small {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            margin: 0 !important;
+            pointer-events: none;
+        }
+
+        .header-large {
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left center;
+        }
+        .accordion-item.is-open .header-large {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition-delay: 0.15s;
+        }
+
+        .acc-fade {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .accordion-item.is-open .acc-fade {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.25s;
+        }
+
+        .acc-icon {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .accordion-item.is-open .acc-icon {
+            transform: rotate(180deg);
         }
 
         /* --- CLASSES BASE DO INTERSECTION OBSERVER --- */
@@ -103,17 +149,11 @@
         .delay-400 { transition-delay: 400ms; }
         .delay-500 { transition-delay: 500ms; }
         
-        /* Delays Prolongados para a Hero */
         .delay-1000 { transition-delay: 1000ms; }
         .delay-1200 { transition-delay: 1200ms; }
         .delay-1500 { transition-delay: 1500ms; }
         .delay-1800 { transition-delay: 1800ms; }
         .delay-2000 { transition-delay: 2000ms; }
-
-        .delay-3000 { transition-delay: 3000ms; }
-        .delay-3200 { transition-delay: 3200ms; }
-        .delay-3500 { transition-delay: 3500ms; }
-        .delay-3800 { transition-delay: 3800ms; }
 
         @media (prefers-reduced-motion: reduce) {
             .reveal, .animate-pop-in {
@@ -163,9 +203,8 @@
                 <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/95 pointer-events-none"></div>
             </div>
 
-            <!-- Cabeçalho Original (Tamanho Médio Otimizado) -->
             <header class="relative z-10 w-full pt-8 px-6 md:px-12 flex items-center justify-between text-zinc-100 reveal delay-1000">
-                <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/Prancheta%202_12.svg" alt="Giro da Bolsa" class="h-10 md:h-14 lg:h-16 w-auto object-contain" />
+                <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/Prancheta%202_12.svg" alt="Giro da Bolsa" class="-ml-2 md:-ml-4 h-10 md:h-14 lg:h-16 w-auto object-contain" />
                 <nav class="hidden md:flex gap-12 text-xs font-medium tracking-widest uppercase text-zinc-300">
                     <a href="#ingressos" class="hover:text-red-500 transition-colors">Ingressos</a>
                     <a href="#roteiro" class="hover:text-red-500 transition-colors">O Roteiro</a>
@@ -178,10 +217,8 @@
                 </a>
             </header>
 
-            <!-- Espaço central livre para o vídeo + Grid de duas colunas na base -->
             <div class="relative z-10 w-full mt-auto pb-8 pt-24 px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-end">
                 
-                <!-- Coluna Esquerda: Título e Destino (Centralizado no mobile/tablet, Esquerda no desktop) -->
                 <div class="flex flex-col items-center justify-center lg:items-start lg:justify-end text-center lg:text-left reveal reveal-left delay-1200">
                     <h1 class="font-serif text-[18vw] sm:text-[15vw] lg:text-[8rem] xl:text-[9.5rem] 2xl:text-[11rem] font-bold leading-[0.85] tracking-tighter text-white flex flex-col items-center lg:items-start drop-shadow-2xl">
                         <span class="flex items-center gap-4">
@@ -198,7 +235,6 @@
                     </div>
                 </div>
 
-                <!-- Coluna Direita: Informações e Status (Centralizado no mobile/tablet, Esquerda no desktop) -->
                 <div class="max-w-lg w-full reveal reveal-right delay-1800 mx-auto lg:mx-0 lg:justify-self-end flex flex-col items-center lg:items-start text-center lg:text-left">
                     <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 md:gap-3 text-xs font-medium uppercase tracking-widest text-zinc-500 mb-8">
                         <span>Goiânia</span>
@@ -369,7 +405,7 @@
         <div id="gallery-container" class="max-w-7xl mx-auto flex flex-wrap justify-center items-center py-12 min-h-[400px] lg:pl-56 xl:pl-64"></div>
     </section>
 
-    <!-- --- COLLAPSIBLE FOLDS (Refatorados para Grid) --- -->
+    <!-- --- COLLAPSIBLE FOLDS (Refatorados com Topo Gigante) --- -->
     <section id="edicoes" class="pb-24 px-6 reveal">
         <div class="max-w-7xl mx-auto lg:pl-56 xl:pl-64 relative">
             
@@ -377,50 +413,59 @@
             <div class="accordion-item relative border border-zinc-700/50 rounded-3xl mb-4 bg-[#07130e] shadow-lg group z-10 transition-colors">
                 <!-- Wrapper do Fundo Escuro Isolado -->
                 <div class="absolute inset-0 z-0 overflow-hidden rounded-3xl pointer-events-none">
-                    <img src="https://images.unsplash.com/photo-1591115765373-5207764f72e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Goiânia" class="w-full h-full object-cover opacity-40 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105">
+                    <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/Goi%C3%A2nia/IMG_0793.JPG" alt="Goiânia" class="w-full h-full object-cover opacity-40 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-tr from-greece-green via-[#0a1a15]/80 to-transparent"></div>
                     <div class="absolute inset-0 bg-gradient-to-t from-greece-green via-[#0a1a15]/60 to-[#0a1a15]/20"></div>
                 </div>
 
-                <button onclick="toggleAccordion(this)" class="relative z-10 w-full px-6 py-8 md:px-10 flex justify-between items-center text-left focus:outline-none">
+                <!-- CABEÇALHO REDUZIDO (Estado Fechado) -->
+                <button onclick="toggleAccordion(this)" class="header-small relative z-10 w-full px-6 py-8 md:px-10 flex justify-between items-center text-left focus:outline-none">
                     <div>
                         <span class="text-greece-yellow font-bold tracking-widest uppercase text-xs shadow-black drop-shadow-md">Edição 01</span>
                         <h3 class="font-serif text-3xl md:text-4xl mt-1 text-white shadow-black drop-shadow-md">Goiânia, GO</h3>
                     </div>
-                    <i data-lucide="chevron-down" class="acc-icon transform transition-transform duration-500 w-8 h-8 text-white/50"></i>
+                    <i data-lucide="chevron-down" class="acc-icon w-8 h-8 text-white/50"></i>
                 </button>
                 
+                <!-- CONTEÚDO EXPANDIDO -->
                 <div class="accordion-content relative z-10">
                     <div class="overflow-hidden accordion-inner">
-                        <div class="px-6 pb-8 md:px-10 md:pb-12 flex flex-col justify-between">
-                            <div class="flex flex-col md:flex-row justify-between items-start gap-8 mt-4">
-                                <i data-lucide="map" class="w-10 h-10 text-greece-yellow/50 shrink-0"></i>
-                                <div class="max-w-md text-[#88a89b] text-sm leading-relaxed">
-                                    Goiânia foi o marco zero. Onde o calor do cerrado encontrou o universo dos investimentos. Mais de 500 pessoas reunidas no teatro Rio Vermelho para entender que a bolsa não é um bicho de sete cabeças. Uma atmosfera única que moldou as edições seguintes.
-                                </div>
-                            </div>
-
-                            <div class="mt-16 md:mt-24 flex flex-col gap-10">
-                                <div class="w-full flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
-                                    <div>
-                                        <div class="flex gap-4 md:gap-8 text-[#88a89b] text-xs uppercase tracking-widest mb-4 md:mb-6 border-b border-[#1a382c] pb-4">
-                                            <span>Goiás <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
-                                            <span>Brasil <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
-                                            <span class="text-greece-yellow">Edição 1</span>
-                                        </div>
-                                        <h4 class="font-serif text-[3.5rem] md:text-[6rem] lg:text-[8rem] leading-none tracking-tighter text-greece-yellow drop-shadow-lg uppercase">
-                                            Goiânia
-                                        </h4>
+                        <div class="px-6 pb-8 md:px-10 md:pb-12 flex flex-col pt-4 md:pt-6">
+                            
+                            <!-- CABEÇALHO GIGANTE (Estado Aberto) -->
+                            <div class="header-large w-full flex flex-col border-b border-[#1a382c] pb-6 mb-8">
+                                <div class="flex items-center justify-between w-full mb-4">
+                                    <div class="flex flex-wrap gap-2 md:gap-4 text-[#88a89b] text-[10px] md:text-xs uppercase tracking-widest items-center">
+                                        <span>Goiás <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span>Brasil <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span class="text-greece-yellow">Edição 1</span>
                                     </div>
-                                    <button class="px-6 md:px-8 py-3 bg-greece-yellow text-[#0a1a15] rounded-full font-bold text-xs md:text-sm tracking-wider uppercase flex items-center gap-3 hover:bg-yellow-400 transition-colors shrink-0 mb-2">
-                                        <span class="w-6 h-[1px] bg-[#0a1a15]"></span> Assistir Resumo
+                                    <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 hover:bg-white/5 rounded-full transition-colors" title="Fechar">
+                                        <i data-lucide="chevron-down" class="acc-icon text-white/50 w-6 h-6"></i>
                                     </button>
                                 </div>
+                                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 w-full">
+                                    <h4 class="font-serif text-[4rem] md:text-[6rem] lg:text-[8rem] leading-none tracking-tighter text-greece-yellow drop-shadow-lg uppercase">
+                                        Goiânia
+                                    </h4>
+                                    <div class="shrink-0 mb-2 lg:mb-4">
+                                        <button class="px-6 md:px-8 py-3 bg-greece-yellow text-[#0a1a15] rounded-full font-bold text-xs md:text-sm tracking-wider uppercase flex items-center gap-3 hover:bg-yellow-400 transition-colors shadow-lg shadow-yellow-500/20">
+                                            <span class="w-6 h-[1px] bg-[#0a1a15]"></span> Assistir Resumo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- DESCRIÇÃO E FOTOS (Fade-in secundário) -->
+                            <div class="acc-fade w-full">
+                                <p class="text-[#88a89b] text-base md:text-lg leading-relaxed mb-10">
+                                    Goiânia foi o marco zero. Onde o calor do cerrado encontrou o universo dos investimentos. Mais de 500 pessoas reunidas no teatro Rio Vermelho para entender que a bolsa não é um bicho de sete cabeças. Uma atmosfera única que moldou as edições seguintes.
+                                </p>
 
-                                <div class="w-full mt-2">
+                                <div class="w-full">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                         <div class="w-full h-64 rounded-2xl overflow-hidden relative group/card cursor-pointer border border-white/10">
-                                            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Palco">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/Goi%C3%A2nia/IMG-20251106-WA0347.jpg.2e9a610eb8b47d988309ff166fead2ec.jpg" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Palco">
                                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                                             <div class="absolute bottom-4 left-4 right-4 text-white">
                                                 <p class="text-xs text-greece-yellow mb-1">Destaque</p>
@@ -428,7 +473,7 @@
                                             </div>
                                         </div>
                                         <div class="w-full h-64 rounded-2xl overflow-hidden relative group/card cursor-pointer border border-white/10">
-                                            <img src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Networking">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/Goi%C3%A2nia/IMG_0796.jpg" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Networking">
                                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                                             <div class="absolute bottom-4 left-4 right-4 text-white">
                                                 <p class="text-xs text-greece-yellow mb-1">Conexões</p>
@@ -436,7 +481,7 @@
                                             </div>
                                         </div>
                                         <div class="w-full h-64 rounded-2xl overflow-hidden relative group/card cursor-pointer border border-white/10">
-                                            <img src="https://images.unsplash.com/photo-1470229722913-7c090be5bc3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Resenha">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/Goi%C3%A2nia/ImagemdoWhatsAppde2025-07-26s10_48.30_59f20d19.jpg.aab9f398a9048f0538f5208dedd29f4d.jpg.97eec.jpg" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Resenha">
                                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                                             <div class="absolute bottom-4 left-4 right-4 text-white">
                                                 <p class="text-xs text-greece-yellow mb-1">Conteúdo</p>
@@ -446,7 +491,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -455,50 +499,59 @@
             <!-- Acordeão 2: Belo Horizonte -->
             <div class="accordion-item relative border border-zinc-700/50 rounded-3xl mb-4 bg-[#0c1014] shadow-lg group z-10 transition-colors">
                 <div class="absolute inset-0 z-0 overflow-hidden rounded-3xl pointer-events-none">
-                    <img src="https://images.unsplash.com/photo-1565363887761-729cb907293b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="BH" class="w-full h-full object-cover opacity-40 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105">
+                    <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/bh%20redux%201.webp" alt="BH" class="w-full h-full object-cover opacity-40 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-tr from-[#0c1014] via-[#0c1014]/80 to-transparent"></div>
                     <div class="absolute inset-0 bg-gradient-to-t from-[#0c1014] via-[#0c1014]/60 to-[#0c1014]/20"></div>
                 </div>
 
-                <button onclick="toggleAccordion(this)" class="relative z-10 w-full px-6 py-8 md:px-10 flex justify-between items-center text-left focus:outline-none">
+                <!-- CABEÇALHO REDUZIDO (Estado Fechado) -->
+                <button onclick="toggleAccordion(this)" class="header-small relative z-10 w-full px-6 py-8 md:px-10 flex justify-between items-center text-left focus:outline-none">
                     <div>
                         <span class="text-[#38bdf8] font-bold tracking-widest uppercase text-xs shadow-black drop-shadow-md">Edição 02</span>
                         <h3 class="font-serif text-3xl md:text-4xl mt-1 text-white shadow-black drop-shadow-md">Belo Horizonte, MG</h3>
                     </div>
-                    <i data-lucide="chevron-down" class="acc-icon transform transition-transform duration-500 w-8 h-8 text-white/50"></i>
+                    <i data-lucide="chevron-down" class="acc-icon w-8 h-8 text-white/50"></i>
                 </button>
                 
+                <!-- CONTEÚDO EXPANDIDO -->
                 <div class="accordion-content relative z-10">
                     <div class="overflow-hidden accordion-inner">
-                        <div class="px-6 pb-8 md:px-10 md:pb-12 flex flex-col justify-between">
+                        <div class="px-6 pb-8 md:px-10 md:pb-12 flex flex-col pt-4 md:pt-6">
                             
-                            <div class="flex flex-col md:flex-row justify-between items-start gap-8 mt-4">
-                                <i data-lucide="map" class="w-10 h-10 text-[#38bdf8]/50 shrink-0"></i>
-                                <div class="max-w-md text-[#94a3b8] text-sm leading-relaxed">
-                                    Minas Gerais recebeu o Giro da Bolsa com lotação esgotada. Trouxemos pão de queijo, café forte e análises profundas sobre o mercado. Uma edição marcada por participações especiais e um engajamento estrondoso da plateia mineira.
-                                </div>
-                            </div>
-
-                            <div class="mt-16 md:mt-24 flex flex-col gap-10">
-                                <div class="w-full flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
-                                    <div>
-                                        <div class="flex gap-4 md:gap-8 text-[#94a3b8] text-xs uppercase tracking-widest mb-4 md:mb-6 border-b border-white/10 pb-4">
-                                            <span>Minas <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
-                                            <span class="text-[#38bdf8]">Edição 2</span>
-                                        </div>
-                                        <h4 class="font-serif text-[3.5rem] md:text-[6rem] lg:text-[8rem] leading-none tracking-tighter text-[#38bdf8] drop-shadow-lg uppercase">
-                                            Belo Horizonte
-                                        </h4>
+                            <!-- CABEÇALHO GIGANTE (Estado Aberto) -->
+                            <div class="header-large w-full flex flex-col border-b border-white/10 pb-6 mb-8">
+                                <div class="flex items-center justify-between w-full mb-4">
+                                    <div class="flex flex-wrap gap-2 md:gap-4 text-[#94a3b8] text-[10px] md:text-xs uppercase tracking-widest items-center">
+                                        <span>Minas Gerais <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span>Brasil <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span class="text-[#38bdf8]">Edição 2</span>
                                     </div>
-                                    <button class="px-6 md:px-8 py-3 bg-[#38bdf8] text-[#0c1014] rounded-full font-bold text-xs md:text-sm tracking-wider uppercase flex items-center gap-3 hover:bg-blue-400 transition-colors shrink-0 mb-2">
-                                        <span class="w-6 h-[1px] bg-[#0c1014]"></span> Ver Galeria
+                                    <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 hover:bg-white/5 rounded-full transition-colors" title="Fechar">
+                                        <i data-lucide="chevron-down" class="acc-icon text-white/50 w-6 h-6"></i>
                                     </button>
                                 </div>
+                                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 w-full">
+                                    <h4 class="font-serif text-[4rem] md:text-[6rem] lg:text-[7.5rem] leading-none tracking-tighter text-[#38bdf8] drop-shadow-lg uppercase">
+                                        Belo Horizonte
+                                    </h4>
+                                    <div class="shrink-0 mb-2 lg:mb-4">
+                                        <button class="px-6 md:px-8 py-3 bg-[#38bdf8] text-[#0c1014] rounded-full font-bold text-xs md:text-sm tracking-wider uppercase flex items-center gap-3 hover:bg-blue-400 transition-colors shadow-lg shadow-blue-500/20">
+                                            <span class="w-6 h-[1px] bg-[#0c1014]"></span> Ver Galeria
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- DESCRIÇÃO E FOTOS -->
+                            <div class="acc-fade w-full">
+                                <p class="text-[#94a3b8] text-base md:text-lg leading-relaxed mb-10">
+                                    Minas Gerais recebeu o Giro da Bolsa com lotação esgotada. Trouxemos pão de queijo, café forte e análises profundas sobre o mercado. Uma edição marcada por participações especiais e um engajamento estrondoso da plateia mineira.
+                                </p>
 
-                                <div class="w-full mt-2">
+                                <div class="w-full">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                         <div class="w-full h-64 rounded-2xl overflow-hidden relative group/card cursor-pointer border border-white/10">
-                                            <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Estúdio">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/bh%20redux%202.webp" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Estúdio">
                                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                                             <div class="absolute bottom-4 left-4 right-4 text-white">
                                                 <p class="text-xs text-[#38bdf8] mb-1">Bastidores</p>
@@ -506,17 +559,24 @@
                                             </div>
                                         </div>
                                         <div class="w-full h-64 rounded-2xl overflow-hidden relative group/card cursor-pointer border border-white/10">
-                                            <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Equipe">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/bh%20redux%203.webp" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Equipe">
                                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                                             <div class="absolute bottom-4 left-4 right-4 text-white">
                                                 <p class="text-xs text-[#38bdf8] mb-1">Ao Vivo</p>
                                                 <p class="text-sm font-semibold">Gravação</p>
                                             </div>
                                         </div>
+                                        <div class="w-full h-64 rounded-2xl overflow-hidden relative group/card cursor-pointer border border-white/10">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/bh%20redux%204.webp" class="w-full h-full object-cover opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" alt="Galera">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                            <div class="absolute bottom-4 left-4 right-4 text-white">
+                                                <p class="text-xs text-[#38bdf8] mb-1">Comunidade</p>
+                                                <p class="text-sm font-semibold">A Turma</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -530,7 +590,8 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-[#120505] via-[#120505]/60 to-[#120505]/20"></div>
                 </div>
 
-                <button onclick="toggleAccordion(this)" class="relative z-10 w-full px-6 py-8 md:px-10 flex justify-between items-center text-left focus:outline-none">
+                <!-- CABEÇALHO REDUZIDO (Estado Fechado) -->
+                <button onclick="toggleAccordion(this)" class="header-small relative z-10 w-full px-6 py-8 md:px-10 flex justify-between items-center text-left focus:outline-none">
                     <div>
                         <span class="text-red-500 font-bold tracking-widest uppercase text-xs shadow-black drop-shadow-md flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Próxima Parada
@@ -539,19 +600,47 @@
                     </div>
                     <div class="flex items-center gap-4">
                         <span class="hidden md:inline-block px-4 py-1 border border-red-500/50 rounded-full text-red-400 text-xs tracking-widest uppercase font-bold bg-red-500/10 backdrop-blur-sm">Em Breve</span>
-                        <i data-lucide="chevron-down" class="acc-icon transform transition-transform duration-500 w-8 h-8 text-white/50"></i>
+                        <i data-lucide="chevron-down" class="acc-icon w-8 h-8 text-white/50"></i>
                     </div>
                 </button>
                 
+                <!-- CONTEÚDO EXPANDIDO -->
                 <div class="accordion-content relative z-10">
                     <div class="overflow-hidden accordion-inner">
-                        <div class="px-6 pb-8 md:px-10 md:pb-12 flex flex-col justify-center">
-                            <div class="max-w-2xl mt-4 py-8">
-                                <h4 class="font-serif text-4xl md:text-5xl text-white mb-6">Aguarde o impacto.</h4>
-                                <p class="text-[#fca5a5] opacity-80 text-lg leading-relaxed mb-8">
+                        <div class="px-6 pb-8 md:px-10 md:pb-12 flex flex-col pt-4 md:pt-6">
+                            
+                            <!-- CABEÇALHO GIGANTE (Estado Aberto) -->
+                            <div class="header-large w-full flex flex-col border-b border-red-900/30 pb-6 mb-8">
+                                <div class="flex items-center justify-between w-full mb-4">
+                                    <div class="flex flex-wrap gap-2 md:gap-4 text-red-400/80 text-[10px] md:text-xs uppercase tracking-widest items-center">
+                                        <span>São Paulo <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span>Brasil <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span class="text-red-500 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Em Breve</span>
+                                    </div>
+                                    <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 hover:bg-white/5 rounded-full transition-colors" title="Fechar">
+                                        <i data-lucide="chevron-down" class="acc-icon text-white/50 w-6 h-6"></i>
+                                    </button>
+                                </div>
+                                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 w-full">
+                                    <h4 class="font-serif text-[4rem] md:text-[6rem] lg:text-[8rem] leading-none tracking-tighter text-white drop-shadow-lg uppercase">
+                                        São Paulo
+                                    </h4>
+                                    <div class="shrink-0 mb-2 lg:mb-4">
+                                        <a href="#ingressos" class="inline-flex px-6 md:px-8 py-3 bg-red-600 text-white rounded-full font-bold text-xs md:text-sm tracking-wider uppercase items-center gap-3 hover:bg-red-700 transition-colors shadow-[0_0_20px_-5px_rgba(220,38,38,0.5)]">
+                                            <span class="w-6 h-[1px] bg-white"></span> Garantir Lugar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- DESCRIÇÃO (Fade-in) -->
+                            <div class="acc-fade w-full">
+                                <h5 class="font-serif text-3xl md:text-4xl text-white mb-4">Aguarde o impacto.</h5>
+                                <p class="text-[#fca5a5] opacity-90 text-base md:text-lg leading-relaxed mb-6">
                                     O coração financeiro do Brasil será o palco da nossa maior edição. Estamos a preparar uma experiência sem precedentes para encerrar este ciclo com chave de ouro. As vagas serão estritamente limitadas.
                                 </p>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -601,16 +690,34 @@
     </div>
 
     <!-- Modal Lightbox (Zoom nas Fotos) -->
-    <div id="lightbox-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 bg-black/90 backdrop-blur-md" onclick="closeLightbox()">
+    <div id="lightbox-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 bg-black/95 backdrop-blur-md" onclick="closeLightbox()">
         <button class="absolute top-6 right-6 text-white hover:text-red-500 transition-colors z-10" onclick="closeLightbox()">
             <i data-lucide="x" class="w-8 h-8"></i>
         </button>
-        <img id="lightbox-img" src="" alt="Imagem Expandida" class="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl scale-95 transition-transform duration-300" onclick="event.stopPropagation()">
+        <div class="relative flex flex-col items-center max-w-[90vw] max-h-[90vh]" onclick="event.stopPropagation()">
+            <img id="lightbox-img" src="" alt="Imagem Expandida" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl scale-95 transition-transform duration-300">
+            <div id="lightbox-caption" class="mt-4 md:mt-6 flex justify-between items-center w-full px-4 md:px-0 font-serif scale-95 transition-transform duration-300 text-white">
+                <span id="lightbox-city" class="font-bold text-xl md:text-2xl"></span>
+                <span id="lightbox-state" class="text-zinc-400 font-bold text-lg md:text-xl"></span>
+            </div>
+        </div>
     </div>
 
     <!-- Lógica JavaScript Dinâmica e Animações -->
     <script>
         lucide.createIcons();
+
+        // --- SISTEMA DE TEMA CLARO/ESCURO ---
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        function updateTheme(e) {
+            if (e.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+        updateTheme(mediaQuery);
+        mediaQuery.addEventListener('change', updateTheme);
 
         // --- SCROLL SPY PARA MENU LATERAL FLUTUANTE ---
         const sections = document.querySelectorAll("section[id]");
@@ -657,28 +764,21 @@
             });
         });
 
-        // --- NOVA LÓGICA DO ACORDEÃO (Baseada em CSS Grid e Z-index Nativo) ---
+        // --- NOVA LÓGICA DO ACORDEÃO (Atualizada para animação de CSS Nativo / is-open) ---
         function toggleAccordion(btn) {
             const item = btn.closest('.accordion-item');
-            const content = item.querySelector('.accordion-content');
-            const icon = btn.querySelector('.acc-icon');
+            const isOpen = item.classList.contains('is-open');
             
-            const isOpen = content.classList.contains('open');
-            
-            // Fecha todos
-            document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('open'));
-            document.querySelectorAll('.acc-icon').forEach(el => el.style.transform = 'rotate(0deg)');
+            // Fecha todos os cartões abertos
             document.querySelectorAll('.accordion-item').forEach(el => {
-                el.classList.remove('z-50');
+                el.classList.remove('is-open', 'z-50');
                 el.classList.add('z-10');
             });
 
-            // Abre apenas o clicado (se não estivesse já aberto)
+            // Abre apenas o clicado (se não estava já aberto)
             if (!isOpen) {
-                content.classList.add('open');
-                icon.style.transform = 'rotate(180deg)';
+                item.classList.add('is-open', 'z-50');
                 item.classList.remove('z-10');
-                item.classList.add('z-50');
             }
         }
 
@@ -710,16 +810,16 @@
             });
         }, 100);
 
-        // --- GALERIA DE FOTOS (MURAL ESPALHADO) ---
+        // --- GALERIA DE FOTOS (MURAL ESPALHADO - IMAGENS OFICIAIS) ---
         const galleryPhotos = [
-            { id: 1, city: 'Goiânia', label: 'Goiânia, GO', ed: 'Ed. 01', src: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-12deg', mt: 'mt-2 md:mt-0' },
-            { id: 2, city: 'Belo Horizonte', label: 'Belo Horizonte', ed: 'Ed. 02', src: 'https://images.unsplash.com/photo-1565363887761-729cb907293b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '5deg', mt: 'mt-8 md:mt-16' },
-            { id: 3, city: 'Goiânia', label: 'Networking', ed: 'GO', src: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-4deg', isHighlight: true, mt: '-mt-4 md:-mt-10' },
-            { id: 4, city: 'Belo Horizonte', label: 'Bastidores', ed: 'MG', src: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '15deg', mt: 'mt-6 md:mt-12' },
-            { id: 5, city: 'Goiânia', label: 'O Palco', ed: 'GO', src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '8deg', mt: '-mt-2 md:-mt-6' },
-            { id: 6, city: 'Belo Horizonte', label: 'A Plateia', ed: 'MG', src: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-10deg', mt: 'mt-4 md:mt-8' },
-            { id: 7, city: 'Goiânia', label: 'A Turma', ed: 'GO', src: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '10deg', mt: '-mt-4 md:-mt-8' },
-            { id: 8, city: 'Belo Horizonte', label: 'Encerramento', ed: 'MG', src: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', rot: '-7deg', mt: 'mt-2 md:mt-4' },
+            { id: 1, city: 'Goiânia', label: 'Goiânia', state: 'GO', src: 'https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/Goi%C3%A2nia/IMG-20251106-WA0347.jpg.2e9a610eb8b47d988309ff166fead2ec.jpg', rot: '-12deg', mt: 'mt-2 md:mt-0' },
+            { id: 2, city: 'Belo Horizonte', label: 'Belo Horizonte', state: 'MG', src: 'https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/bh%20redux%201.webp', rot: '5deg', mt: 'mt-8 md:mt-16' },
+            { id: 3, city: 'Goiânia', label: 'Goiânia', state: 'GO', src: 'https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/Goi%C3%A2nia/IMG_0793.JPG', rot: '-4deg', isHighlight: true, mt: '-mt-4 md:-mt-10' },
+            { id: 4, city: 'Belo Horizonte', label: 'Belo Horizonte', state: 'MG', src: 'https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/bh%20redux%202.webp', rot: '15deg', mt: 'mt-6 md:mt-12' },
+            { id: 5, city: 'Goiânia', label: 'Goiânia', state: 'GO', src: 'https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/Goi%C3%A2nia/IMG_0796.jpg', rot: '8deg', mt: '-mt-2 md:-mt-6' },
+            { id: 6, city: 'Belo Horizonte', label: 'Belo Horizonte', state: 'MG', src: 'https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/bh%20redux%203.webp', rot: '-10deg', mt: 'mt-4 md:mt-8' },
+            { id: 7, city: 'Goiânia', label: 'Goiânia', state: 'GO', src: 'https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/Goi%C3%A2nia/ImagemdoWhatsAppde2025-07-26s10_48.30_59f20d19.jpg.aab9f398a9048f0538f5208dedd29f4d.jpg.97eec.jpg', rot: '10deg', mt: '-mt-4 md:-mt-8' },
+            { id: 8, city: 'Belo Horizonte', label: 'Belo Horizonte', state: 'MG', src: 'https://github.com/ProdutosAUVP/gdb-itinerante/raw/claude/fervent-brahmagupta-heK89/bh%20redux%204.webp', rot: '-7deg', mt: 'mt-2 md:mt-4' },
         ];
 
         const filterOptions = ['Todos', 'Goiânia', 'Belo Horizonte'];
@@ -733,7 +833,7 @@
             const filtered = galleryPhotos.filter(p => activeFilter === 'Todos' || p.city === activeFilter);
             
             filtered.forEach((photo, index) => {
-                const marginClass = index === 0 ? '' : '-ml-12 md:-ml-20';
+                const marginClass = index === 0 ? '' : '-mx-3 sm:-mx-4 md:-mx-8 lg:-mx-10';
                 const zIndex = photo.isHighlight ? 'z-40 scale-105' : `z-[${index + 10}]`;
                 const textClasses = photo.isHighlight ? 'text-lg' : '';
                 const edClasses = photo.isHighlight ? 'text-red-600 font-bold' : 'text-zinc-500';
@@ -741,21 +841,19 @@
 
                 galleryContainer.innerHTML += `
                     <div class="polaroid-card animate-pop-in relative bg-white p-2 md:p-3 pb-10 md:pb-12 shadow-2xl border border-zinc-200 w-36 sm:w-44 md:w-60 ${marginClass} ${photo.mt} ${zIndex} cursor-pointer group/photo" 
-                         style="--card-rot: ${photo.rot}; opacity: 0; animation-delay: ${staggerDelay}ms;" onclick="openLightbox('${photo.src}')">
+                         style="--card-rot: ${photo.rot}; opacity: 0; animation-delay: ${staggerDelay}ms;" onclick="openLightbox('${photo.src}', '${photo.label}', '${photo.state}')">
                         <div class="relative overflow-hidden w-full h-36 sm:h-40 md:h-56">
                             <img src="${photo.src}" alt="${photo.city}" class="w-full h-full object-cover transition-transform duration-700 group-hover/photo:scale-110" />
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/photo:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <i data-lucide="zoom-in" class="text-white w-8 h-8"></i>
+                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover/photo:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                             </div>
                         </div>
                         <div class="absolute bottom-2 md:bottom-3 left-3 md:left-4 right-3 md:right-4 flex justify-between items-center font-serif text-zinc-800">
                             <span class="font-bold text-xs sm:text-sm md:text-base ${textClasses}">${photo.label}</span>
-                            <span class="text-[10px] sm:text-xs md:text-sm ${edClasses}">${photo.ed}</span>
+                            <span class="text-[10px] sm:text-xs md:text-sm ${edClasses}">${photo.state}</span>
                         </div>
                     </div>
                 `;
             });
-            // Reinicializar ícones inseridos pelo JS dinâmico
             lucide.createIcons();
         }
 
@@ -796,7 +894,6 @@
             }, 10);
         }
 
-        // --- SISTEMA DE FECHAR MODAL DA CIDADE ---
         function closeCityModal() {
             const modal = document.getElementById('city-modal');
             const content = document.getElementById('city-modal-content');
@@ -807,22 +904,40 @@
             }, 300);
         }
 
-        function openLightbox(src) {
+        function openLightbox(src, city, state) {
             const modal = document.getElementById('lightbox-modal');
             const img = document.getElementById('lightbox-img');
+            const caption = document.getElementById('lightbox-caption');
+            const cityEl = document.getElementById('lightbox-city');
+            const stateEl = document.getElementById('lightbox-state');
+            
             img.src = src;
+            cityEl.innerText = city;
+            stateEl.innerText = state;
+            
             modal.classList.remove('opacity-0', 'pointer-events-none');
             setTimeout(() => {
                 img.classList.remove('scale-95');
                 img.classList.add('scale-100');
+                if(caption) {
+                    caption.classList.remove('scale-95');
+                    caption.classList.add('scale-100');
+                }
             }, 10);
         }
 
         function closeLightbox() {
             const modal = document.getElementById('lightbox-modal');
             const img = document.getElementById('lightbox-img');
+            const caption = document.getElementById('lightbox-caption');
+            
             img.classList.remove('scale-100');
             img.classList.add('scale-95');
+            if(caption) {
+                caption.classList.remove('scale-100');
+                caption.classList.add('scale-95');
+            }
+            
             setTimeout(() => {
                 modal.classList.add('opacity-0', 'pointer-events-none');
             }, 300);
