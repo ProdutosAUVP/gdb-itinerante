@@ -1091,23 +1091,22 @@
             submitBtn.disabled = true;
             submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
 
-            // Garante que o campo "aluno" seja enviado mesmo quando desmarcado
             const formData = new FormData(form);
             if (!formData.has('aluno')) formData.append('aluno', 'Não');
 
-            // Envia os dados nativamente pelo Fetch API
-            fetch(scriptURL, { method: 'POST', body: formData })
-                .then(response => {
+            // mode: 'no-cors' é obrigatório para requisições ao Google Apps Script.
+            // A resposta será opaca (não legível), mas os dados chegam na planilha.
+            fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
+                .then(() => {
                     alert('Sua sugestão foi enviada com sucesso! Obrigado.');
-                    form.reset(); // Limpa o formulário
-                    closeCityModal(); // Fecha o modal
+                    form.reset();
+                    closeCityModal();
                 })
                 .catch(error => {
-                    console.error('Erro!', error.message);
+                    console.error('Erro ao enviar formulário:', error.message);
                     alert('Houve um erro ao enviar. Tente novamente mais tarde.');
                 })
                 .finally(() => {
-                    // Restaura o botão
                     submitBtn.innerText = originalText;
                     submitBtn.disabled = false;
                     submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
