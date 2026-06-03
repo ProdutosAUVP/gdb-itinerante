@@ -1094,9 +1094,10 @@
             const formData = new FormData(form);
             if (!formData.has('aluno')) formData.append('aluno', 'Não');
 
-            // mode: 'no-cors' é obrigatório para requisições ao Google Apps Script.
-            // A resposta será opaca (não legível), mas os dados chegam na planilha.
-            fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
+            // Google Apps Script só lê e.parameter com application/x-www-form-urlencoded.
+            // FormData envia multipart/form-data, que o Apps Script ignora.
+            // URLSearchParams força o content-type correto e é compatível com no-cors.
+            fetch(scriptURL, { method: 'POST', body: new URLSearchParams(formData), mode: 'no-cors' })
                 .then(() => {
                     alert('Sua sugestão foi enviada com sucesso! Obrigado.');
                     form.reset();
