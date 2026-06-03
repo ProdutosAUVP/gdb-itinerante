@@ -30,7 +30,7 @@
                     },
                     keyframes: {
                         popIn: {
-                            '0%': { opacity: '0', transform: 'scale(0.8) translateY(50px) rotate(var(--card-rot))' },
+                            '0%': { opacity: '0', transform: 'scale(1.4) translateY(100px) rotate(calc(var(--card-rot) - 15deg))' },
                             '100%': { opacity: '1', transform: 'scale(1) translateY(0) rotate(var(--card-rot))' },
                         }
                     }
@@ -417,7 +417,7 @@
             <div id="filter-container" class="flex flex-wrap justify-center gap-3 mb-2 reveal delay-200"></div>
         </div>
 
-        <div id="gallery-container" class="max-w-7xl mx-auto flex flex-col justify-center items-center pb-12 pt-2 min-h-[400px] lg:pl-56 xl:pl-64"></div>
+        <div id="gallery-container" class="max-w-7xl mx-auto flex flex-col justify-center items-center pb-12 pt-8 mt-2 min-h-[400px] lg:pl-56 xl:pl-64"></div>
     </section>
 
     <!-- --- COLLAPSIBLE FOLDS (Refatorados com Topo Gigante) --- -->
@@ -813,6 +813,16 @@
             });
         }, observerOptions);
 
+        // Observer Exclusivo para as Polaroids (animam apenas quando entram na tela)
+        const polaroidObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-pop-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '0px 0px -5% 0px', threshold: 0.1 });
+
         document.querySelectorAll('.reveal').forEach(el => {
             if (!el.closest('#hero')) {
                 scrollObserver.observe(el);
@@ -870,8 +880,9 @@
                     const globalIndex = rowIndex * Math.ceil(filtered.length / 2) + index;
                     const staggerDelay = globalIndex * 100;
 
+                    // Removemos a classe 'animate-pop-in' do HTML inicial para que seja adicionada apenas no scroll
                     rowContainer.innerHTML += `
-                        <div class="polaroid-card animate-pop-in relative bg-white p-2 md:p-3 pb-10 md:pb-12 shadow-2xl border border-zinc-200 w-36 sm:w-44 md:w-60 ${marginClass} ${photo.mt} ${zIndex} cursor-pointer group/photo" 
+                        <div class="polaroid-card relative bg-white p-2 md:p-3 pb-10 md:pb-12 shadow-2xl border border-zinc-200 w-36 sm:w-44 md:w-60 ${marginClass} ${photo.mt} ${zIndex} cursor-pointer group/photo" 
                              style="--card-rot: ${photo.rot}; opacity: 0; animation-delay: ${staggerDelay}ms;" onclick="openLightbox('${photo.src}', '${photo.label}', '${photo.state}')">
                             <div class="relative overflow-hidden w-full h-36 sm:h-40 md:h-56">
                                 <img src="${photo.src}" alt="${photo.city}" class="w-full h-full object-cover transition-transform duration-700 group-hover/photo:scale-110" />
@@ -890,6 +901,13 @@
             });
             
             lucide.createIcons();
+
+            // Reatribui o observador às novas polaroids renderizadas
+            setTimeout(() => {
+                document.querySelectorAll('.polaroid-card').forEach(card => {
+                    polaroidObserver.observe(card);
+                });
+            }, 50);
         }
 
         function renderFilters() {
