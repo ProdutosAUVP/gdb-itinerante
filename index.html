@@ -271,7 +271,7 @@
         }
     </style>
 </head>
-<body class="font-sans bg-zinc-950 text-zinc-100 overflow-x-hidden">
+<body class="font-sans bg-zinc-950 text-zinc-100">
 
 <!-- ════════════════════════════════════════════════════════════════════
      #gdb-root — wrapper isolado para uso via Elementor HTML widget.
@@ -323,11 +323,11 @@
             <header class="relative z-10 w-full pt-8 px-6 md:px-12 flex items-center justify-between text-zinc-100 reveal delay-1000">
                 <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Prancheta%202_12.svg" alt="Giro da Bolsa" class="-ml-2 md:-ml-4 h-10 md:h-14 lg:h-16 w-auto object-contain" loading="eager" fetchpriority="high" />
                 <nav class="hidden md:flex gap-12 text-xs font-medium tracking-widest uppercase text-zinc-300">
-                    <a href="#ingressos" class="hover:text-red-500 transition-colors">Ingressos</a>
-                    <a href="#roteiro" class="hover:text-red-500 transition-colors">Roteiro</a>
-                    <a href="#galeria" class="hover:text-red-500 transition-colors">Histórico</a>
-                    <a href="#edicoes" class="hover:text-red-500 transition-colors">Edições</a>
-                    <a href="#faq" class="hover:text-red-500 transition-colors">FAQ</a>
+                    <a href="#ingressos" class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Ingressos</a>
+                    <a href="#roteiro"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Roteiro</a>
+                    <a href="#galeria"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Histórico</a>
+                    <a href="#edicoes"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Edições</a>
+                    <a href="#faq"       class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">FAQ</a>
                 </nav>
                 <a href="#ingressos" class="flex items-center gap-4 text-xs font-medium tracking-widest uppercase hover:text-red-500 transition-colors">
                     <span class="hidden md:block w-8 h-[1px] bg-current"></span>
@@ -881,9 +881,10 @@
             }
         }
 
-        // --- SCROLL SPY PARA MENU LATERAL FLUTUANTE ---
+        // --- SCROLL SPY PARA MENU LATERAL FLUTUANTE E TOP NAV ---
         const sections = document.querySelectorAll("section[id]");
         const navItems = document.querySelectorAll(".floating-nav-item");
+        const topNavItems = document.querySelectorAll(".top-nav-item");
         const floatingMenu = document.getElementById("floating-menu");
         const heroVideo = document.getElementById('hero-video');
 
@@ -916,12 +917,19 @@
                 item.classList.add("text-zinc-400");
                 item.querySelector('span').classList.remove("w-4", "bg-red-600");
                 item.querySelector('span').classList.add("w-0", "bg-zinc-400");
-                
+
                 if (item.getAttribute("href") === `#${current}`) {
                     item.classList.remove("text-zinc-400");
                     item.classList.add("text-red-600");
                     item.querySelector('span').classList.remove("w-0", "bg-zinc-400");
                     item.querySelector('span').classList.add("w-4", "bg-red-600");
+                }
+            });
+
+            topNavItems.forEach(item => {
+                item.classList.remove("text-red-500", "underline");
+                if (item.getAttribute("href") === `#${current}`) {
+                    item.classList.add("text-red-500", "underline");
                 }
             });
         });
