@@ -1,20 +1,62 @@
 <!DOCTYPE html>
-<html lang="pt-PT" class="scroll-smooth dark">
+<html lang="pt-BR" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giro da Bolsa - Turnê Nacional</title>
-    
+    <title>Giro da Bolsa Itinerante | São Paulo — 26 de Junho</title>
+    <meta name="description" content="O Giro da Bolsa sai do estúdio e vai até você. Evento presencial em São Paulo no dia 26 de junho: mercado de verdade, ao vivo, sem censura. Garanta seu ingresso.">
+
+    <!-- Open Graph / Redes Sociais -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Giro da Bolsa Itinerante | São Paulo — 26 de Junho">
+    <meta property="og:description" content="O maior canal de investimentos do Brasil ao vivo na sua cidade. Conteúdo sem filtro, networking real e a baguncinha que você já conhece.">
+    <meta property="og:image" content="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/avenida-paulista1_0.jpg">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Giro da Bolsa Itinerante | São Paulo — 26 de Junho">
+    <meta name="twitter:description" content="O maior canal de investimentos do Brasil ao vivo na sua cidade.">
+    <meta name="twitter:image" content="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/avenida-paulista1_0.jpg">
+
+    <!-- Structured Data: Evento -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Giro da Bolsa Itinerante — São Paulo",
+      "description": "Evento presencial do Investidor Sardinha: mercado financeiro ao vivo, sem censura, em São Paulo.",
+      "startDate": "2026-06-26T19:00:00-03:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": "São Paulo",
+        "address": { "@type": "PostalAddress", "addressLocality": "São Paulo", "addressRegion": "SP", "addressCountry": "BR" }
+      },
+      "organizer": { "@type": "Organization", "name": "AUVP Capital — Investidor Sardinha" },
+      "offers": [
+        { "@type": "Offer", "name": "Público Geral", "price": "997", "priceCurrency": "BRL", "availability": "https://schema.org/LimitedAvailability" },
+        { "@type": "Offer", "name": "Alunos AUVP", "price": "297", "priceCurrency": "BRL", "availability": "https://schema.org/LimitedAvailability" }
+      ]
+    }
+    </script>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://d3js.org">
+    <link rel="dns-prefetch" href="https://unpkg.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class', 
+            darkMode: 'class',
+            /* important: '#gdb-root' escopa TODAS as utilities ao wrapper,
+               evitando conflitos com o tema WordPress/Elementor.
+               corePlugins.preflight: false impede o reset global de CSS. */
+            important: '#gdb-root',
+            corePlugins: { preflight: false },
             theme: {
                 extend: {
                     fontFamily: {
@@ -39,12 +81,22 @@
         }
     </script>
 
-    <!-- D3.js e Lucide Icons -->
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- D3.js e Lucide Icons (defer: não bloqueiam o render inicial) -->
+    <script src="https://d3js.org/d3.v7.min.js" defer></script>
+    <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
 
     <!-- Estilos Customizados & Classes de Animação Performantes -->
     <style>
+        /* ── Reset de base para o wrapper (garante funcionamento isolado no Elementor) ── */
+        #gdb-root, #gdb-root *, #gdb-root *::before, #gdb-root *::after {
+            box-sizing: border-box;
+        }
+        #gdb-root img, #gdb-root video, #gdb-root svg {
+            display: block;
+            max-width: 100%;
+        }
+        #gdb-root a { color: inherit; text-decoration: none; }
+
         .noise-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -53,8 +105,8 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
             opacity: 0.06;
         }
-        
-        html.dark .noise-overlay { opacity: 0.04; }
+        /* Funciona tanto com html.dark (standalone) quanto com .dark wrapper (Elementor) */
+        html.dark .noise-overlay, .dark .noise-overlay { opacity: 0.04; }
 
         .dash-anim {
             stroke-dasharray: 8 8;
@@ -181,13 +233,21 @@
         }
     </style>
 </head>
-<body class="font-sans transition-colors duration-300 bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 overflow-x-hidden">
-    
+<body class="font-sans bg-zinc-950 text-zinc-100 overflow-x-hidden">
+
+<!-- ════════════════════════════════════════════════════════════════════
+     #gdb-root — wrapper isolado para uso via Elementor HTML widget.
+     O Tailwind está configurado com important:'#gdb-root' (escopo) e
+     preflight:false (sem reset global). Cole tudo a partir desta linha
+     no widget HTML do Elementor.
+     ════════════════════════════════════════════════════════════════════ -->
+<div id="gdb-root" class="dark font-sans bg-zinc-950 text-zinc-100 overflow-x-hidden">
+
     <div class="noise-overlay"></div>
 
     <!-- --- FLOATING SIDEBAR (Menu Flutuante à Esquerda) --- -->
     <nav id="floating-menu" class="fixed left-6 xl:left-12 top-1/2 -translate-y-1/2 z-50 flex-col gap-8 hidden lg:flex opacity-0 pointer-events-none transition-all duration-700 drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] dark:drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] w-48">
-        <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Prancheta%2010.svg" alt="Giro da Bolsa" class="h-10 w-auto mb-4 object-contain object-left" />
+        <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Prancheta%2010.svg" alt="Giro da Bolsa" class="h-10 w-auto mb-4 object-contain object-left" loading="lazy" />
         <a href="#hero" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-red-600">
             <span class="w-4 h-[2px] bg-red-600 transition-all duration-300 shadow-md"></span> Início
         </a>
@@ -220,7 +280,7 @@
             </div>
 
             <header class="relative z-10 w-full pt-8 px-6 md:px-12 flex items-center justify-between text-zinc-100 reveal delay-1000">
-                <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Prancheta%202_12.svg" alt="Giro da Bolsa" class="-ml-2 md:-ml-4 h-10 md:h-14 lg:h-16 w-auto object-contain" />
+                <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Prancheta%202_12.svg" alt="Giro da Bolsa" class="-ml-2 md:-ml-4 h-10 md:h-14 lg:h-16 w-auto object-contain" loading="eager" fetchpriority="high" />
                 <nav class="hidden md:flex gap-12 text-xs font-medium tracking-widest uppercase text-zinc-300">
                     <a href="#ingressos" class="hover:text-red-500 transition-colors">Ingressos</a>
                     <a href="#roteiro" class="hover:text-red-500 transition-colors">Roteiro</a>
@@ -276,7 +336,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <p class="text-zinc-400 text-xs md:text-sm font-medium tracking-wider uppercase mb-2">ENTÃO, VAMOS LÁ!</p>
+                        <p class="text-zinc-400 text-xs md:text-sm font-medium tracking-wider uppercase mb-2">ENTÃO, VAMOS LÁ?</p>
                         <p class="text-zinc-100 text-xl md:text-2xl font-serif leading-snug">
                             Esse é o Giro da Bolsa Itinerante
                         </p>
@@ -284,7 +344,7 @@
                     <div class="h-[1px] w-full bg-zinc-800/80 my-6"></div>
                     
                     <p class="text-zinc-400 text-sm leading-relaxed lg:pr-4">
-                        O Giro da Bolsa vai sair do estúdio e desembarcar em São Paulo. Ao vivo, sem tetos, sem gravadoras e SEM CENSURA... porque a ideia aqui é trazer INFORMAÇÃO DE VERDADE pra quem foca no longo prazo. E depois? A gente faz a nossa baguncinha, come, toma uma cerveja e fica feliz com quem realmente investe de verdade e não cai em papinho de carreteiro.
+                        O Giro da Bolsa vai sair do estúdio e desembarcar em São Paulo. Ao vivo, sem terno, sem gravatinha e SEM CENSURA... porque a ideia aqui é trazer INFORMAÇÃO DE VERDADE pra quem foca no longo prazo. E depois? A gente faz a nossa baguncinha, senta, toma uma cerveja e troca ideia com quem realmente investe de verdade e não cai em papinho de corretora.
                     </p>
                     
                     <div class="flex flex-wrap items-center justify-center lg:justify-start gap-8 md:gap-12 mt-8">
@@ -313,7 +373,7 @@
         <div class="max-w-7xl mx-auto px-6 lg:pl-56 xl:pl-64 relative z-10">
             
             <div class="text-center mb-16 reveal">
-                <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4">Seu Passaporte</h2>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4">Garanta seu lugar</h2>
                 <p class="text-zinc-400 max-w-2xl mx-auto">Garanta seu lugar! Escolha o seu ingresso para o evento presencial em São Paulo.</p>
             </div>
 
@@ -344,8 +404,8 @@
                         Exclusivo Alunos AUVP
                     </div>
                     <div class="mb-8">
-                        <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-white">Ingresso VIP</h3>
-                        <p class="text-zinc-400 text-sm">Condição exclusiva e benefício para alunos da escola.</p>
+                        <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-white">Alunos AUVP</h3>
+                        <p class="text-zinc-400 text-sm">Condição exclusiva e benefícios para alunos da AUVP.</p>
                     </div>
                     <div class="mb-8 flex items-center gap-4">
                         <div class="flex items-baseline gap-2">
@@ -378,7 +438,7 @@
                         A Rota <br class="hidden md:block" />Itinerante
                     </h2>
                     <p class="text-zinc-500 max-w-md mx-auto md:mx-0 text-lg">
-                        Acompanhe por onde o Giro da Bolsa já passou e qual será o nosso próximo destino. O mapa está sendo traçado e sua cidade pode ser a próxima.
+                        Acompanhe por onde o Giro da Bolsa Itinerante já passou e qual será o nosso próximo destino. O mapa está sendo traçado e sua cidade pode ser a próxima.
                     </p>
                     <div class="mt-8">
                         <button onclick="openCityModal()" class="inline-flex items-center gap-3 px-6 py-3 border border-zinc-700 hover:border-red-500 text-zinc-300 hover:text-white rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-lg hover:bg-red-500/10 hover:shadow-red-500/20">
@@ -400,8 +460,8 @@
     <!-- --- PAST EDITIONS (POLAROID MURAL) --- -->
     <section id="galeria" class="pt-24 pb-12 px-6">
         <div class="max-w-7xl mx-auto text-center mb-6 lg:pl-56 xl:pl-64">
-            <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4 reveal">O Quê Já Rolou</h2>
-            <p class="text-zinc-500 max-w-2xl mx-auto mb-10 reveal delay-100">Cada evento marcou presença nas outras edições para falar sobre o mercado frente a frente.</p>
+            <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4 reveal">O Que Já Rolou</h2>
+            <p class="text-zinc-500 max-w-2xl mx-auto mb-10 reveal delay-100">Confira quem já marcou presença nas outras edições para falar sobre o mercado frente a frente.</p>
             
             <div id="filter-container" class="flex flex-wrap justify-center gap-3 mb-2 reveal delay-200"></div>
         </div>
@@ -417,7 +477,7 @@
             <div class="accordion-item relative border border-zinc-700/50 rounded-3xl mb-4 bg-[#07130e] shadow-lg group z-10 transition-colors">
                 <!-- Wrapper do Fundo Escuro Isolado -->
                 <div class="absolute inset-0 z-0 overflow-hidden rounded-3xl pointer-events-none">
-                    <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/IMG_0793.JPG" alt="Goiânia" class="w-full h-full object-cover opacity-40 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105">
+                    <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/IMG_0793.JPG" alt="Goiânia" class="w-full h-full object-cover opacity-40 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-tr from-greece-green via-[#0a1a15]/80 to-transparent"></div>
                     <div class="absolute inset-0 bg-gradient-to-t from-greece-green via-[#0a1a15]/60 to-[#0a1a15]/20"></div>
                 </div>
@@ -463,19 +523,19 @@
                             <!-- DESCRIÇÃO E FOTOS (Fade-in secundário) -->
                             <div class="acc-fade w-full">
                                 <p class="text-[#88a89b] text-base md:text-lg leading-relaxed mb-10">
-                                    Só o sol escaldante do cerrado começamos nosso projeto Giro da Bolsa fora das telas. A gente que sempre prezava viu o mercado sendo debatido ao vivo e sem fronteiras. Foi justamente essa troca real que deu o pontapé inicial pra gente rodar o Brasil.
+                                    Sob o sol escaldante do cerrado começamos nosso primeiro Giro da Bolsa fora das telas. A galera que marcou presença viu o mercado sendo debatido ao vivo e sem frescura. Foi justamente essa troca real que deu o pontapé inicial pra gente rodar o Brasil.
                                 </p>
 
                                 <div class="w-full">
                                     <div class="photo-strip grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         <div class="photo-strip-item h-64 rounded-2xl overflow-hidden border border-white/10 cursor-pointer" onclick="openLightbox('https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/IMG-20251106-WA0347.jpg.2e9a610eb8b47d988309ff166fead2ec.jpg', 'Goiânia', 'GO')">
-                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/IMG-20251106-WA0347.jpg.2e9a610eb8b47d988309ff166fead2ec.jpg" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" alt="Palco">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/IMG-20251106-WA0347.jpg.2e9a610eb8b47d988309ff166fead2ec.jpg" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" loading="lazy" alt="Palco">
                                         </div>
                                         <div class="photo-strip-item h-64 rounded-2xl overflow-hidden border border-white/10 cursor-pointer" onclick="openLightbox('https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/IMG_0796.jpg', 'Goiânia', 'GO')">
-                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/IMG_0796.jpg" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" alt="Networking">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/IMG_0796.jpg" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" loading="lazy" alt="Networking">
                                         </div>
                                         <div class="photo-strip-item h-64 rounded-2xl overflow-hidden border border-white/10 cursor-pointer" onclick="openLightbox('https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/ImagemdoWhatsAppde2025-07-26s10_48.30_59f20d19.jpg.aab9f398a9048f0538f5208dedd29f4d.jpg.97eec.jpg', 'Goiânia', 'GO')">
-                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/ImagemdoWhatsAppde2025-07-26s10_48.30_59f20d19.jpg.aab9f398a9048f0538f5208dedd29f4d.jpg.97eec.jpg" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" alt="Resenha">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/ImagemdoWhatsAppde2025-07-26s10_48.30_59f20d19.jpg.aab9f398a9048f0538f5208dedd29f4d.jpg.97eec.jpg" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" loading="lazy" alt="Resenha">
                                         </div>
                                     </div>
                                 </div>
@@ -488,7 +548,7 @@
             <!-- Acordeão 2: Belo Horizonte -->
             <div class="accordion-item relative border border-zinc-700/50 rounded-3xl mb-4 bg-[#0c1014] shadow-lg group z-10 transition-colors">
                 <div class="absolute inset-0 z-0 overflow-hidden rounded-3xl pointer-events-none">
-                    <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%201.webp" alt="BH" class="w-full h-full object-cover opacity-40 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105">
+                    <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%201.webp" alt="BH" class="w-full h-full object-cover opacity-40 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-tr from-[#0c1014] via-[#0c1014]/80 to-transparent"></div>
                     <div class="absolute inset-0 bg-gradient-to-t from-[#0c1014] via-[#0c1014]/60 to-[#0c1014]/20"></div>
                 </div>
@@ -534,19 +594,19 @@
                             <!-- DESCRIÇÃO E FOTOS -->
                             <div class="acc-fade w-full">
                                 <p class="text-[#94a3b8] text-base md:text-lg leading-relaxed mb-10">
-                                    Nossa segunda parada foi em Minas Gerais e com lotação máxima. A casa cheia provou que o mineiro não só é bom de cervejas, como também investe e se informa com seriedade. A edição foi marcada e contamos até com a participação da galera do "outro canal". Tudo no esquema de sempre: conteúdo sem filtro sobre atividades e a chance de relaxar o papo tomando bons drinks com gente boa.
+                                    Nossa segunda parada foi em Minas Gerais e com lotação máxima. A casa cheia provou que o mineiro não só é bom de conversa, como também investe e se informa com seriedade. A edição foi marcante e contamos até com a participação da galera daquele "outro canal". Tudo no esquema de sempre: conteúdo sem filtro sobre o mercado e a chance de esticar o papo tomando bons drinks com gente boa.
                                 </p>
 
                                 <div class="w-full">
                                     <div class="photo-strip grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         <div class="photo-strip-item h-64 rounded-2xl overflow-hidden border border-white/10 cursor-pointer" onclick="openLightbox('https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%202.webp', 'Belo Horizonte', 'MG')">
-                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%202.webp" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" alt="Estúdio">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%202.webp" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" loading="lazy" alt="Estúdio">
                                         </div>
                                         <div class="photo-strip-item h-64 rounded-2xl overflow-hidden border border-white/10 cursor-pointer" onclick="openLightbox('https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%203.webp', 'Belo Horizonte', 'MG')">
-                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%203.webp" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" alt="Equipe">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%203.webp" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" loading="lazy" alt="Equipe">
                                         </div>
                                         <div class="photo-strip-item h-64 rounded-2xl overflow-hidden border border-white/10 cursor-pointer" onclick="openLightbox('https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%204.webp', 'Belo Horizonte', 'MG')">
-                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%204.webp" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" alt="Galera">
+                                            <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%204.webp" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" loading="lazy" alt="Galera">
                                         </div>
                                     </div>
                                 </div>
@@ -559,7 +619,7 @@
             <!-- Acordeão 3: São Paulo (Em Breve) -->
             <div class="accordion-item relative border border-red-900/30 rounded-3xl mb-4 bg-[#120505] shadow-lg group z-10 transition-colors">
                 <div class="absolute inset-0 z-0 overflow-hidden rounded-3xl pointer-events-none">
-                    <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/avenida-paulista1_0.jpg" alt="São Paulo" class="w-full h-full object-cover opacity-30 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105">
+                    <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/avenida-paulista1_0.jpg" alt="São Paulo" class="w-full h-full object-cover opacity-30 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-tr from-[#120505] via-[#120505]/80 to-transparent"></div>
                     <div class="absolute inset-0 bg-gradient-to-t from-[#120505] via-[#120505]/60 to-[#120505]/20"></div>
                 </div>
@@ -610,7 +670,7 @@
                             <!-- DESCRIÇÃO (Fade-in) -->
                             <div class="acc-fade w-full">
                                 <p class="text-[#fca5a5] opacity-90 text-base md:text-lg leading-relaxed mb-6">
-                                    Nossa terceira parada é São Paulo. Desembarcaremos por lá para mostrar que investir de verdade não exige terceiro em coletinho da Pablo Lima. Se quiser fazer parte desse momento, já garanto sua vaga, os lugares são limitados e vão esgotar RÁPIDO.
+                                    Nossa terceira parada é São Paulo. Desembarcaremos por lá para mostrar que investir de verdade não exige terno ou coletinho da Faria Lima. Se quiser fazer parte desse momento, já garanta sua vaga, os lugares são limitados e elas esgotam RÁPIDO.
                                 </p>
                             </div>
 
@@ -719,9 +779,9 @@
     <footer class="bg-zinc-100 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-900 py-12 px-6 text-center text-zinc-500 text-sm reveal">
         <div class="max-w-7xl mx-auto lg:pl-56 xl:pl-64 flex flex-col items-center gap-8">
             <div class="flex items-center justify-center gap-8 md:gap-12 flex-wrap">
-                <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Prancheta%202_12.svg" alt="Giro da Bolsa" class="h-10 md:h-16 w-auto object-contain" />
+                <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Prancheta%202_12.svg" alt="Giro da Bolsa" class="h-10 md:h-16 w-auto object-contain" loading="lazy" />
                 <div class="h-8 w-[1px] bg-zinc-300 dark:bg-zinc-800 hidden md:block"></div>
-                <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/AUVP%20CAPITAL%20HORIZONTAL%20BRANCA.svg" alt="AUVP Capital" class="h-8 md:h-12 w-auto object-contain" />
+                <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/AUVP%20CAPITAL%20HORIZONTAL%20BRANCA.svg" alt="AUVP Capital" class="h-8 md:h-12 w-auto object-contain" loading="lazy" />
             </div>
             <p>© 2026 Investidor Sardinha. Todos os direitos reservados.</p>
         </div>
@@ -1251,5 +1311,7 @@
                 });
         });
     </script>
+
+</div><!-- /#gdb-root -->
 </body>
 </html>
