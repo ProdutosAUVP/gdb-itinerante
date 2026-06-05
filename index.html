@@ -225,6 +225,14 @@
         #gdb-root .header-small {
             transition: max-height 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease, padding 0.6s cubic-bezier(0.4,0,0.2,1) !important;
             max-height: 150px !important; opacity: 1 !important; overflow: hidden !important;
+            background: transparent !important;
+        }
+        #gdb-root .header-small:hover,
+        #gdb-root .header-small:focus,
+        #gdb-root .header-small:focus-visible {
+            background: transparent !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
         #gdb-root .accordion-item.is-open .header-small {
             max-height: 0 !important; opacity: 0 !important;
