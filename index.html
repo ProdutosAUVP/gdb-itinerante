@@ -650,10 +650,20 @@
                 <input type="tel" name="telefone" placeholder="Telefone / WhatsApp" required class="bg-zinc-900 border border-zinc-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-red-600 transition-colors">
                 <input type="text" name="cidade" placeholder="Qual cidade devemos visitar?" required class="bg-zinc-900 border border-zinc-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-red-600 transition-colors">
                 
-                <label class="flex items-center gap-3 text-sm text-zinc-300 mt-2 cursor-pointer group">
-                    <input type="checkbox" name="aluno" value="Sim" class="w-5 h-5 rounded border-zinc-700 bg-zinc-900 text-red-600 focus:ring-red-600 focus:ring-offset-zinc-950 accent-red-600 cursor-pointer">
-                    <span class="group-hover:text-white transition-colors">Já sou aluno da AUVP Escola</span>
-                </label>
+                <div class="mt-1">
+                    <p class="text-xs text-zinc-500 uppercase tracking-wider mb-2">Você é aluno da AUVP Escola?</p>
+                    <div class="flex gap-1 p-1 bg-zinc-900 border border-zinc-800 rounded-full">
+                        <button type="button" id="toggle-nao" onclick="setAluno('Não')"
+                                class="flex-1 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 bg-zinc-700 text-white">
+                            Não sou aluno
+                        </button>
+                        <button type="button" id="toggle-sim" onclick="setAluno('Sim')"
+                                class="flex-1 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 text-zinc-500">
+                            Sou aluno AUVP
+                        </button>
+                    </div>
+                    <input type="hidden" name="aluno" id="aluno-value" value="Não">
+                </div>
                 
                 <button type="submit" id="submit-btn" class="mt-4 w-full py-4 bg-red-600 text-white rounded-full font-bold uppercase tracking-wider hover:bg-red-700 transition-colors shadow-lg shadow-red-900/20">
                     Enviar Sugestão
@@ -679,6 +689,24 @@
     <!-- Lógica JavaScript Dinâmica e Animações -->
     <script>
         lucide.createIcons();
+
+        // --- TOGGLE ALUNO/NÃO-ALUNO NO FORMULÁRIO ---
+        function setAluno(val) {
+            document.getElementById('aluno-value').value = val;
+            const btnSim = document.getElementById('toggle-sim');
+            const btnNao = document.getElementById('toggle-nao');
+            if (val === 'Sim') {
+                btnSim.classList.add('bg-red-600', 'text-white');
+                btnSim.classList.remove('text-zinc-500');
+                btnNao.classList.remove('bg-zinc-700', 'text-white');
+                btnNao.classList.add('text-zinc-500');
+            } else {
+                btnNao.classList.add('bg-zinc-700', 'text-white');
+                btnNao.classList.remove('text-zinc-500');
+                btnSim.classList.remove('bg-red-600', 'text-white');
+                btnSim.classList.add('text-zinc-500');
+            }
+        }
 
         // --- SCROLL SPY PARA MENU LATERAL FLUTUANTE ---
         const sections = document.querySelectorAll("section[id]");
