@@ -86,7 +86,7 @@
         #gdb-root, #gdb-root *, #gdb-root *::before, #gdb-root *::after {
             box-sizing: border-box;
         }
-        #gdb-root img, #gdb-root video, #gdb-root svg {
+        #gdb-root img, #gdb-root video {
             display: block;
             max-width: 100%;
         }
@@ -538,8 +538,8 @@
                             <div class="header-large w-full flex flex-col border-b border-[#1a382c] pb-6 mb-8">
                                 <div class="flex items-center justify-between w-full mb-4">
                                     <div class="flex flex-wrap gap-2 md:gap-4 text-[#88a89b] text-[10px] md:text-xs uppercase tracking-widest items-center">
+                                        <span>Goiânia <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
                                         <span>Goiás <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
-                                        <span>Brasil <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
                                         <span class="text-greece-yellow">Edição 1</span>
                                     </div>
                                     <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 hover:bg-white/5 rounded-full transition-colors" title="Fechar">
@@ -609,8 +609,8 @@
                             <div class="header-large w-full flex flex-col border-b border-white/10 pb-6 mb-8">
                                 <div class="flex items-center justify-between w-full mb-4">
                                     <div class="flex flex-wrap gap-2 md:gap-4 text-[#94a3b8] text-[10px] md:text-xs uppercase tracking-widest items-center">
+                                        <span>Belo Horizonte <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
                                         <span>Minas Gerais <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
-                                        <span>Brasil <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
                                         <span class="text-[#38bdf8]">Edição 2</span>
                                     </div>
                                     <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 hover:bg-white/5 rounded-full transition-colors" title="Fechar">
@@ -657,7 +657,7 @@
             <!-- Acordeão 3: São Paulo (Em Breve) -->
             <div class="accordion-item relative border border-red-900/30 rounded-3xl mb-4 bg-[#120505] shadow-lg group z-10 transition-colors">
                 <div class="absolute inset-0 z-0 overflow-hidden rounded-3xl pointer-events-none">
-                    <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/avenida-paulista1_0.jpg" alt="São Paulo" class="w-full h-full object-cover opacity-30 mix-blend-luminosity transition-transform duration-1000 group-hover:scale-105" loading="lazy">
+                    <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/avenida-paulista1_0.jpg" alt="São Paulo" class="w-full h-full object-cover opacity-30 mix-blend-luminosity grayscale transition-transform duration-1000 group-hover:scale-105" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-tr from-[#120505] via-[#120505]/80 to-transparent"></div>
                     <div class="absolute inset-0 bg-gradient-to-t from-[#120505] via-[#120505]/60 to-[#120505]/20"></div>
                 </div>
@@ -686,7 +686,7 @@
                                 <div class="flex items-center justify-between w-full mb-4">
                                     <div class="flex flex-wrap gap-2 md:gap-4 text-red-400/80 text-[10px] md:text-xs uppercase tracking-widest items-center">
                                         <span>São Paulo <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
-                                        <span>Brasil <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span>SP <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
                                         <span class="text-red-500 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Em Breve</span>
                                     </div>
                                     <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 hover:bg-white/5 rounded-full transition-colors" title="Fechar">
