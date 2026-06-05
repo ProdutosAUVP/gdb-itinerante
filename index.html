@@ -54,6 +54,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            important: true,
             darkMode: 'class',
             theme: {
                 extend: {
@@ -85,14 +86,42 @@
 
     <!-- Estilos Customizados & Classes de Animação Performantes -->
     <style>
-        /* ── Reset de base para o wrapper (garante funcionamento isolado no Elementor) ── */
+        /* ── Isolamento total do Elementor ──────────────────────────────────────────── */
+
+        /* 1. Base do wrapper */
         #gdb-root, #gdb-root *, #gdb-root *::before, #gdb-root *::after {
-            box-sizing: border-box;
+            box-sizing: border-box !important;
         }
-        #gdb-root { overflow-x: clip; } /* clip não cria scroll container, ao contrário de hidden */
+        #gdb-root {
+            overflow-x: clip !important;
+            font-family: 'Inter', sans-serif !important;
+            background-color: rgb(9 9 11) !important;   /* zinc-950 */
+            color: rgb(244 244 245) !important;          /* zinc-100 */
+            font-size: 16px !important;
+            line-height: 1.5 !important;
+        }
+
+        /* 2. Propaga fonte sem bloquear font-serif (Tailwind !important sobrescreve inherit) */
+        #gdb-root * { font-family: inherit; }
+
+        /* 3. Anula overrides de tipografia comuns em temas WordPress */
+        #gdb-root h1, #gdb-root h2, #gdb-root h3,
+        #gdb-root h4, #gdb-root h5, #gdb-root h6 {
+            margin: 0; padding: 0;
+            color: inherit; font-size: inherit;
+            font-weight: inherit; line-height: inherit;
+        }
+        #gdb-root p  { margin: 0; color: inherit; }
+        #gdb-root ul, #gdb-root ol { margin: 0; padding: 0; list-style: none; }
+        #gdb-root li { margin: 0; }
+        #gdb-root a  { color: inherit; text-decoration: none; }
+        #gdb-root button { font-family: inherit; color: inherit; }
+        #gdb-root input, #gdb-root textarea, #gdb-root select { font-family: inherit; }
+
+        /* 4. Mídia */
         #gdb-root img, #gdb-root video {
-            display: block;
-            max-width: 100%;
+            display: block !important;
+            max-width: 100% !important;
         }
 
         .noise-overlay {
@@ -259,17 +288,17 @@
 
         /* Photo strip — expand on hover (desktop only) */
         @media (min-width: 1024px) {
-            .photo-strip {
+            #gdb-root .photo-strip {
                 display: flex !important;
-                gap: 12px;
+                gap: 12px !important;
             }
-            .photo-strip-item {
-                flex: 1 1 0;
-                min-width: 0;
+            #gdb-root .photo-strip-item {
+                flex: 1 1 0 !important;
+                min-width: 0 !important;
                 transition: flex-grow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             }
-            .photo-strip-item:hover {
-                flex-grow: 2;
+            #gdb-root .photo-strip-item:hover {
+                flex-grow: 2 !important;
             }
         }
     </style>
