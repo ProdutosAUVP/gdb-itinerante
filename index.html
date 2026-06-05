@@ -84,24 +84,8 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 
-    <!-- Anti-FOUC: exibe o conteúdo somente após o Tailwind CDN processar as classes -->
-    <script>
-        document.addEventListener('tailwind:ready', function () {
-            var r = document.getElementById('gdb-root');
-            if (r) r.classList.remove('not-ready');
-        }, { once: true });
-        // Fallback: garante exibição caso o evento não dispare
-        window.addEventListener('load', function () {
-            var r = document.getElementById('gdb-root');
-            if (r) r.classList.remove('not-ready');
-        }, { once: true });
-    </script>
-
     <!-- Estilos Customizados & Classes de Animação Performantes -->
     <style>
-        /* Anti-FOUC: oculta o root até o Tailwind CDN injetar os utilitários */
-        #gdb-root.not-ready { visibility: hidden !important; }
-
         /* ══════════════════════════════════════════════════════════════
            ISOLAMENTO TOTAL DO ELEMENTOR
            Nenhum estilo externo deve penetrar ou alterar o #gdb-root.
@@ -278,17 +262,21 @@
         }
 
         /* ── Intersection Observer ───────────────────────────────────── */
+        /* Sem js-loaded: elementos ficam visíveis (sem flash antes do JS rodar).
+           Com js-loaded: JS já adicionou .active nos elementos visíveis antes de
+           setar a classe, então o browser renderiza uma única vez sem piscar. */
         #gdb-root .reveal {
-            opacity: 0 !important; transform: translateY(40px) !important;
             transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1) !important;
             will-change: opacity, transform;
         }
-        #gdb-root .reveal.active  { opacity: 1 !important; transform: translateY(0) !important; }
-        #gdb-root .reveal-left    { transform: translateX(-40px) !important; }
-        #gdb-root .reveal-right   { transform: translateX(40px)  !important; }
-        #gdb-root .reveal-scale   { transform: scale(0.9) translateY(20px) !important; }
-        #gdb-root .reveal-left.active, #gdb-root .reveal-right.active,
-        #gdb-root .reveal-scale.active { transform: none !important; }
+        #gdb-root.js-loaded .reveal              { opacity: 0 !important; transform: translateY(40px) !important; }
+        #gdb-root.js-loaded .reveal.active        { opacity: 1 !important; transform: translateY(0) !important; }
+        #gdb-root.js-loaded .reveal-left          { transform: translateX(-40px) !important; }
+        #gdb-root.js-loaded .reveal-right         { transform: translateX(40px)  !important; }
+        #gdb-root.js-loaded .reveal-scale         { transform: scale(0.9) translateY(20px) !important; }
+        #gdb-root.js-loaded .reveal-left.active,
+        #gdb-root.js-loaded .reveal-right.active,
+        #gdb-root.js-loaded .reveal-scale.active  { transform: none !important; }
 
         #gdb-root .delay-100  { transition-delay: 100ms  !important; }
         #gdb-root .delay-200  { transition-delay: 200ms  !important; }
@@ -302,7 +290,7 @@
         #gdb-root .delay-2000 { transition-delay: 2000ms !important; }
 
         @media (prefers-reduced-motion: reduce) {
-            #gdb-root .reveal, #gdb-root .animate-pop-in {
+            #gdb-root.js-loaded .reveal, #gdb-root .reveal, #gdb-root .animate-pop-in {
                 transition: none !important; animation: none !important;
                 opacity: 1 !important; transform: none !important;
             }
@@ -391,7 +379,7 @@
      preflight:false (sem reset global). Cole tudo a partir desta linha
      no widget HTML do Elementor.
      ════════════════════════════════════════════════════════════════════ -->
-<div id="gdb-root" class="not-ready dark font-sans bg-zinc-950 text-zinc-100">
+<div id="gdb-root" class="dark font-sans bg-zinc-950 text-zinc-100">
 
     <div class="noise-overlay"></div>
 
@@ -1112,11 +1100,11 @@
             }
         });
 
-        setTimeout(() => {
-            document.querySelectorAll('#hero .reveal').forEach(el => {
-                el.classList.add('active');
-            });
-        }, 100);
+        // Ativa hero e habilita reveals no mesmo tick de renderização:
+        // 1. .active adicionado antes de js-loaded → hero visível imediatamente
+        // 2. js-loaded habilita opacity:0 nos demais (abaixo da dobra, fora da tela)
+        document.querySelectorAll('#hero .reveal').forEach(function(el) { el.classList.add('active'); });
+        document.getElementById('gdb-root').classList.add('js-loaded');
 
         // --- GALERIA DE FOTOS (MURAL ESPALHADO - IMAGENS OFICIAIS) ---
         const galleryPhotos = [
