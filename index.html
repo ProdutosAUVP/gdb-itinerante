@@ -138,8 +138,9 @@
         #gdb-root a                        { color: inherit; text-decoration: none; }
         #gdb-root a:hover, #gdb-root a:focus { color: inherit; text-decoration: none; outline: none; }
 
-        /* Botões — o Elementor injeta cores de tema em hover/focus */
-        #gdb-root button                          { font-family: inherit; color: inherit; }
+        /* Botões — border-style: solid garante visibilidade das bordas Tailwind
+           (temas WP costumam injetar button { border: none } que apaga o border-style) */
+        #gdb-root button                          { font-family: inherit; color: inherit; border-style: solid; }
         #gdb-root button:hover, #gdb-root button:focus { color: inherit; outline: none; }
 
         /* Inputs */
@@ -326,6 +327,13 @@
             color: #a1a1aa; /* zinc-400 */
             font-size: 0.875rem; line-height: 1.8;
             border-top: 1px solid rgba(63,63,70,0.4);
+        }
+
+        /* Corrige overflow de imagens escaladas (scale()) que escapam de overflow:hidden+border-radius
+           em certos contextos do Elementor. isolation:isolate força novo stacking context. */
+        #gdb-root .accordion-item > div.overflow-hidden {
+            overflow: hidden !important;
+            isolation: isolate;
         }
 
         /* Photo strip — expand on hover (desktop only) */
