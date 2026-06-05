@@ -52,11 +52,6 @@
     <script>
         tailwind.config = {
             darkMode: 'class',
-            /* important: '#gdb-root' escopa TODAS as utilities ao wrapper,
-               evitando conflitos com o tema WordPress/Elementor.
-               corePlugins.preflight: false impede o reset global de CSS. */
-            important: '#gdb-root',
-            corePlugins: { preflight: false },
             theme: {
                 extend: {
                     fontFamily: {
@@ -81,9 +76,9 @@
         }
     </script>
 
-    <!-- D3.js e Lucide Icons (defer: não bloqueiam o render inicial) -->
-    <script src="https://d3js.org/d3.v7.min.js" defer></script>
-    <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+    <!-- D3.js e Lucide Icons -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 
     <!-- Estilos Customizados & Classes de Animação Performantes -->
     <style>
