@@ -968,7 +968,9 @@
 
     <!-- Lógica JavaScript Dinâmica e Animações -->
     <script>
-        lucide.createIcons();
+        // Guarda nula: se o CDN do Lucide falhar (modo anônimo, rede lenta),
+        // a execução continua; ícones ficam sem SVG mas tudo mais funciona.
+        if (window.lucide) lucide.createIcons();
 
         // --- TOGGLE ALUNO/NÃO-ALUNO NO FORMULÁRIO ---
         function setAluno(val) {
@@ -1172,7 +1174,7 @@
                 galleryContainer.appendChild(rowContainer);
             });
             
-            lucide.createIcons();
+            if (window.lucide) lucide.createIcons();
 
             // Reatribui o observador às novas polaroids renderizadas
             setTimeout(() => {
