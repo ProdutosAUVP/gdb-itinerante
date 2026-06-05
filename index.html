@@ -358,8 +358,8 @@
                             <!-- Roleta Gacha Oculta -->
                             <div id="dynamic-destination-slot" class="text-sm tracking-widest uppercase text-white font-bold whitespace-nowrap absolute left-0 w-full flex items-center opacity-0 transition-all duration-300 transform translate-y-full">
                                 <span class="text-red-500 mr-2 shrink-0">Destino:</span>
-                                <div class="flex-1" style="height: 20px; overflow: hidden; position: relative;">
-                                    <div id="gacha-reel" class="flex flex-col w-full" style="transition: transform 6s cubic-bezier(0.15, 0.85, 0.1, 1); transform: translateY(0px);">
+                                <div class="shrink-0" style="height: 20px; overflow: hidden; position: relative; min-width: max-content;">
+                                    <div id="gacha-reel" class="flex flex-col" style="transition: transform 6s cubic-bezier(0.15, 0.85, 0.1, 1); transform: translateY(0px);">
                                         <!-- Cidades inseridas via JS -->
                                     </div>
                                 </div>
@@ -369,7 +369,7 @@
                 </div>
 
                 <div class="max-w-lg w-full reveal reveal-right delay-1800 mx-auto lg:mx-0 lg:justify-self-end flex flex-col items-center lg:items-start text-center lg:text-left">
-                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 md:gap-3 text-xs font-medium uppercase tracking-widest text-zinc-500 mb-8">
+                    <div class="hidden lg:flex flex-wrap items-center justify-center lg:justify-start gap-2 md:gap-3 text-xs font-medium uppercase tracking-widest text-zinc-500 mb-8">
                         <span>Goiânia</span>
                         <i data-lucide="arrow-right" class="w-[14px] h-[14px] opacity-40"></i>
                         <span>Belo Horizonte</span>
@@ -1272,16 +1272,16 @@
                 const isLast = index === cidades.length - 1;
                 const textClass = isLast ? 'text-white' : 'text-white/40 blur-[0.5px]';
                 // Adicionamos truncate para cortar visualmente cidades longas sem alterar layout
-                return `<div style="height: ${itemHeight}px;" class="flex items-center w-full overflow-hidden ${textClass}"><span class="truncate w-full">${city}</span></div>`;
+                return `<div style="height: ${itemHeight}px;" class="flex items-center ${textClass}"><span class="whitespace-nowrap">${city}</span></div>`;
             }).join('');
             reel.innerHTML = reelHTML;
 
             // Medir largura invisivelmente baseada EXATAMENTE em "São Paulo, SP" para evitar Layout Shift
             const spSpan = document.createElement('span');
             spSpan.className = 'text-sm tracking-widest uppercase font-bold whitespace-nowrap invisible absolute';
-            spSpan.innerHTML = '<span class="mr-2">Destino:</span>São Paulo, SP';
+            spSpan.innerHTML = '<span style="margin-right:0.5rem">Destino:</span>São Paulo, SP';
             document.body.appendChild(spSpan);
-            const finalWidth = spSpan.offsetWidth;
+            const finalWidth = spSpan.offsetWidth + 8;
             document.body.removeChild(spSpan);
 
             // 1. Oculta ITINERANTE (sobe e desaparece suavemente)
