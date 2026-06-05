@@ -86,11 +86,11 @@
         #gdb-root, #gdb-root *, #gdb-root *::before, #gdb-root *::after {
             box-sizing: border-box;
         }
+        #gdb-root { overflow-x: clip; } /* clip não cria scroll container, ao contrário de hidden */
         #gdb-root img, #gdb-root video {
             display: block;
             max-width: 100%;
         }
-        #gdb-root a { color: inherit; text-decoration: none; }
 
         .noise-overlay {
             position: fixed;
@@ -279,7 +279,7 @@
      preflight:false (sem reset global). Cole tudo a partir desta linha
      no widget HTML do Elementor.
      ════════════════════════════════════════════════════════════════════ -->
-<div id="gdb-root" class="dark font-sans bg-zinc-950 text-zinc-100 overflow-x-hidden">
+<div id="gdb-root" class="dark font-sans bg-zinc-950 text-zinc-100">
 
     <div class="noise-overlay"></div>
 
