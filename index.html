@@ -84,8 +84,24 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 
+    <!-- Anti-FOUC: exibe o conteúdo somente após o Tailwind CDN processar as classes -->
+    <script>
+        document.addEventListener('tailwind:ready', function () {
+            var r = document.getElementById('gdb-root');
+            if (r) r.classList.remove('not-ready');
+        }, { once: true });
+        // Fallback: garante exibição caso o evento não dispare
+        window.addEventListener('load', function () {
+            var r = document.getElementById('gdb-root');
+            if (r) r.classList.remove('not-ready');
+        }, { once: true });
+    </script>
+
     <!-- Estilos Customizados & Classes de Animação Performantes -->
     <style>
+        /* Anti-FOUC: oculta o root até o Tailwind CDN injetar os utilitários */
+        #gdb-root.not-ready { visibility: hidden !important; }
+
         /* ══════════════════════════════════════════════════════════════
            ISOLAMENTO TOTAL DO ELEMENTOR
            Nenhum estilo externo deve penetrar ou alterar o #gdb-root.
@@ -242,12 +258,15 @@
             isolation: isolate !important;
         }
 
-        /* Trava o background dos cards no hover — (1-1-0)+!important bate qualquer coisa do Elementor */
+        /* Trava todos os estilos visuais dos cards no hover — bloqueia qualquer injeção do Elementor/tema */
         #gdb-root .accordion-item {
             background-color: var(--acc-bg) !important;
         }
         #gdb-root .accordion-item:hover {
             background-color: var(--acc-bg) !important;
+            border-color: rgba(63, 63, 70, 0.5) !important;
+            outline: none !important;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
         }
 
         /* ── Intersection Observer ───────────────────────────────────── */
@@ -308,6 +327,11 @@
             font-weight: 600 !important; font-size: 0.9375rem !important;
             line-height: 1.55 !important; color: #d4d4d8 !important;
             transition: color 0.3s ease !important;
+            /* Garante quebra de linha dentro do flex container no mobile */
+            min-width: 0 !important;
+            flex: 1 1 0% !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
         }
         #gdb-root .faq-item.faq-open .faq-question { color: #ffffff !important; }
         #gdb-root .faq-chevron {
@@ -356,7 +380,7 @@
      preflight:false (sem reset global). Cole tudo a partir desta linha
      no widget HTML do Elementor.
      ════════════════════════════════════════════════════════════════════ -->
-<div id="gdb-root" class="dark font-sans bg-zinc-950 text-zinc-100">
+<div id="gdb-root" class="not-ready dark font-sans bg-zinc-950 text-zinc-100">
 
     <div class="noise-overlay"></div>
 
