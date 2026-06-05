@@ -211,6 +211,49 @@
             }
         }
 
+        /* ── FAQ — sistema próprio, independente do acordeão de edições ── */
+        .faq-item {
+            border: 1px solid rgba(63,63,70,0.7);
+            border-radius: 1rem;
+            background: rgba(24,24,27,0.6);
+            transition: border-color 0.35s ease, background 0.35s ease;
+        }
+        .faq-item.faq-open {
+            border-color: rgba(220,38,38,0.4);
+            background: rgba(24,24,27,1);
+        }
+        .faq-btn {
+            width: 100%; display: flex; align-items: center;
+            justify-content: space-between; gap: 1.5rem;
+            padding: 1.25rem 1.5rem; text-align: left;
+            cursor: pointer; background: none; border: none; outline: none;
+        }
+        .faq-question {
+            font-weight: 600; font-size: 0.9375rem; line-height: 1.55;
+            color: #d4d4d8; /* zinc-300 */
+            transition: color 0.3s ease;
+        }
+        .faq-item.faq-open .faq-question { color: #ffffff; }
+        .faq-chevron {
+            width: 1.1rem; height: 1.1rem; color: #ef4444;
+            flex-shrink: 0;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .faq-item.faq-open .faq-chevron { transform: rotate(180deg); }
+        .faq-body {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .faq-item.faq-open .faq-body { grid-template-rows: 1fr; }
+        .faq-inner { min-height: 0; overflow: hidden; }
+        .faq-answer {
+            padding: 0.875rem 1.5rem 1.5rem;
+            color: #a1a1aa; /* zinc-400 */
+            font-size: 0.875rem; line-height: 1.8;
+            border-top: 1px solid rgba(63,63,70,0.4);
+        }
+
         /* Photo strip — expand on hover (desktop only) */
         @media (min-width: 1024px) {
             .photo-strip {
@@ -258,6 +301,9 @@
         <a href="#edicoes" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
             <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Edições
         </a>
+        <a href="#faq" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
+            <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> FAQ
+        </a>
     </nav>
 
     <!-- --- HERO FOLD (Largura Total) --- -->
@@ -281,6 +327,7 @@
                     <a href="#roteiro" class="hover:text-red-500 transition-colors">Roteiro</a>
                     <a href="#galeria" class="hover:text-red-500 transition-colors">Histórico</a>
                     <a href="#edicoes" class="hover:text-red-500 transition-colors">Edições</a>
+                    <a href="#faq" class="hover:text-red-500 transition-colors">FAQ</a>
                 </nav>
                 <a href="#ingressos" class="flex items-center gap-4 text-xs font-medium tracking-widest uppercase hover:text-red-500 transition-colors">
                     <span class="hidden md:block w-8 h-[1px] bg-current"></span>
@@ -686,84 +733,66 @@
                 <div class="h-[2px] w-16 bg-red-600 mx-auto mt-6"></div>
             </div>
 
-            <div class="flex flex-col gap-3 reveal delay-100">
+            <div class="flex flex-col gap-2 reveal delay-100">
 
-                <!-- FAQ 1 -->
-                <div class="accordion-item border border-zinc-800 rounded-2xl bg-zinc-900/60 overflow-hidden">
-                    <button onclick="toggleAccordion(this)" class="header-small w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none gap-4">
-                        <span class="font-semibold text-zinc-100 text-sm md:text-base leading-snug">Quando e que horas será o evento em São Paulo?</span>
-                        <i data-lucide="chevron-down" class="acc-icon w-5 h-5 text-red-500 shrink-0"></i>
+                <div class="faq-item">
+                    <button class="faq-btn" onclick="toggleFaq(this)">
+                        <span class="faq-question">Quando e que horas será o evento em São Paulo?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
                     </button>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <p class="px-6 pb-6 text-zinc-400 text-sm leading-relaxed">O evento acontece no dia 26 de junho, a partir das 19 horas. Recomendamos chegar um pouco antes para evitar qualquer tipo de transtorno.</p>
-                        </div>
-                    </div>
+                    <div class="faq-body"><div class="faq-inner">
+                        <p class="faq-answer">O evento acontece no dia 26 de junho, a partir das 19 horas. Recomendamos chegar um pouco antes para evitar qualquer tipo de transtorno.</p>
+                    </div></div>
                 </div>
 
-                <!-- FAQ 2 -->
-                <div class="accordion-item border border-zinc-800 rounded-2xl bg-zinc-900/60 overflow-hidden">
-                    <button onclick="toggleAccordion(this)" class="header-small w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none gap-4">
-                        <span class="font-semibold text-zinc-100 text-sm md:text-base leading-snug">Qual o local do evento?</span>
-                        <i data-lucide="chevron-down" class="acc-icon w-5 h-5 text-red-500 shrink-0"></i>
+                <div class="faq-item">
+                    <button class="faq-btn" onclick="toggleFaq(this)">
+                        <span class="faq-question">Qual o local do evento?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
                     </button>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <p class="px-6 pb-6 text-zinc-400 text-sm leading-relaxed">Será na cidade de São Paulo. O endereço exato e o nome do espaço serão enviados por e-mail apenas para quem garantir o ingresso.</p>
-                        </div>
-                    </div>
+                    <div class="faq-body"><div class="faq-inner">
+                        <p class="faq-answer">Será na cidade de São Paulo. O endereço exato e o nome do espaço serão enviados por e-mail apenas para quem garantir o ingresso.</p>
+                    </div></div>
                 </div>
 
-                <!-- FAQ 3 -->
-                <div class="accordion-item border border-zinc-800 rounded-2xl bg-zinc-900/60 overflow-hidden">
-                    <button onclick="toggleAccordion(this)" class="header-small w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none gap-4">
-                        <span class="font-semibold text-zinc-100 text-sm md:text-base leading-snug">Que roupa devo usar?</span>
-                        <i data-lucide="chevron-down" class="acc-icon w-5 h-5 text-red-500 shrink-0"></i>
+                <div class="faq-item">
+                    <button class="faq-btn" onclick="toggleFaq(this)">
+                        <span class="faq-question">Que roupa devo usar?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
                     </button>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <p class="px-6 pb-6 text-zinc-400 text-sm leading-relaxed">A que você se sentir confortável. Como já avisamos, não precisa de terno, gravata ou coletinho da Faria Lima para falar de investimentos aqui. Venha à vontade.</p>
-                        </div>
-                    </div>
+                    <div class="faq-body"><div class="faq-inner">
+                        <p class="faq-answer">A que você se sentir confortável. Como já avisamos, não precisa de terno, gravata ou coletinho da Faria Lima para falar de investimentos aqui. Venha à vontade.</p>
+                    </div></div>
                 </div>
 
-                <!-- FAQ 4 -->
-                <div class="accordion-item border border-zinc-800 rounded-2xl bg-zinc-900/60 overflow-hidden">
-                    <button onclick="toggleAccordion(this)" class="header-small w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none gap-4">
-                        <span class="font-semibold text-zinc-100 text-sm md:text-base leading-snug">O evento será open bar?</span>
-                        <i data-lucide="chevron-down" class="acc-icon w-5 h-5 text-red-500 shrink-0"></i>
+                <div class="faq-item">
+                    <button class="faq-btn" onclick="toggleFaq(this)">
+                        <span class="faq-question">O evento será open bar?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
                     </button>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <p class="px-6 pb-6 text-zinc-400 text-sm leading-relaxed">Não será um open bar com bebida liberada a noite toda. O foco principal é a gravação e o conteúdo. Depois do episódio, a gente se reúne para tomar alguma coisa e bater um papo, mas cada um consome o que quiser direto no local.</p>
-                        </div>
-                    </div>
+                    <div class="faq-body"><div class="faq-inner">
+                        <p class="faq-answer">Não será um open bar com bebida liberada a noite toda. O foco principal é a gravação e o conteúdo. Depois do episódio, a gente se reúne para tomar alguma coisa e bater um papo, mas cada um consome o que quiser direto no local.</p>
+                    </div></div>
                 </div>
 
-                <!-- FAQ 5 -->
-                <div class="accordion-item border border-zinc-800 rounded-2xl bg-zinc-900/60 overflow-hidden">
-                    <button onclick="toggleAccordion(this)" class="header-small w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none gap-4">
-                        <span class="font-semibold text-zinc-100 text-sm md:text-base leading-snug">Posso levar acompanhantes?</span>
-                        <i data-lucide="chevron-down" class="acc-icon w-5 h-5 text-red-500 shrink-0"></i>
+                <div class="faq-item">
+                    <button class="faq-btn" onclick="toggleFaq(this)">
+                        <span class="faq-question">Posso levar acompanhantes?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
                     </button>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <p class="px-6 pb-6 text-zinc-400 text-sm leading-relaxed">Cada ingresso dá direito a apenas uma entrada, mas você pode comprar dois ingressos de uma vez no mesmo carrinho. Só lembre de preencher os dados direitinho com o nome e o documento de cada pessoa, porque a entrada é individual e nominal.</p>
-                        </div>
-                    </div>
+                    <div class="faq-body"><div class="faq-inner">
+                        <p class="faq-answer">Cada ingresso dá direito a apenas uma entrada, mas você pode comprar dois ingressos de uma vez no mesmo carrinho. Só lembre de preencher os dados direitinho com o nome e o documento de cada pessoa, porque a entrada é individual e nominal.</p>
+                    </div></div>
                 </div>
 
-                <!-- FAQ 6 -->
-                <div class="accordion-item border border-zinc-800 rounded-2xl bg-zinc-900/60 overflow-hidden">
-                    <button onclick="toggleAccordion(this)" class="header-small w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none gap-4">
-                        <span class="font-semibold text-zinc-100 text-sm md:text-base leading-snug">Posso gravar o evento?</span>
-                        <i data-lucide="chevron-down" class="acc-icon w-5 h-5 text-red-500 shrink-0"></i>
+                <div class="faq-item">
+                    <button class="faq-btn" onclick="toggleFaq(this)">
+                        <span class="faq-question">Posso gravar o evento?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron"></i>
                     </button>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <p class="px-6 pb-6 text-zinc-400 text-sm leading-relaxed">Você pode tirar fotos e fazer vídeos curtos para os seus stories, sem problemas. Só não é permitida a gravação integral do conteúdo, já que a gravação oficial será publicada depois no canal do Investidor Sardinha.</p>
-                        </div>
-                    </div>
+                    <div class="faq-body"><div class="faq-inner">
+                        <p class="faq-answer">Você pode tirar fotos e fazer vídeos curtos para os seus stories, sem problemas. Só não é permitida a gravação integral do conteúdo, já que a gravação oficial será publicada depois no canal do Investidor Sardinha.</p>
+                    </div></div>
                 </div>
 
             </div>
@@ -900,6 +929,11 @@
                 }
             });
         });
+
+        // --- FAQ — toggle independente por item ---
+        function toggleFaq(btn) {
+            btn.closest('.faq-item').classList.toggle('faq-open');
+        }
 
         // --- NOVA LÓGICA DO ACORDEÃO (Atualizada para animação de CSS Nativo / is-open) ---
         function toggleAccordion(btn) {
