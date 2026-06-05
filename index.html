@@ -86,43 +86,85 @@
 
     <!-- Estilos Customizados & Classes de Animação Performantes -->
     <style>
-        /* ── Isolamento total do Elementor ──────────────────────────────────────────── */
+        /* ══════════════════════════════════════════════════════════════
+           ISOLAMENTO TOTAL DO ELEMENTOR
+           Nenhum estilo externo deve penetrar ou alterar o #gdb-root.
+           ══════════════════════════════════════════════════════════════ */
 
-        /* 1. Base do wrapper */
+        /* 1. Box-sizing universal */
         #gdb-root, #gdb-root *, #gdb-root *::before, #gdb-root *::after {
             box-sizing: border-box !important;
         }
+
+        /* 2. Base do wrapper — estilos com !important para bater qualquer injeção do Elementor/tema */
         #gdb-root {
             overflow-x: clip !important;
             font-family: 'Inter', sans-serif !important;
-            background-color: rgb(9 9 11) !important;   /* zinc-950 */
-            color: rgb(244 244 245) !important;          /* zinc-100 */
+            background-color: rgb(9 9 11) !important;
+            color: rgb(244 244 245) !important;
             font-size: 16px !important;
             line-height: 1.5 !important;
+
+            /* Neutraliza as variáveis globais de cor do Elementor dentro deste escopo */
+            --e-global-color-primary:   currentColor;
+            --e-global-color-secondary: currentColor;
+            --e-global-color-text:      currentColor;
+            --e-global-color-accent:    currentColor;
+            --e-global-color-4:         currentColor;
+            --e-global-color-5:         currentColor;
+            --e-global-color-6:         currentColor;
+            /* Variáveis de tipografia do Elementor */
+            --e-global-typography-primary-font-family:   'Inter', sans-serif;
+            --e-global-typography-secondary-font-family: 'Inter', sans-serif;
+            --e-global-typography-text-font-family:      'Inter', sans-serif;
+            --e-global-typography-accent-font-family:    'Inter', sans-serif;
         }
 
-        /* 2. Propaga fonte sem bloquear font-serif (Tailwind !important sobrescreve inherit) */
+        /* 3. Herança de fonte — Tailwind !important sobrescreve onde necessário (ex: font-serif) */
         #gdb-root * { font-family: inherit; }
 
-        /* 3. Anula overrides de tipografia comuns em temas WordPress */
+        /* 4. Reset de elementos comuns sobrescritos por temas WordPress/Elementor */
         #gdb-root h1, #gdb-root h2, #gdb-root h3,
         #gdb-root h4, #gdb-root h5, #gdb-root h6 {
             margin: 0; padding: 0;
             color: inherit; font-size: inherit;
             font-weight: inherit; line-height: inherit;
         }
-        #gdb-root p  { margin: 0; color: inherit; }
+        #gdb-root p   { margin: 0; color: inherit; }
         #gdb-root ul, #gdb-root ol { margin: 0; padding: 0; list-style: none; }
-        #gdb-root li { margin: 0; }
-        #gdb-root a  { color: inherit; text-decoration: none; }
-        #gdb-root button { font-family: inherit; color: inherit; }
-        #gdb-root input, #gdb-root textarea, #gdb-root select { font-family: inherit; }
+        #gdb-root li  { margin: 0; }
 
-        /* 4. Mídia */
+        /* Links — estados padrão, hover e focus */
+        #gdb-root a                        { color: inherit; text-decoration: none; }
+        #gdb-root a:hover, #gdb-root a:focus { color: inherit; text-decoration: none; outline: none; }
+
+        /* Botões — o Elementor injeta cores de tema em hover/focus */
+        #gdb-root button                          { font-family: inherit; color: inherit; background: transparent; border: none; }
+        #gdb-root button:hover, #gdb-root button:focus { color: inherit; background-color: inherit; border-color: inherit; outline: none; }
+
+        /* Inputs */
+        #gdb-root input, #gdb-root textarea, #gdb-root select {
+            font-family: inherit; color: inherit;
+        }
+        #gdb-root input:focus, #gdb-root textarea:focus,
+        #gdb-root select:focus { outline: none; }
+
+        /* 5. Mídia — dimensões protegidas com especificidade elevada (id + classe > .elementor img) */
         #gdb-root img, #gdb-root video {
             display: block !important;
-            max-width: 100% !important;
+            max-width: none !important;  /* evita que o tema force max-width globalmente */
         }
+        /* Classes Tailwind de tamanho em imagens com especificidade (1-1-0) para bater Elementor */
+        #gdb-root img.w-full   { width: 100% !important; }
+        #gdb-root img.w-auto   { width: auto !important; }
+        #gdb-root img.h-full   { height: 100% !important; }
+        #gdb-root img.h-auto   { height: auto !important; }
+        #gdb-root img.object-cover    { object-fit: cover !important; }
+        #gdb-root img.object-contain  { object-fit: contain !important; }
+        /* Vídeo de fundo */
+        #gdb-root video.w-full { width: 100% !important; }
+        #gdb-root video.h-full { height: 100% !important; }
+        #gdb-root video.object-cover  { object-fit: cover !important; }
 
         .noise-overlay {
             position: fixed;
