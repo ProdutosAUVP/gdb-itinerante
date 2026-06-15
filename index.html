@@ -1085,16 +1085,35 @@
             window._gdbLucide = _runLucide;
         }());
 
+        // Coordenação de "reveal": permite que animações (ex.: gacha) iniciem
+        // apenas depois que a tela de carregamento sai, garantindo que o usuário
+        // veja a interação por completo (e não atrás do loader).
+        (function () {
+            var fired = false;
+            var queue = [];
+            window.gdbOnReveal = function (cb) {
+                if (fired) { cb(); } else { queue.push(cb); }
+            };
+            window._gdbFireReveal = function () {
+                if (fired) return;
+                fired = true;
+                queue.forEach(function (fn) { try { fn(); } catch (e) {} });
+                queue = [];
+            };
+        }());
+
         // Dismiss da tela de carregamento após window.load + tempo mínimo
         (function () {
             var loader = document.getElementById('gdb-loader');
-            if (!loader) return;
+            // Sem loader (ex.: widget Elementor sem a tela): revela imediatamente
+            if (!loader) { window._gdbFireReveal(); return; }
             var MIN_MS = 2000;
             var t0 = window._gdLoaderStart || Date.now();
             function dismiss() {
                 var wait = Math.max(0, MIN_MS - (Date.now() - t0));
                 setTimeout(function () {
                     loader.classList.add('gld-hidden');
+                    window._gdbFireReveal();
                     setTimeout(function () {
                         if (loader.parentNode) loader.parentNode.removeChild(loader);
                     }, 900);
@@ -1475,7 +1494,9 @@
             .catch(err => console.error("Erro ao desenhar o mapa:", err));
 
         // --- EFEITO GACHA DINÂMICO DA TAG DE DESTINO ---
-        setTimeout(() => {
+        // Inicia somente após a tela de carregamento sair (reveal), com uma breve
+        // pausa para o usuário ler "ITINERANTE" antes da rotação para São Paulo.
+        window.gdbOnReveal(function () { setTimeout(() => {
             const destTag = document.getElementById('dynamic-destination-tag');
             const wrapper = document.getElementById('tag-content-wrapper');
             const textInitial = document.getElementById('dynamic-destination-text');
@@ -1542,7 +1563,7 @@
                     }, 50);
                 }, 400); // Tempo da expansão lateral
             }, 300); // Tempo do fade out
-        }, 4000);
+        }, 1200); }); // Pausa após o reveal antes de iniciar a rotação
 
         // --- INTEGRAÇÃO FORMULÁRIO GOOGLE SHEETS ---
         const form = document.getElementById('city-suggestion-form');
