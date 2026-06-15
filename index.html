@@ -366,9 +366,137 @@
                 flex-grow: 2 !important;
             }
         }
+
+        /* ══════════════════════════════════════════════════════════════
+           TELA DE CARREGAMENTO
+           ══════════════════════════════════════════════════════════════ */
+        html:has(#gdb-loader:not(.gld-hidden)) { overflow: hidden !important; }
+
+        #gdb-loader {
+            position: fixed !important; inset: 0 !important; z-index: 99999 !important;
+            background: #09090b !important;
+            display: flex !important; flex-direction: column !important;
+            align-items: center !important; justify-content: center !important;
+            gap: 2rem !important;
+            font-family: 'Inter', sans-serif !important;
+            transition: opacity 0.85s cubic-bezier(0.4,0,0.2,1),
+                        visibility 0.85s ease !important;
+        }
+        #gdb-loader.gld-hidden {
+            opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;
+        }
+        #gdb-loader .gld-glow {
+            position: absolute !important; top: 50% !important; left: 50% !important;
+            transform: translate(-50%, -60%) !important;
+            width: 440px !important; height: 440px !important; border-radius: 50% !important;
+            background: radial-gradient(circle, rgba(220,38,38,0.14) 0%, transparent 65%) !important;
+            pointer-events: none !important;
+            animation: gldPulse 3s ease-in-out infinite !important;
+        }
+        #gdb-loader .gld-globe-wrap {
+            position: relative !important; width: 160px !important; height: 160px !important;
+            filter: drop-shadow(0 0 30px rgba(220,38,38,0.28)) !important;
+        }
+        #gdb-loader .gld-globe-wrap svg { width: 100% !important; height: 100% !important; display: block !important; }
+
+        #gdb-loader .gld-m1, #gdb-loader .gld-m2,
+        #gdb-loader .gld-m3, #gdb-loader .gld-m4 {
+            transform-box: fill-box !important; transform-origin: center !important;
+            animation: gldMeridian 9s linear infinite !important;
+        }
+        #gdb-loader .gld-m2 { animation-delay: -2.25s !important; }
+        #gdb-loader .gld-m3 { animation-delay: -4.5s  !important; }
+        #gdb-loader .gld-m4 { animation-delay: -6.75s !important; }
+
+        #gdb-loader .gld-brand { text-align: center !important; }
+        #gdb-loader .gld-title {
+            font-family: 'Playfair Display', serif !important;
+            font-size: 1.375rem !important; font-weight: 700 !important;
+            color: #ffffff !important; letter-spacing: 0.15em !important; margin: 0 !important;
+        }
+        #gdb-loader .gld-city {
+            display: block !important; font-size: 0.625rem !important; font-weight: 600 !important;
+            letter-spacing: 0.35em !important; color: #dc2626 !important; margin: 0.4rem 0 0 !important;
+        }
+        #gdb-loader .gld-dots { display: flex !important; gap: 0.5rem !important; align-items: center !important; }
+        #gdb-loader .gld-dots span {
+            display: block !important; width: 5px !important; height: 5px !important;
+            border-radius: 50% !important; background: #3f3f46 !important;
+            animation: gldDot 1.4s ease-in-out infinite !important;
+        }
+        #gdb-loader .gld-dots span:nth-child(2) { animation-delay: 0.2s !important; }
+        #gdb-loader .gld-dots span:nth-child(3) { animation-delay: 0.4s !important; }
+
+        @keyframes gldMeridian {
+            0%   { transform: scaleX(1);    }
+            25%  { transform: scaleX(0.01); }
+            50%  { transform: scaleX(-1);   }
+            75%  { transform: scaleX(0.01); }
+            100% { transform: scaleX(1);    }
+        }
+        @keyframes gldPulse {
+            0%, 100% { opacity: 0.55; transform: translate(-50%, -60%) scale(1);    }
+            50%       { opacity: 1;    transform: translate(-50%, -60%) scale(1.12); }
+        }
+        @keyframes gldDot {
+            0%, 70%, 100% { background: #3f3f46; transform: translateY(0);    }
+            35%            { background: #dc2626; transform: translateY(-5px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #gdb-loader .gld-m1, #gdb-loader .gld-m2,
+            #gdb-loader .gld-m3, #gdb-loader .gld-m4,
+            #gdb-loader .gld-glow, #gdb-loader .gld-dots span { animation: none !important; }
+        }
     </style>
+
+    <script>window._gdLoaderStart = Date.now();</script>
 </head>
 <body class="font-sans bg-zinc-950 text-zinc-100">
+
+<!-- ════════════════════════════════════════════════════════════════════
+     TELA DE CARREGAMENTO — removida do DOM após window.load + delay
+     ════════════════════════════════════════════════════════════════════ -->
+<div id="gdb-loader" role="status" aria-label="Carregando o site...">
+    <div class="gld-glow"></div>
+    <div class="gld-globe-wrap">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+                <radialGradient id="gldSph" cx="35%" cy="30%" r="65%">
+                    <stop offset="0%" stop-color="#3f3f46"/>
+                    <stop offset="50%" stop-color="#18181b"/>
+                    <stop offset="100%" stop-color="#09090b"/>
+                </radialGradient>
+                <radialGradient id="gldSheen" cx="30%" cy="25%" r="45%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.08"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                </radialGradient>
+                <clipPath id="gldClip">
+                    <circle cx="100" cy="100" r="79"/>
+                </clipPath>
+            </defs>
+            <circle cx="100" cy="100" r="93" fill="none" stroke="#dc2626" stroke-width="26" stroke-opacity="0.05"/>
+            <circle cx="100" cy="100" r="80" fill="url(#gldSph)"/>
+            <g clip-path="url(#gldClip)">
+                <ellipse class="gld-m1" cx="100" cy="100" rx="80" ry="80" fill="none" stroke="#dc2626" stroke-width="0.9" stroke-opacity="0.55"/>
+                <ellipse class="gld-m2" cx="100" cy="100" rx="80" ry="80" fill="none" stroke="#dc2626" stroke-width="0.9" stroke-opacity="0.55"/>
+                <ellipse class="gld-m3" cx="100" cy="100" rx="80" ry="80" fill="none" stroke="#dc2626" stroke-width="0.9" stroke-opacity="0.55"/>
+                <ellipse class="gld-m4" cx="100" cy="100" rx="80" ry="80" fill="none" stroke="#dc2626" stroke-width="0.9" stroke-opacity="0.55"/>
+                <ellipse cx="100" cy="62"  rx="63" ry="9"  fill="none" stroke="#dc2626" stroke-width="0.7" stroke-opacity="0.3"/>
+                <ellipse cx="100" cy="100" rx="80" ry="13" fill="none" stroke="#dc2626" stroke-width="0.9" stroke-opacity="0.4"/>
+                <ellipse cx="100" cy="138" rx="63" ry="9"  fill="none" stroke="#dc2626" stroke-width="0.7" stroke-opacity="0.3"/>
+            </g>
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#dc2626" stroke-width="1" stroke-opacity="0.4"/>
+            <circle cx="100" cy="100" r="80" fill="url(#gldSheen)"/>
+        </svg>
+    </div>
+    <div class="gld-brand">
+        <p class="gld-title">GIRO DA BOLSA</p>
+        <span class="gld-city">SÃO PAULO &middot; 26 DE JUNHO</span>
+    </div>
+    <div class="gld-dots" aria-hidden="true">
+        <span></span><span></span><span></span>
+    </div>
+</div>
 
 <!-- ════════════════════════════════════════════════════════════════════
      #gdb-root — wrapper isolado para uso via Elementor HTML widget.
@@ -973,9 +1101,38 @@
 
     <!-- Lógica JavaScript Dinâmica e Animações -->
     <script>
-        // Guarda nula: se o CDN do Lucide falhar (modo anônimo, rede lenta),
-        // a execução continua; ícones ficam sem SVG mas tudo mais funciona.
-        if (window.lucide) lucide.createIcons();
+        // Carrega Lucide dinamicamente quando o <head> não está disponível (widget Elementor)
+        (function () {
+            function _runLucide() { if (window.lucide) lucide.createIcons(); }
+            if (window.lucide) {
+                _runLucide();
+            } else {
+                var s = document.createElement('script');
+                s.src = 'https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js';
+                s.onload = _runLucide;
+                document.head.appendChild(s);
+            }
+            window._gdbLucide = _runLucide;
+        }());
+
+        // Dismiss da tela de carregamento após window.load + tempo mínimo
+        (function () {
+            var loader = document.getElementById('gdb-loader');
+            if (!loader) return;
+            var MIN_MS = 2000;
+            var t0 = window._gdLoaderStart || Date.now();
+            function dismiss() {
+                var wait = Math.max(0, MIN_MS - (Date.now() - t0));
+                setTimeout(function () {
+                    loader.classList.add('gld-hidden');
+                    setTimeout(function () {
+                        if (loader.parentNode) loader.parentNode.removeChild(loader);
+                    }, 900);
+                }, wait);
+            }
+            if (document.readyState === 'complete') { dismiss(); }
+            else { window.addEventListener('load', dismiss, { once: true }); }
+        }());
 
         // --- TOGGLE ALUNO/NÃO-ALUNO NO FORMULÁRIO ---
         function setAluno(val) {
@@ -1179,7 +1336,7 @@
                 galleryContainer.appendChild(rowContainer);
             });
             
-            if (window.lucide) lucide.createIcons();
+            if (window._gdbLucide) window._gdbLucide();
 
             // Reatribui o observador às novas polaroids renderizadas
             setTimeout(() => {
