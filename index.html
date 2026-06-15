@@ -209,6 +209,14 @@
         #gdb-root .header-small {
             transition: max-height 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease, padding 0.6s cubic-bezier(0.4,0,0.2,1) !important;
             max-height: 150px !important; opacity: 1 !important; overflow: hidden !important;
+            background: transparent !important;
+        }
+        #gdb-root .header-small:hover,
+        #gdb-root .header-small:focus,
+        #gdb-root .header-small:focus-visible {
+            background: transparent !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
         #gdb-root .accordion-item.is-open .header-small {
             max-height: 0 !important; opacity: 0 !important;
@@ -242,26 +250,30 @@
             isolation: isolate !important;
         }
 
-        /* Trava o background dos cards no hover — (1-1-0)+!important bate qualquer coisa do Elementor */
+        /* Trava todos os estilos visuais dos cards no hover — bloqueia qualquer injeção do Elementor/tema */
         #gdb-root .accordion-item {
             background-color: var(--acc-bg) !important;
         }
         #gdb-root .accordion-item:hover {
             background-color: var(--acc-bg) !important;
+            border-color: rgba(63, 63, 70, 0.5) !important;
+            outline: none !important;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
         }
 
         /* ── Intersection Observer ───────────────────────────────────── */
         #gdb-root .reveal {
-            opacity: 0 !important; transform: translateY(40px) !important;
             transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1) !important;
             will-change: opacity, transform;
         }
-        #gdb-root .reveal.active  { opacity: 1 !important; transform: translateY(0) !important; }
-        #gdb-root .reveal-left    { transform: translateX(-40px) !important; }
-        #gdb-root .reveal-right   { transform: translateX(40px)  !important; }
-        #gdb-root .reveal-scale   { transform: scale(0.9) translateY(20px) !important; }
-        #gdb-root .reveal-left.active, #gdb-root .reveal-right.active,
-        #gdb-root .reveal-scale.active { transform: none !important; }
+        #gdb-root.js-loaded .reveal              { opacity: 0 !important; transform: translateY(40px) !important; }
+        #gdb-root.js-loaded .reveal.active        { opacity: 1 !important; transform: translateY(0) !important; }
+        #gdb-root.js-loaded .reveal-left          { transform: translateX(-40px) !important; }
+        #gdb-root.js-loaded .reveal-right         { transform: translateX(40px)  !important; }
+        #gdb-root.js-loaded .reveal-scale         { transform: scale(0.9) translateY(20px) !important; }
+        #gdb-root.js-loaded .reveal-left.active,
+        #gdb-root.js-loaded .reveal-right.active,
+        #gdb-root.js-loaded .reveal-scale.active  { transform: none !important; }
 
         #gdb-root .delay-100  { transition-delay: 100ms  !important; }
         #gdb-root .delay-200  { transition-delay: 200ms  !important; }
@@ -275,7 +287,7 @@
         #gdb-root .delay-2000 { transition-delay: 2000ms !important; }
 
         @media (prefers-reduced-motion: reduce) {
-            #gdb-root .reveal, #gdb-root .animate-pop-in {
+            #gdb-root.js-loaded .reveal, #gdb-root .reveal, #gdb-root .animate-pop-in {
                 transition: none !important; animation: none !important;
                 opacity: 1 !important; transform: none !important;
             }
@@ -300,16 +312,24 @@
             background: transparent !important;
             border: none !important; border-width: 0 !important;
             outline: none !important; box-shadow: none !important;
+            white-space: normal !important;
         }
         #gdb-root .faq-btn:hover, #gdb-root .faq-btn:focus {
             background: transparent !important; outline: none !important; box-shadow: none !important;
         }
-        #gdb-root .faq-question {
+        /* Seletor com especificidade (1-2-0) para bater qualquer regra de span/button do tema */
+        #gdb-root .faq-btn .faq-question {
             font-weight: 600 !important; font-size: 0.9375rem !important;
             line-height: 1.55 !important; color: #d4d4d8 !important;
             transition: color 0.3s ease !important;
+            display: block !important;
+            min-width: 0 !important;
+            flex: 1 1 0% !important;
+            white-space: normal !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
         }
-        #gdb-root .faq-item.faq-open .faq-question { color: #ffffff !important; }
+        #gdb-root .faq-item.faq-open .faq-btn .faq-question { color: #ffffff !important; }
         #gdb-root .faq-chevron {
             width: 1.1rem !important; height: 1.1rem !important;
             color: #ef4444 !important; flex-shrink: 0 !important;
@@ -558,8 +578,10 @@
                         Acompanhe por onde o Giro da Bolsa Itinerante já passou e qual será o nosso próximo destino. O mapa está sendo traçado e sua cidade pode ser a próxima parada.
                     </p>
                     <div class="mt-8">
-                        <button onclick="openCityModal()" class="inline-flex items-center gap-3 px-6 py-3 border border-zinc-700 hover:border-red-500 text-zinc-300 hover:text-white rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-lg hover:bg-red-500/10 hover:shadow-red-500/20">
-                            <i data-lucide="map-pin" class="w-4 h-4 text-red-500"></i> PARA ONDE DEVEMOS IR?
+                        <!-- BOTÃO MODIFICADO AQUI: ÍCONE PIN EM SVG DIRETO -->
+                        <button type="button" onclick="openCityModal()" class="inline-flex items-center gap-3 px-6 py-3 border border-zinc-700 hover:border-red-500 text-zinc-300 hover:text-white rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-lg hover:bg-red-500/10 hover:shadow-red-500/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-red-500 shrink-0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg> 
+                            PARA ONDE DEVEMOS IR?
                         </button>
                     </div>
                 </div>
@@ -605,7 +627,7 @@
                         <span class="text-greece-yellow font-bold tracking-widest uppercase text-xs shadow-black drop-shadow-md">Edição 01</span>
                         <h3 class="font-serif text-3xl md:text-4xl mt-1 text-white shadow-black drop-shadow-md">Goiânia, GO</h3>
                     </div>
-                    <i data-lucide="chevron-down" class="acc-icon w-8 h-8 text-white/50"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="acc-icon w-8 h-8 text-white/50"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
                 
                 <!-- CONTEÚDO EXPANDIDO -->
@@ -621,8 +643,8 @@
                                         <span>Goiás <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
                                         <span class="text-greece-yellow">Edição 1</span>
                                     </div>
-                                    <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 hover:bg-white/5 rounded-full transition-colors" title="Fechar">
-                                        <i data-lucide="chevron-down" class="acc-icon text-white/50 w-6 h-6"></i>
+                                    <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 rounded-full" title="Fechar">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="acc-icon text-white/50 w-6 h-6"><path d="m6 9 6 6 6-6"/></svg>
                                     </button>
                                 </div>
                                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 w-full">
@@ -671,7 +693,7 @@
                         <span class="text-[#38bdf8] font-bold tracking-widest uppercase text-xs shadow-black drop-shadow-md">Edição 02</span>
                         <h3 class="font-serif text-3xl md:text-4xl mt-1 text-white shadow-black drop-shadow-md">Belo Horizonte, MG</h3>
                     </div>
-                    <i data-lucide="chevron-down" class="acc-icon w-8 h-8 text-white/50"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="acc-icon w-8 h-8 text-white/50"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
                 
                 <!-- CONTEÚDO EXPANDIDO -->
@@ -687,8 +709,8 @@
                                         <span>Minas Gerais <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
                                         <span class="text-[#38bdf8]">Edição 2</span>
                                     </div>
-                                    <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 hover:bg-white/5 rounded-full transition-colors" title="Fechar">
-                                        <i data-lucide="chevron-down" class="acc-icon text-white/50 w-6 h-6"></i>
+                                    <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 rounded-full" title="Fechar">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="acc-icon text-white/50 w-6 h-6"><path d="m6 9 6 6 6-6"/></svg>
                                     </button>
                                 </div>
                                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 w-full">
@@ -741,7 +763,7 @@
                     </div>
                     <div class="flex items-center gap-4">
                         <span class="hidden md:inline-block px-4 py-1 border border-red-500/50 rounded-full text-red-400 text-xs tracking-widest uppercase font-bold bg-red-500/10 backdrop-blur-sm">Em Breve</span>
-                        <i data-lucide="chevron-down" class="acc-icon w-8 h-8 text-white/50"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="acc-icon w-8 h-8 text-white/50"><path d="m6 9 6 6 6-6"/></svg>
                     </div>
                 </button>
                 
@@ -758,8 +780,8 @@
                                         <span>SP <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
                                         <span class="text-red-500 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Em Breve</span>
                                     </div>
-                                    <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 hover:bg-white/5 rounded-full transition-colors" title="Fechar">
-                                        <i data-lucide="chevron-down" class="acc-icon text-white/50 w-6 h-6"></i>
+                                    <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 rounded-full" title="Fechar">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="acc-icon text-white/50 w-6 h-6"><path d="m6 9 6 6 6-6"/></svg>
                                     </button>
                                 </div>
                                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 w-full">
@@ -803,7 +825,7 @@
                 <div class="faq-item">
                     <button class="faq-btn" onclick="toggleFaq(this)">
                         <span class="faq-question">Quando e que horas será o evento em São Paulo?</span>
-                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-chevron"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
                     <div class="faq-body"><div class="faq-inner">
                         <p class="faq-answer">O evento acontece no dia 26 de junho, a partir das 19 horas.</p>
@@ -813,7 +835,7 @@
                 <div class="faq-item">
                     <button class="faq-btn" onclick="toggleFaq(this)">
                         <span class="faq-question">Qual o local do evento?</span>
-                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-chevron"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
                     <div class="faq-body"><div class="faq-inner">
                         <p class="faq-answer">Será na cidade de São Paulo. O endereço exato e o nome do espaço serão enviados por e-mail apenas para quem garantir o ingresso.</p>
@@ -823,7 +845,7 @@
                 <div class="faq-item">
                     <button class="faq-btn" onclick="toggleFaq(this)">
                         <span class="faq-question">Que roupa devo usar?</span>
-                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-chevron"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
                     <div class="faq-body"><div class="faq-inner">
                         <p class="faq-answer">A que você se sentir confortável. Como já avisamos, não precisa de terno, gravata ou coletinho da Faria Lima para falar de investimentos aqui. Venha à vontade.</p>
@@ -833,7 +855,7 @@
                 <div class="faq-item">
                     <button class="faq-btn" onclick="toggleFaq(this)">
                         <span class="faq-question">O evento será open bar?</span>
-                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-chevron"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
                     <div class="faq-body"><div class="faq-inner">
                         <p class="faq-answer">No local do evento, os focos principais são a gravação e o conteúdo, portanto, não haverá bebidas incluídas. Depois a gente se reúne para tomar alguma coisa e bater um papo, mas cada um consome o que quiser direto no local.</p>
@@ -843,7 +865,7 @@
                 <div class="faq-item">
                     <button class="faq-btn" onclick="toggleFaq(this)">
                         <span class="faq-question">Posso levar acompanhantes?</span>
-                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-chevron"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
                     <div class="faq-body"><div class="faq-inner">
                         <p class="faq-answer">Cada ingresso dá direito a apenas uma entrada, mas você pode comprar dois ingressos. Basta realizar uma compra por vez. Só lembre de preencher os dados direitinho com o nome e o documento de cada pessoa, porque a entrada é individual e nominal.</p>
@@ -853,7 +875,7 @@
                 <div class="faq-item">
                     <button class="faq-btn" onclick="toggleFaq(this)">
                         <span class="faq-question">Posso gravar o evento?</span>
-                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-chevron"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
                     <div class="faq-body"><div class="faq-inner">
                         <div class="faq-answer">
@@ -868,7 +890,7 @@
                 <div class="faq-item">
                     <button class="faq-btn" onclick="toggleFaq(this)">
                         <span class="faq-question">Menores de 18 anos podem ir ao evento?</span>
-                        <i data-lucide="chevron-down" class="faq-chevron"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-chevron"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
                     <div class="faq-body"><div class="faq-inner">
                         <p class="faq-answer">Não. O evento é exclusivo para maiores de idade.</p>
@@ -892,12 +914,15 @@
     </footer>
 
     <!-- --- MODALS (Ocultos por defeito) --- -->
-    <!-- Modal Sugerir Cidade -->
-    <div id="city-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 bg-black/80 backdrop-blur-sm">
+    <!-- Modal Sugerir Cidade (Clicar no fundo tbm fecha agora) -->
+    <div id="city-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 bg-black/80 backdrop-blur-sm" onclick="if(event.target === this) closeCityModal()">
         <div class="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 md:p-10 max-w-md w-full mx-4 shadow-2xl relative transform scale-95 transition-transform duration-300" id="city-modal-content">
-            <button class="absolute top-6 right-6 text-zinc-400 hover:text-white transition-colors" onclick="closeCityModal()">
-                <i data-lucide="x" class="w-6 h-6"></i>
+            
+            <!-- BOTÃO MODIFICADO AQUI: ÍCONE X EM SVG DIRETO + CLIQUE REFORÇADO -->
+            <button type="button" class="absolute top-4 right-4 md:top-6 md:right-6 text-zinc-400 hover:text-white transition-colors z-[60] p-2" onclick="closeCityModal()" aria-label="Fechar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
+            
             <h3 class="font-serif text-3xl font-bold text-white mb-2">Para onde devemos ir na próxima?</h3>
             <p class="text-zinc-400 mb-8 text-sm">Preencha os dados abaixo e sugira qual deve ser a próxima parada.</p>
             
@@ -931,9 +956,12 @@
 
     <!-- Modal Lightbox (Zoom nas Fotos) -->
     <div id="lightbox-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 bg-black/95 backdrop-blur-md" onclick="closeLightbox()">
-        <button class="absolute top-6 right-6 text-white hover:text-red-500 transition-colors z-10" onclick="closeLightbox()">
-            <i data-lucide="x" class="w-8 h-8"></i>
+        
+        <!-- BOTÃO MODIFICADO AQUI: ÍCONE X EM SVG DIRETO -->
+        <button type="button" class="absolute top-4 right-4 md:top-6 md:right-6 text-white hover:text-red-500 transition-colors z-[60] p-2" onclick="closeLightbox()" aria-label="Fechar">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
+        
         <div class="relative flex flex-col items-center max-w-[90vw] max-h-[90vh]" onclick="event.stopPropagation()">
             <img id="lightbox-img" src="" alt="Imagem Expandida" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl scale-95 transition-transform duration-300">
             <div id="lightbox-caption" class="mt-4 md:mt-6 flex justify-between items-center w-full px-4 md:px-0 font-serif scale-95 transition-transform duration-300 text-white">
@@ -945,7 +973,9 @@
 
     <!-- Lógica JavaScript Dinâmica e Animações -->
     <script>
-        lucide.createIcons();
+        // Guarda nula: se o CDN do Lucide falhar (modo anônimo, rede lenta),
+        // a execução continua; ícones ficam sem SVG mas tudo mais funciona.
+        if (window.lucide) lucide.createIcons();
 
         // --- TOGGLE ALUNO/NÃO-ALUNO NO FORMULÁRIO ---
         function setAluno(val) {
@@ -1077,11 +1107,11 @@
             }
         });
 
-        setTimeout(() => {
-            document.querySelectorAll('#hero .reveal').forEach(el => {
-                el.classList.add('active');
-            });
-        }, 100);
+        // Ativa hero e habilita reveals no mesmo tick de renderização:
+        // 1. .active adicionado antes de js-loaded → hero visível imediatamente
+        // 2. js-loaded habilita opacity:0 nos demais (abaixo da dobra, fora da tela)
+        document.querySelectorAll('#hero .reveal').forEach(function(el) { el.classList.add('active'); });
+        document.getElementById('gdb-root').classList.add('js-loaded');
 
         // --- GALERIA DE FOTOS (MURAL ESPALHADO - IMAGENS OFICIAIS) ---
         const galleryPhotos = [
@@ -1149,7 +1179,7 @@
                 galleryContainer.appendChild(rowContainer);
             });
             
-            lucide.createIcons();
+            if (window.lucide) lucide.createIcons();
 
             // Reatribui o observador às novas polaroids renderizadas
             setTimeout(() => {
