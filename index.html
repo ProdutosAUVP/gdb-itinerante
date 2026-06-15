@@ -669,7 +669,22 @@
 
     <!-- Lógica JavaScript Dinâmica e Animações -->
     <script>
-        lucide.createIcons();
+        // Carrega Lucide dinamicamente quando o <head> não está disponível (widget Elementor)
+        (function () {
+            function _runLucide() {
+                if (window.lucide) lucide.createIcons();
+            }
+            if (window.lucide) {
+                _runLucide();
+            } else {
+                var s = document.createElement('script');
+                s.src = 'https://unpkg.com/lucide@latest/dist/umd/lucide.min.js';
+                s.onload = _runLucide;
+                document.head.appendChild(s);
+            }
+            // Helper reutilizável para re-renders (galeria, etc.)
+            window._gdbLucide = _runLucide;
+        }());
 
         // --- SCROLL SPY PARA MENU LATERAL FLUTUANTE ---
         const sections = document.querySelectorAll("section[id]");
@@ -838,7 +853,7 @@
                 galleryContainer.appendChild(rowContainer);
             });
             
-            lucide.createIcons();
+            if (window._gdbLucide) window._gdbLucide();
 
             // Reatribui o observador às novas polaroids renderizadas
             setTimeout(() => {
