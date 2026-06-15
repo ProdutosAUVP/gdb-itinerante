@@ -537,29 +537,15 @@
                         <span>BOLSA</span>
                     </h1>
                     
-                    <!-- Tag Dinâmica com Largura Flexível e Gacha Slot -->
+                    <!-- Tag de Destino + Data do Evento -->
                     <div class="mt-6 md:mt-8 flex flex-wrap items-center gap-3">
-                    <div id="dynamic-destination-tag" class="inline-flex items-center px-6 py-2 border rounded-full backdrop-blur-md shadow-xl border-red-600/50 bg-red-950/40 reveal reveal-left delay-1500 transition-all duration-500 ease-out origin-left">
-                        <span class="w-2 h-2 rounded-full animate-pulse bg-red-500 shrink-0 mr-3"></span>
-                        
-                        <!-- Wrapper Animado que adapta a largura -->
-                        <div id="tag-content-wrapper" class="relative overflow-hidden transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center h-5 w-[105px]"> 
-                            <!-- Texto Inicial -->
-                            <div id="dynamic-destination-text" class="text-sm tracking-widest uppercase text-red-500 font-bold whitespace-nowrap absolute left-0 flex items-center transition-all duration-300 transform translate-y-0 opacity-100">
-                                ITINERANTE
-                            </div>
-                            <!-- Roleta Gacha Oculta -->
-                            <div id="dynamic-destination-slot" class="text-sm tracking-widest uppercase text-white font-bold whitespace-nowrap absolute left-0 w-full flex items-center opacity-0 transition-all duration-300 transform translate-y-full">
-                                <span class="text-red-500 mr-2 shrink-0">Destino:</span>
-                                <div class="shrink-0" style="height: 20px; overflow: hidden; position: relative; min-width: max-content;">
-                                    <div id="gacha-reel" class="flex flex-col" style="transition: transform 6s cubic-bezier(0.15, 0.85, 0.1, 1); transform: translateY(0px);">
-                                        <!-- Cidades inseridas via JS -->
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="inline-flex items-center px-6 py-2 border rounded-full backdrop-blur-md shadow-xl border-red-600/50 bg-red-950/40 reveal reveal-left delay-1500">
+                            <span class="w-2 h-2 rounded-full animate-pulse bg-red-500 shrink-0 mr-3"></span>
+                            <span class="text-sm tracking-widest uppercase font-bold whitespace-nowrap">
+                                <span class="text-red-500 mr-2">Destino:</span><span class="text-white">São Paulo, SP</span>
+                            </span>
                         </div>
-                    </div>
-                    <span class="reveal reveal-left delay-1800 text-xs font-bold tracking-widest uppercase text-zinc-400 border border-zinc-700/60 px-4 py-2 rounded-full whitespace-nowrap">26 de Junho</span>
+                        <span class="reveal reveal-left delay-1800 text-xs font-bold tracking-widest uppercase text-zinc-400 border border-zinc-700/60 px-4 py-2 rounded-full whitespace-nowrap">26 de Junho</span>
                     </div>
                 </div>
 
@@ -1085,40 +1071,16 @@
             window._gdbLucide = _runLucide;
         }());
 
-        // Coordenação de "reveal": permite que animações (ex.: gacha) iniciem
-        // apenas depois que a tela de carregamento sai, garantindo que o usuário
-        // veja a interação por completo (e não atrás do loader).
-        (function () {
-            var fired = false;
-            var queue = [];
-            window.gdbOnReveal = function (cb) {
-                if (fired) { cb(); } else { queue.push(cb); }
-            };
-            window._gdbFireReveal = function () {
-                if (fired) return;
-                fired = true;
-                queue.forEach(function (fn) { try { fn(); } catch (e) {} });
-                queue = [];
-            };
-            // Rede de segurança: garante que o reveal SEMPRE dispare, mesmo que a
-            // tela de carregamento esteja ausente ou sua lógica falhe (ex.: timing
-            // do window.load em WordPress/Elementor). Sem isso, callbacks como o
-            // gacha poderiam ficar presos na fila para sempre.
-            setTimeout(window._gdbFireReveal, 5000);
-        }());
-
         // Dismiss da tela de carregamento após window.load + tempo mínimo
         (function () {
             var loader = document.getElementById('gdb-loader');
-            // Sem loader (ex.: widget Elementor sem a tela): revela imediatamente
-            if (!loader) { window._gdbFireReveal(); return; }
+            if (!loader) return; // Sem loader (ex.: widget Elementor sem a tela)
             var MIN_MS = 2000;
             var t0 = window._gdLoaderStart || Date.now();
             function dismiss() {
                 var wait = Math.max(0, MIN_MS - (Date.now() - t0));
                 setTimeout(function () {
                     loader.classList.add('gld-hidden');
-                    window._gdbFireReveal();
                     setTimeout(function () {
                         if (loader.parentNode) loader.parentNode.removeChild(loader);
                     }, 900);
@@ -1497,80 +1459,6 @@
                 mapContainer.innerHTML = svgHTML;
             })
             .catch(err => console.error("Erro ao desenhar o mapa:", err));
-
-        // --- EFEITO GACHA DINÂMICO DA TAG DE DESTINO ---
-        // Inicia somente após a tela de carregamento sair (reveal), com uma breve
-        // pausa para o usuário ler "ITINERANTE" antes da rotação para São Paulo.
-        // Fallback defensivo: se a coordenação de reveal não existir por qualquer
-        // motivo, dispara via timer simples para o gacha nunca deixar de rodar.
-        (window.gdbOnReveal || function (cb) { setTimeout(cb, 1500); })(function () { setTimeout(() => {
-            const destTag = document.getElementById('dynamic-destination-tag');
-            const wrapper = document.getElementById('tag-content-wrapper');
-            const textInitial = document.getElementById('dynamic-destination-text');
-            const slotContainer = document.getElementById('dynamic-destination-slot');
-            const reel = document.getElementById('gacha-reel');
-            if (!destTag || !wrapper || !textInitial || !slotContainer || !reel) return;
-
-            // Garante que o invólucro tem exatamente o tamanho da palavra ITINERANTE antes de animar
-            wrapper.style.width = textInitial.offsetWidth + 'px';
-
-            const cidades = [
-                'Rio de Janeiro, RJ', 'Salvador, BA', 'Curitiba, PR',
-                'Fortaleza, CE', 'Brasília, DF', 'Porto Alegre, RS',
-                'Manaus, AM', 'Recife, PE', 'Vitória, ES', 'Florianópolis, SC',
-                'Goiânia, GO', 'Cuiabá, MT', 'Natal, RN', 'Belém, PA',
-                'Belo Horizonte, MG', 'São Paulo, SP' // Parada final
-            ];
-
-            const itemHeight = 20; 
-
-            // Construir HTML da roleta
-            const reelHTML = cidades.map((city, index) => {
-                const isLast = index === cidades.length - 1;
-                const textClass = isLast ? 'text-white' : 'text-white/40 blur-[0.5px]';
-                // Adicionamos truncate para cortar visualmente cidades longas sem alterar layout
-                return `<div style="height: ${itemHeight}px;" class="flex items-center ${textClass}"><span class="whitespace-nowrap">${city}</span></div>`;
-            }).join('');
-            reel.innerHTML = reelHTML;
-
-            // Medir largura invisivelmente baseada EXATAMENTE em "São Paulo, SP" para evitar Layout Shift
-            const spSpan = document.createElement('span');
-            spSpan.className = 'text-sm tracking-widest uppercase font-bold whitespace-nowrap invisible absolute';
-            spSpan.innerHTML = '<span style="margin-right:0.5rem">Destino:</span>São Paulo, SP';
-            document.body.appendChild(spSpan);
-            const finalWidth = spSpan.offsetWidth + 8;
-            document.body.removeChild(spSpan);
-
-            // 1. Oculta ITINERANTE (sobe e desaparece suavemente)
-            textInitial.style.opacity = '0';
-            textInitial.style.transform = 'translateY(-100%)';
-
-            setTimeout(() => {
-                // 2. Expande o invólucro diretamente para a largura definitiva de SP
-                wrapper.style.width = finalWidth + 'px';
-                
-                setTimeout(() => {
-                    // 3. Mostra o Slot Machine (vem de baixo)
-                    slotContainer.style.opacity = '1';
-                    slotContainer.style.transform = 'translateY(0)';
-
-                    // 4. Inicia o giro da roleta
-                    setTimeout(() => {
-                        const targetY = (cidades.length - 1) * itemHeight;
-                        reel.style.transform = `translateY(-${targetY}px)`;
-
-                        // 5. Quando terminar de rodar (6s), aplica o efeito visual de impacto
-                        setTimeout(() => {
-                            // Efeito visual de impacto (Thud)
-                            destTag.classList.add('scale-105', 'bg-red-900/70', 'border-red-500', 'shadow-red-500/30');
-                            setTimeout(() => {
-                                destTag.classList.remove('scale-105', 'bg-red-900/70', 'border-red-500', 'shadow-red-500/30');
-                            }, 400);
-                        }, 6000); 
-                    }, 50);
-                }, 400); // Tempo da expansão lateral
-            }, 300); // Tempo do fade out
-        }, 1200); }); // Pausa após o reveal antes de iniciar a rotação
 
         // --- INTEGRAÇÃO FORMULÁRIO GOOGLE SHEETS ---
         const form = document.getElementById('city-suggestion-form');
