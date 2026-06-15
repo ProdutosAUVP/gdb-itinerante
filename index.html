@@ -262,6 +262,9 @@
         }
 
         /* ── Intersection Observer ───────────────────────────────────── */
+        /* Sem js-loaded: elementos ficam visíveis (sem flash antes do JS rodar).
+           Com js-loaded: JS já adicionou .active nos elementos visíveis antes de
+           setar a classe, então o browser renderiza uma única vez sem piscar. */
         #gdb-root .reveal {
             transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1) !important;
             will-change: opacity, transform;
