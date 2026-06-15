@@ -1100,6 +1100,11 @@
                 queue.forEach(function (fn) { try { fn(); } catch (e) {} });
                 queue = [];
             };
+            // Rede de segurança: garante que o reveal SEMPRE dispare, mesmo que a
+            // tela de carregamento esteja ausente ou sua lógica falhe (ex.: timing
+            // do window.load em WordPress/Elementor). Sem isso, callbacks como o
+            // gacha poderiam ficar presos na fila para sempre.
+            setTimeout(window._gdbFireReveal, 5000);
         }());
 
         // Dismiss da tela de carregamento após window.load + tempo mínimo
@@ -1496,7 +1501,9 @@
         // --- EFEITO GACHA DINÂMICO DA TAG DE DESTINO ---
         // Inicia somente após a tela de carregamento sair (reveal), com uma breve
         // pausa para o usuário ler "ITINERANTE" antes da rotação para São Paulo.
-        window.gdbOnReveal(function () { setTimeout(() => {
+        // Fallback defensivo: se a coordenação de reveal não existir por qualquer
+        // motivo, dispara via timer simples para o gacha nunca deixar de rodar.
+        (window.gdbOnReveal || function (cb) { setTimeout(cb, 1500); })(function () { setTimeout(() => {
             const destTag = document.getElementById('dynamic-destination-tag');
             const wrapper = document.getElementById('tag-content-wrapper');
             const textInitial = document.getElementById('dynamic-destination-text');
