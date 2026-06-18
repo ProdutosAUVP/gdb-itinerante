@@ -26,19 +26,53 @@
       "@context": "https://schema.org",
       "@type": "Event",
       "name": "Giro da Bolsa Itinerante — São Paulo",
-      "description": "Evento presencial do Investidor Sardinha: mercado financeiro ao vivo, sem censura, em São Paulo.",
+      "description": "O maior canal de investimentos do Brasil ao vivo na sua cidade. Evento presencial em São Paulo no dia 26 de junho: mercado de verdade, ao vivo, sem censura. Garanta seu ingresso.",
+      "url": "https://produtosauvp.github.io/gdb-itinerante/",
+      "image": [
+        "https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Prancheta%2010.svg"
+      ],
       "startDate": "2026-06-26T19:00:00-03:00",
+      "endDate": "2026-06-26T23:00:00-03:00",
       "eventStatus": "https://schema.org/EventScheduled",
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
       "location": {
         "@type": "Place",
         "name": "São Paulo",
-        "address": { "@type": "PostalAddress", "addressLocality": "São Paulo", "addressRegion": "SP", "addressCountry": "BR" }
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "São Paulo",
+          "addressRegion": "SP",
+          "addressCountry": "BR"
+        }
       },
-      "organizer": { "@type": "Organization", "name": "AUVP Capital — Investidor Sardinha" },
+      "organizer": {
+        "@type": "Organization",
+        "name": "AUVP Capital — Investidor Sardinha",
+        "url": "https://auvp.com.br"
+      },
+      "performer": {
+        "@type": "Person",
+        "name": "Investidor Sardinha"
+      },
       "offers": [
-        { "@type": "Offer", "name": "Público Geral", "price": "997", "priceCurrency": "BRL", "availability": "https://schema.org/LimitedAvailability" },
-        { "@type": "Offer", "name": "Membros AUVP", "price": "297", "priceCurrency": "BRL", "availability": "https://schema.org/LimitedAvailability" }
+        {
+          "@type": "Offer",
+          "name": "Público Geral",
+          "price": "300",
+          "priceCurrency": "BRL",
+          "availability": "https://schema.org/LimitedAvailability",
+          "validFrom": "2026-01-01",
+          "url": "https://checkout.auvp.com.br/pay/giro-da-bolsa-sp-geral"
+        },
+        {
+          "@type": "Offer",
+          "name": "Membros AUVP",
+          "price": "150",
+          "priceCurrency": "BRL",
+          "availability": "https://schema.org/LimitedAvailability",
+          "validFrom": "2026-01-01",
+          "url": "https://comunidade.auvp.com.br/topic/44292-%F0%9F%9A%A8-giro-da-bolsa-em-s%C3%A3o-paulo-ingressos-liberados-com-desconto-exclusivo/"
+        }
       ]
     }
     </script>
@@ -1069,6 +1103,28 @@
                 document.head.appendChild(s);
             }
             window._gdbLucide = _runLucide;
+        }());
+
+        // --- PROPAGAÇÃO DE UTMs PARA O CHECKOUT ---
+        (function () {
+            var utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+            var pageParams = new URLSearchParams(window.location.search);
+            var utmQuery = new URLSearchParams();
+
+            utmKeys.forEach(function (key) {
+                var val = pageParams.get(key);
+                if (val) utmQuery.set(key, val);
+            });
+
+            if (!utmQuery.toString()) return;
+
+            document.querySelectorAll('a[href*="checkout.auvp.com.br/pay/giro-da-bolsa-sp-geral"]').forEach(function (link) {
+                var url = new URL(link.href);
+                utmQuery.forEach(function (value, key) {
+                    url.searchParams.set(key, value);
+                });
+                link.href = url.toString();
+            });
         }());
 
         // Dismiss da tela de carregamento após window.load + tempo mínimo
