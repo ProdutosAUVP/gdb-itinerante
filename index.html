@@ -58,7 +58,7 @@
         {
           "@type": "Offer",
           "name": "Público Geral",
-          "price": "300",
+          "price": "250",
           "priceCurrency": "BRL",
           "availability": "https://schema.org/LimitedAvailability",
           "validFrom": "2026-01-01",
@@ -401,6 +401,72 @@
             }
         }
 
+        /* ── FAIXA DE CONTENÇÃO & BLUR ANIMADO ───────────────────────── */
+        #gdb-root .containment-tape-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150vw; /* Cruza a tela inteira */
+            z-index: 50;
+            pointer-events: none;
+            /* Máscara de opacidade nas bordas para não atrapalhar o menu */
+            -webkit-mask-image: linear-gradient(to right, transparent 2%, black 15%, black 85%, transparent 98%);
+            mask-image: linear-gradient(to right, transparent 2%, black 15%, black 85%, transparent 98%);
+        }
+        #gdb-root.js-loaded .containment-tape-wrapper {
+            opacity: 0 !important;
+            transform: translate(-50%, -50%) rotate(-4deg) scale(1.3) !important;
+            transition: opacity 0.4s ease 0.8s, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.8s !important;
+        }
+        #gdb-root.js-loaded .containment-tape-wrapper.active {
+            opacity: 1 !important;
+            transform: translate(-50%, -50%) rotate(-4deg) scale(1) !important;
+        }
+
+        #gdb-root .containment-tape {
+            display: flex;
+            width: max-content;
+            background-color: rgba(220, 38, 38, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            padding: 0.5rem 0; /* Faixa estreita */
+            box-shadow: 0 4px 30px rgba(220, 38, 38, 0.4);
+            animation: tapeScroll 20s linear infinite;
+        }
+        @keyframes tapeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        #gdb-root .containment-text {
+            font-size: 1.125rem;
+            font-weight: 900;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            padding: 0 1.5rem;
+            white-space: nowrap;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Classes para o grid dos cards com as vendas encerradas */
+        #gdb-root .locked-grid {
+            filter: blur(6px) grayscale(100%);
+            opacity: 0.4;
+        }
+        #gdb-root.js-loaded .locked-grid {
+            transform: none !important;
+            filter: blur(0px) grayscale(0%);
+            opacity: 1 !important;
+            /* Dá tempo para os cards surgirem bonitos (delay ~800ms) antes do impacto visual do bloqueio */
+            transition: filter 1s ease 0.8s, opacity 1s ease 0.8s !important; 
+        }
+        #gdb-root.js-loaded .locked-grid.active {
+            filter: blur(6px) grayscale(100%);
+            opacity: 0.4 !important;
+        }
+
         /* ══════════════════════════════════════════════════════════════
            TELA DE CARREGAMENTO
            ══════════════════════════════════════════════════════════════ */
@@ -518,6 +584,9 @@
         <a href="#ingressos" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
             <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Ingressos
         </a>
+        <a href="#local" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
+            <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Local
+        </a>
         <a href="#roteiro" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
             <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Roteiro
         </a>
@@ -550,6 +619,7 @@
                 <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Prancheta%202_12.svg" alt="Giro da Bolsa" class="-ml-2 md:-ml-4 h-10 md:h-14 lg:h-16 w-auto object-contain" loading="eager" fetchpriority="high" />
                 <nav class="hidden md:flex gap-12 text-xs font-medium tracking-widest uppercase text-zinc-300">
                     <a href="#ingressos" class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Ingressos</a>
+                    <a href="#local"     class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Local</a>
                     <a href="#roteiro"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Roteiro</a>
                     <a href="#galeria"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Histórico</a>
                     <a href="#edicoes"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Edições</a>
@@ -630,53 +700,129 @@
         <div class="max-w-7xl mx-auto px-6 lg:pl-56 xl:pl-64 relative z-10">
             
             <div class="text-center mb-16 reveal">
-                <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4">Garanta seu lugar</h2>
-                <p class="text-zinc-400 max-w-2xl mx-auto">Escolha o seu ingresso para o evento presencial em <span class="text-white font-semibold">São Paulo</span> · <span class="text-red-500 font-semibold">26 de Junho</span>.</p>
+                <div class="inline-flex items-center justify-center px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-zinc-400 uppercase bg-zinc-900/80 rounded-full border border-zinc-800 backdrop-blur-sm">
+                    Ingressos Encerrados
+                </div>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-zinc-300">Vendas Encerradas</h2>
+                <p class="text-zinc-500 max-w-2xl mx-auto">Os ingressos para o evento presencial em <span class="text-white font-semibold">São Paulo</span> · <span class="text-red-500 font-semibold">26 de Junho</span> estão encerrados.</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="relative max-w-4xl mx-auto">
                 
-                <!-- Ingresso 1: Padrão -->
-                <div class="flex flex-col p-8 lg:p-10 border border-zinc-800 rounded-3xl bg-zinc-900/50 backdrop-blur hover:border-zinc-700 transition-colors reveal reveal-scale">
-                    <div class="mb-8">
-                        <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2">Público Geral</h3>
-                        <p class="text-zinc-400 text-sm">A experiência exclusiva de assistir ao Giro da Bolsa ao vivo.</p>
+                <!-- Tarja de Contenção Animada (Aparece com delay junto com o blur) -->
+                <div class="containment-tape-wrapper reveal">
+                    <div class="containment-tape">
+                        <!-- Primeira sequência de palavras -->
+                        <div class="flex items-center">
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                        </div>
+                        <!-- Segunda sequência idêntica (Para loop infinito perfeito no marquee) -->
+                        <div class="flex items-center">
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                            <span class="containment-text">ENCERRADOS &nbsp;&bull;&nbsp;</span>
+                        </div>
                     </div>
-                    <div class="mb-8 flex items-baseline gap-2">
-                        <span class="text-2xl font-bold text-zinc-500">R$</span>
-                        <span class="text-5xl lg:text-6xl font-black tracking-tighter">300</span>
-                    </div>
-                    <ul class="space-y-4 mb-10 text-zinc-300 text-sm">
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
-                    </ul>
-                    <a href="https://checkout.auvp.com.br/pay/giro-da-bolsa-sp-geral" target="_blank" rel="noopener" class="mt-auto w-full py-4 border border-zinc-700 hover:bg-zinc-800 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm transition-colors text-center block">
-                        GARANTIR MINHA PRESENÇA
-                    </a>
                 </div>
 
-                <!-- Ingresso 2: VIP -->
-                <div class="flex flex-col p-8 lg:p-10 border-2 border-red-600 rounded-3xl bg-red-950/10 backdrop-blur relative shadow-[0_0_50px_-12px_rgba(220,38,38,0.3)] hover:shadow-[0_0_90px_0px_rgba(220,38,38,0.65)] transition-shadow duration-300 transform lg:-translate-y-4 reveal reveal-scale delay-200">
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white px-4 py-1 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-wider whitespace-nowrap">
-                        Exclusivo Membros AUVP
-                    </div>
-                    <div class="mb-8">
-                        <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-white">Membros AUVP</h3>
-                        <p class="text-zinc-400 text-sm">Condição exclusiva e benefícios para membros da AUVP.</p>
-                    </div>
-                    <div class="mb-8 flex items-baseline gap-4">
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-2xl font-bold text-red-500">R$</span>
-                            <span class="text-5xl lg:text-6xl font-black tracking-tighter text-white">150</span>
+                <div class="grid md:grid-cols-2 gap-8 pointer-events-none select-none locked-grid reveal">
+                    
+                    <!-- Ingresso 1: Padrão -->
+                    <div class="flex flex-col p-8 lg:p-10 border border-zinc-800 rounded-3xl bg-zinc-900/50 backdrop-blur transition-colors reveal reveal-scale">
+                        <div class="mb-8">
+                            <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2">Público Geral</h3>
+                            <p class="text-zinc-400 text-sm">A experiência exclusiva de assistir ao Giro da Bolsa ao vivo.</p>
                         </div>
-                        <span class="text-red-500 text-sm line-through">R$ 300</span>
+                        <div class="mb-8 flex items-baseline gap-2 opacity-50">
+                            <span class="text-2xl font-bold text-zinc-500">R$</span>
+                            <span class="text-5xl lg:text-6xl font-black tracking-tighter">250</span>
+                        </div>
+                        <ul class="space-y-4 mb-10 text-zinc-500 text-sm">
+                            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-zinc-700 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
+                        </ul>
+                        <button disabled class="mt-auto w-full py-4 border border-zinc-800 bg-zinc-900/50 text-zinc-600 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm text-center block cursor-not-allowed opacity-70">
+                            VENDAS ENCERRADAS
+                        </button>
                     </div>
-                    <ul class="space-y-4 mb-10 text-zinc-300 text-sm">
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Valor exclusivo com desconto para quem faz parte da nossa comunidade.</li>
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
-                    </ul>
-                    <a href="https://comunidade.auvp.com.br/topic/44292-%F0%9F%9A%A8-giro-da-bolsa-em-s%C3%A3o-paulo-ingressos-liberados-com-desconto-exclusivo/" target="_blank" rel="noopener" class="mt-auto w-full py-4 bg-red-600 hover:bg-red-700 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm transition-colors text-white shadow-xl shadow-red-900/20 text-center block">
-                        SOU MEMBRO AUVP
-                    </a>
+
+                    <!-- Ingresso 2: VIP -->
+                    <div class="flex flex-col p-8 lg:p-10 border border-red-900/30 rounded-3xl bg-red-950/10 backdrop-blur relative shadow-[0_0_30px_-12px_rgba(220,38,38,0.1)] transition-shadow duration-300 transform lg:-translate-y-4 reveal reveal-scale delay-200">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-800 text-zinc-400 px-4 py-1 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-wider whitespace-nowrap border border-zinc-700">
+                            Exclusivo Membros AUVP
+                        </div>
+                        <div class="mb-8">
+                            <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-zinc-300">Membros AUVP</h3>
+                            <p class="text-zinc-500 text-sm">Condição exclusiva e benefícios para membros da AUVP.</p>
+                        </div>
+                        <div class="mb-8 flex items-baseline gap-4 opacity-50">
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-2xl font-bold text-zinc-500">R$</span>
+                                <span class="text-5xl lg:text-6xl font-black tracking-tighter text-zinc-400">150</span>
+                            </div>
+                            <span class="text-zinc-600 text-sm line-through">R$ 250</span>
+                        </div>
+                        <ul class="space-y-4 mb-10 text-zinc-500 text-sm">
+                            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-zinc-700 w-5 h-5 shrink-0"></i> Valor exclusivo com desconto para quem faz parte da nossa comunidade.</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-zinc-700 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
+                        </ul>
+                        <button disabled class="mt-auto w-full py-4 border border-red-900/30 bg-red-950/20 text-red-500/50 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm text-center block cursor-not-allowed opacity-70">
+                            VENDAS ENCERRADAS
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- LOCAL SECTION --- -->
+    <section id="local" class="py-24 bg-zinc-950 relative border-t border-zinc-900 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:pl-56 xl:pl-64">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                
+                <div class="text-center md:text-left reveal reveal-left">
+                    <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
+                        O Palco da <br class="hidden md:block" /><span class="text-red-600 italic font-light">Baguncinha</span>
+                    </h2>
+                    <h3 class="text-2xl font-bold text-zinc-200 mb-2">Teatro Gamaro</h3>
+                    <p class="text-zinc-400 text-lg mb-6">
+                        R. Dr. Almeida Lima, 1176<br/>
+                        Mooca, São Paulo - SP, 03164-000
+                    </p>
+                    <p class="text-zinc-500 max-w-md mx-auto md:mx-0">
+                        Um espaço escolhido a dedo para garantir que todo mundo tenha uma visão perfeita, conforto e a melhor acústica para o nosso papo sem filtros. O mercado do jeito que você nunca viu.
+                    </p>
+                    <div class="mt-8">
+                        <a href="https://maps.app.goo.gl/opCZRCpWzAyDgRz96" target="_blank" rel="noopener" class="inline-flex items-center gap-3 px-6 py-3 border border-zinc-700 hover:border-red-500 text-zinc-300 hover:text-white rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-lg hover:bg-red-500/10 hover:shadow-red-500/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-red-500 shrink-0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg> 
+                            ABRIR NO GOOGLE MAPS
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative w-full h-[300px] md:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-zinc-800 reveal reveal-right delay-200 group">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 pointer-events-none z-10"></div>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.411211153839!2d-46.60831628447545!3d-23.553655184687585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce594895690b21%3A0xf63980df9a7cb147!2sTeatro%20Gamaro!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="grayscale invert contrast-125 opacity-70 mix-blend-luminosity hover:mix-blend-normal hover:grayscale-0 hover:opacity-100 hover:invert-0 transition-all duration-700 relative z-0"></iframe>
                 </div>
 
             </div>
