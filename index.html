@@ -678,7 +678,7 @@
                     </h1>
                     
                     <!-- Tag de Destino + Data do Evento -->
-                    <div class="mt-6 md:mt-8 flex flex-wrap items-center gap-3">
+                    <div class="mt-6 md:mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-3">
                         <div class="inline-flex items-center px-6 py-2 border rounded-full backdrop-blur-md shadow-xl border-red-600/50 bg-red-950/40 reveal reveal-left delay-1500">
                             <span class="w-2 h-2 rounded-full animate-pulse bg-red-500 shrink-0 mr-3"></span>
                             <span class="text-sm tracking-widest uppercase font-bold whitespace-nowrap">
@@ -1012,7 +1012,7 @@
                                     </button>
                                 </div>
                                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 w-full">
-                                    <h4 class="font-serif text-[4rem] md:text-[6rem] lg:text-[7.5rem] leading-none tracking-tighter text-[#38bdf8] drop-shadow-lg uppercase">
+                                    <h4 class="font-serif text-[2.25rem] min-[400px]:text-[2.75rem] sm:text-[4rem] md:text-[6rem] lg:text-[7.5rem] leading-[1.1] md:leading-none tracking-tighter text-[#38bdf8] drop-shadow-lg uppercase">
                                         Belo Horizonte
                                     </h4>
                                 </div>
@@ -1552,46 +1552,62 @@
         const filterContainer = document.getElementById('filter-container');
         const galleryContainer = document.getElementById('gallery-container');
 
+        let resizeTimeoutGallery;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeoutGallery);
+            resizeTimeoutGallery = setTimeout(renderGallery, 200);
+        });
+
         function renderGallery() {
             galleryContainer.innerHTML = '';
             const filtered = galleryPhotos.filter(p => activeFilter === 'Todos' || p.city === activeFilter);
             
-            // Divide o array ao meio para equilibrar as linhas caso haja mais de 4 fotos
             let rows = [];
-            if (filtered.length > 4) {
-                const mid = Math.ceil(filtered.length / 2);
-                rows.push(filtered.slice(0, mid));
-                rows.push(filtered.slice(mid));
+            const isMobile = window.innerWidth < 768; // Tailwind breakpoint para md
+            
+            if (isMobile) {
+                // No mobile, força agrupamento de no máximo 3 fotos por fileira
+                const chunkSize = 3;
+                for (let i = 0; i < filtered.length; i += chunkSize) {
+                    rows.push(filtered.slice(i, i + chunkSize));
+                }
             } else {
-                rows.push(filtered);
+                // No desktop divide pela metade normalmente
+                if (filtered.length > 4) {
+                    const mid = Math.ceil(filtered.length / 2);
+                    rows.push(filtered.slice(0, mid));
+                    rows.push(filtered.slice(mid));
+                } else {
+                    rows.push(filtered);
+                }
             }
+            
+            let globalIndex = 0;
             
             rows.forEach((row, rowIndex) => {
                 const rowContainer = document.createElement('div');
-                // Alterado de mt-8 md:mt-16 para margens negativas para aproximar as linhas
                 rowContainer.className = `flex justify-center items-center w-full ${rowIndex > 0 ? '-mt-4 sm:-mt-8 md:-mt-16' : ''}`;
                 
                 row.forEach((photo, index) => {
                     const marginClass = index === 0 ? '' : '-mx-3 sm:-mx-4 md:-mx-8 lg:-mx-10';
                     const zIndex = photo.isHighlight ? 'z-40 scale-105' : `z-[${index + 10}]`;
                     const textClasses = photo.isHighlight ? 'text-lg' : '';
-                    // Mantendo a consistência da cor para todos os estados, sem o vermelho no destaque
                     const edClasses = 'text-zinc-500';
-                    const globalIndex = rowIndex * Math.ceil(filtered.length / 2) + index;
                     const staggerDelay = globalIndex * 100;
+                    globalIndex++;
 
-                    // Removemos a classe 'animate-pop-in' do HTML inicial para que seja adicionada apenas no scroll
+                    // Ajustes aplicados na largura (w-28 min-[400px]:w-36) e altura (h-32 min-[400px]:h-36) das fotos para não estourar a tela no mobile
                     rowContainer.innerHTML += `
-                        <div class="polaroid-card relative bg-white p-2 md:p-3 pb-10 md:pb-12 shadow-2xl border border-zinc-200 w-36 sm:w-44 md:w-60 ${marginClass} ${photo.mt} ${zIndex} cursor-pointer group/photo" 
+                        <div class="polaroid-card relative bg-white p-2 md:p-3 pb-10 md:pb-12 shadow-2xl border border-zinc-200 w-28 min-[400px]:w-36 sm:w-44 md:w-60 ${marginClass} ${photo.mt} ${zIndex} cursor-pointer group/photo" 
                              style="--card-rot: ${photo.rot}; opacity: 0; animation-delay: ${staggerDelay}ms;" onclick="openLightbox('${photo.src}', '${photo.label}', '${photo.state}')">
-                            <div class="relative overflow-hidden w-full h-36 sm:h-40 md:h-56">
+                            <div class="relative overflow-hidden w-full h-32 min-[400px]:h-36 sm:h-40 md:h-56">
                                 <img src="${photo.src}" alt="${photo.city}" class="w-full h-full object-cover transition-transform duration-700 group-hover/photo:scale-110" />
                                 <div class="absolute inset-0 bg-black/10 opacity-0 group-hover/photo:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                 </div>
                             </div>
                             <div class="absolute bottom-2 md:bottom-3 left-3 md:left-4 right-3 md:right-4 flex justify-between items-center font-serif text-zinc-800">
-                                <span class="font-bold text-xs sm:text-sm md:text-base ${textClasses}">${photo.label}</span>
-                                <span class="text-[10px] sm:text-xs md:text-sm ${edClasses}">${photo.state}</span>
+                                <span class="font-bold text-[10px] min-[400px]:text-xs sm:text-sm md:text-base ${textClasses}">${photo.label}</span>
+                                <span class="text-[9px] min-[400px]:text-[10px] sm:text-xs md:text-sm ${edClasses}">${photo.state}</span>
                             </div>
                         </div>
                     `;
@@ -1602,7 +1618,6 @@
             
             if (window._gdbLucide) window._gdbLucide();
 
-            // Reatribui o observador às novas polaroids renderizadas
             setTimeout(() => {
                 document.querySelectorAll('.polaroid-card').forEach(card => {
                     polaroidObserver.observe(card);
