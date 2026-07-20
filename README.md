@@ -9,7 +9,7 @@ Landing page oficial do **Giro da Bolsa Itinerante** — o evento presencial da 
 | 1 | Goiânia, GO | 2025 | — | Realizada |
 | 2 | Belo Horizonte, MG | 2025 | — | Realizada |
 | 3 | São Paulo, SP | 26/06/2026 | Teatro Gamaro (Mooca) | Realizada |
-| 4 | **Curitiba, PR** | **24/07/2026, 19h** | **Teatro Paulo Autran (Batel)** | **Vendas abertas** |
+| 4 | **Curitiba, PR** | **24/07/2026, 19h** | *A confirmar publicamente* | **Vendas abertas** (Público Geral esgotado · Membros AUVP disponível) |
 
 A página é reciclada a cada edição: a cidade atual vira "próxima parada" e a anterior entra para o histórico (galeria e acordeões de edições passadas).
 

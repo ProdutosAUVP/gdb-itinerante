@@ -38,6 +38,11 @@ Landing page do Giro da Bolsa Itinerante (AUVP Capital / Investidor Sardinha). E
 
 **3. Edição realizada**: cidade vira histórico — JSON-LD da edição vai para o segundo bloco (offers → `SoldOut`), fotos entram na galeria (novo asset no repo), acordeão muda para formato "realizada", próxima cidade recomeça o ciclo.
 
+**Variações dentro do estado "vendas abertas":**
+- **Lote/categoria esgotada**: um card de ingresso pode esgotar antes do outro (ex.: Público Geral esgota, Membros AUVP continua à venda). Nesse caso, troque só o card afetado — badge "Esgotado", textos/preço em tom `zinc` (dessaturado), CTA vira `<button disabled>` com "ESGOTADO" — e no JSON-LD mude só a `availability` daquela oferta para `SoldOut`. Não mexa no card/oferta que segue ativo.
+- **Local ainda não divulgado**: mesmo com vendas abertas, a dobra `#local` pode ficar comentada (endereço não confirmado/não deve ser publicado ainda). Nesse caso, comente a seção inteira e os dois links "Local" (mesmo padrão do estado "em breve"), mas **mantenha os dados da cidade atual dentro do comentário** (não do ciclo anterior) para reativação rápida assim que o endereço puder ser divulgado. JSON-LD do local também deve voltar a citar só `addressLocality`/`addressRegion`/`addressCountry`, sem `streetAddress`/`postalCode`/nome do espaço. O FAQ "Qual o local do evento?" volta à resposta genérica ("endereço exato... anunciados em breve").
+- Regra geral: **qualquer dobra ocultada vira comentário HTML, nunca é apagada** — o conteúdo comentado é o que será reaproveitado quando a informação puder ser divulgada.
+
 ## Referências rápidas
 
 - Checkout geral Curitiba: `https://checkout.auvp.com.br/pay/giro-da-bolsa-curitiba-geral`
