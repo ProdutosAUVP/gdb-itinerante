@@ -59,7 +59,7 @@
           "name": "Público Geral",
           "price": "150",
           "priceCurrency": "BRL",
-          "availability": "https://schema.org/SoldOut",
+          "availability": "https://schema.org/InStock",
           "validFrom": "2026-07-18",
           "url": "https://checkout.auvp.com.br/pay/giro-da-bolsa-curitiba-geral"
         },
@@ -68,7 +68,7 @@
           "name": "Membros AUVP",
           "price": "100",
           "priceCurrency": "BRL",
-          "availability": "https://schema.org/SoldOut",
+          "availability": "https://schema.org/InStock",
           "validFrom": "2026-07-18",
           "url": "https://comunidade.auvp.com.br/topic/45479-o-giro-da-bolsa-t%C3%A1-chegando-em-curitiba-e-a-comunidade-tem-desconto-exclusivo/"
         }
@@ -116,7 +116,7 @@
           "name": "Público Geral",
           "price": "250",
           "priceCurrency": "BRL",
-          "availability": "https://schema.org/SoldOut",
+          "availability": "https://schema.org/InStock",
           "validFrom": "2026-01-01",
           "url": "https://checkout.auvp.com.br/pay/giro-da-bolsa-sp-geral"
         },
@@ -125,7 +125,7 @@
           "name": "Membros AUVP",
           "price": "150",
           "priceCurrency": "BRL",
-          "availability": "https://schema.org/SoldOut",
+          "availability": "https://schema.org/InStock",
           "validFrom": "2026-01-01",
           "url": "https://comunidade.auvp.com.br/topic/44292-%F0%9F%9A%A8-giro-da-bolsa-em-s%C3%A3o-paulo-ingressos-liberados-com-desconto-exclusivo/"
         }
@@ -758,56 +758,50 @@
         <div class="max-w-7xl mx-auto px-6 lg:pl-56 xl:pl-64 relative z-10">
             
             <div class="text-center mb-16 reveal">
-                <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-zinc-300">Vendas Encerradas</h2>
-                <p class="text-zinc-500 max-w-2xl mx-auto">As vendas de ingressos para o evento em <span class="text-white font-semibold">Curitiba</span> · <span class="text-red-500 font-semibold">24 de&nbsp;Julho</span> foram encerradas.</p>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-zinc-300">Ingressos Disponíveis</h2>
+                <p class="text-zinc-500 max-w-2xl mx-auto">Garanta sua entrada para o Giro da Bolsa em <span class="text-white font-semibold">Florianópolis</span> · <span class="text-red-500 font-semibold">18 de&nbsp;Setembro</span></p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
 
-                <!-- Ingresso 1: Padrão (Vendas Encerradas) -->
-                <div class="flex flex-col p-8 lg:p-10 border border-zinc-800 rounded-3xl bg-zinc-900/50 backdrop-blur relative transition-colors reveal reveal-scale">
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-800 text-zinc-400 px-4 py-1 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-wider whitespace-nowrap border border-zinc-700">
-                        Vendas Encerradas
-                    </div>
+                <!-- Ingresso 1: Público Geral -->
+                <div class="flex flex-col p-8 lg:p-10 border border-red-600/30 rounded-3xl bg-zinc-900/50 backdrop-blur relative transition-colors reveal reveal-scale hover:border-red-500/50">
                     <div class="mb-8">
-                        <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-zinc-400">Público Geral</h3>
-                        <p class="text-zinc-500 text-sm">A experiência exclusiva de assistir ao Giro da Bolsa ao&nbsp;vivo.</p>
+                        <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-white">Público Geral</h3>
+                        <p class="text-zinc-400 text-sm">A experiência exclusiva de assistir ao Giro da Bolsa ao&nbsp;vivo.</p>
                     </div>
                     <div class="mb-8 flex items-baseline gap-2">
-                        <span class="text-2xl font-bold text-zinc-600">R$</span>
-                        <span class="text-5xl lg:text-6xl font-black tracking-tighter text-zinc-600">150</span>
+                        <span class="text-2xl font-bold text-zinc-300">R$</span>
+                        <span class="text-5xl lg:text-6xl font-black tracking-tighter text-red-500">150</span>
                     </div>
-                    <ul class="space-y-4 mb-10 text-zinc-500 text-sm">
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-zinc-700 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
+                    <ul class="space-y-4 mb-10 text-zinc-400 text-sm">
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
                     </ul>
-                    <button disabled class="mt-auto w-full py-4 border border-zinc-800 bg-zinc-900/50 text-zinc-600 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm text-center block cursor-not-allowed opacity-70">
-                        VENDAS ENCERRADAS
-                    </button>
+                    <a href="#" class="mt-auto w-full py-4 border border-red-600 bg-red-600/10 text-red-500 hover:bg-red-600/20 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm text-center block transition-colors">
+                        GARANTIR INGRESSO
+                    </a>
                 </div>
 
-                <!-- Ingresso 2: VIP (Vendas Encerradas) -->
-                <div class="flex flex-col p-8 lg:p-10 border border-zinc-800 rounded-3xl bg-zinc-900/50 backdrop-blur relative transition-colors reveal reveal-scale delay-200">
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-800 text-zinc-400 px-4 py-1 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-wider whitespace-nowrap border border-zinc-700">
-                        Vendas Encerradas
-                    </div>
+                <!-- Ingresso 2: Membros AUVP -->
+                <div class="flex flex-col p-8 lg:p-10 border border-red-600/30 rounded-3xl bg-zinc-900/50 backdrop-blur relative transition-colors reveal reveal-scale delay-200 hover:border-red-500/50">
                     <div class="mb-8">
-                        <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-zinc-400">Membros AUVP</h3>
-                        <p class="text-zinc-500 text-sm">Condição exclusiva e benefícios para membros da&nbsp;AUVP.</p>
+                        <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-white">Membros AUVP</h3>
+                        <p class="text-zinc-400 text-sm">Condição exclusiva e benefícios para membros da&nbsp;AUVP.</p>
                     </div>
                     <div class="mb-8 flex items-baseline gap-4">
                         <div class="flex items-baseline gap-2">
-                            <span class="text-2xl font-bold text-zinc-600">R$</span>
-                            <span class="text-5xl lg:text-6xl font-black tracking-tighter text-zinc-600">100</span>
+                            <span class="text-2xl font-bold text-zinc-300">R$</span>
+                            <span class="text-5xl lg:text-6xl font-black tracking-tighter text-red-500">100</span>
                         </div>
-                        <span class="text-zinc-600 text-sm line-through">R$ 150</span>
+                        <span class="text-zinc-500 text-sm line-through">R$ 150</span>
                     </div>
-                    <ul class="space-y-4 mb-10 text-zinc-500 text-sm">
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-zinc-700 w-5 h-5 shrink-0"></i> Valor exclusivo com desconto para quem faz parte da nossa comunidade.</li>
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-zinc-700 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
+                    <ul class="space-y-4 mb-10 text-zinc-400 text-sm">
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Valor exclusivo com desconto para quem faz parte da nossa comunidade.</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
                     </ul>
-                    <button disabled class="mt-auto w-full py-4 border border-zinc-800 bg-zinc-900/50 text-zinc-600 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm text-center block cursor-not-allowed opacity-70">
-                        VENDAS ENCERRADAS
-                    </button>
+                    <a href="#" class="mt-auto w-full py-4 border border-red-600 bg-red-600/10 text-red-500 hover:bg-red-600/20 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm text-center block transition-colors">
+                        GARANTIR INGRESSO
+                    </a>
                 </div>
 
             </div>
