@@ -36,11 +36,13 @@
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
       "location": {
         "@type": "Place",
-        "name": "Florianópolis",
+        "name": "Teatro Dionísio",
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": "Rua Servidão Safira, 148, Ingleses do Rio Vermelho",
           "addressLocality": "Florianópolis",
           "addressRegion": "SC",
+          "postalCode": "88058-095",
           "addressCountry": "BR"
         }
       },
@@ -640,9 +642,9 @@
         <a href="#ingressos" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
             <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Ingressos
         </a>
-        <!-- <a href="#local" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
+        <a href="#local" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
             <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Local
-        </a> -->
+        </a>
         <a href="#roteiro" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
             <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Roteiro
         </a>
@@ -675,7 +677,7 @@
                 <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Prancheta%202_12.svg" alt="Giro da Bolsa" class="-ml-2 md:-ml-4 h-10 md:h-14 lg:h-16 w-auto object-contain" loading="eager" fetchpriority="high" />
                 <nav class="hidden md:flex gap-12 text-xs font-medium tracking-widest uppercase text-zinc-300">
                     <a href="#ingressos" class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Ingressos</a>
-                    <!-- <a href="#local"     class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Local</a> -->
+                    <a href="#local"     class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Local</a>
                     <a href="#roteiro"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Roteiro</a>
                     <a href="#galeria"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Histórico</a>
                     <a href="#edicoes"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Edições</a>
@@ -802,6 +804,40 @@
                     <a href="#" class="mt-auto w-full py-4 border border-red-600 bg-red-600/10 text-red-500 hover:bg-red-600/20 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm text-center block transition-colors">
                         GARANTIR INGRESSO
                     </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- --- LOCAL SECTION --- -->
+    <section id="local" class="py-24 bg-zinc-950 relative border-t border-zinc-900 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:pl-56 xl:pl-64">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+
+                <div class="text-center md:text-left reveal reveal-left">
+                    <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
+                        O Palco da <br class="hidden md:block" /><span class="text-red-600 italic font-light">Baguncinha</span>
+                    </h2>
+                    <h3 class="text-2xl font-bold text-zinc-200 mb-2">Teatro Dionísio</h3>
+                    <p class="text-zinc-400 text-lg mb-6">
+                        Rua Servidão Safira, 148<br/>
+                        Ingleses do Rio Vermelho, Florianópolis - SC, 88058-095
+                    </p>
+                    <p class="text-zinc-500 max-w-md mx-auto md:mx-0">
+                        Um espaço escolhido a dedo para garantir que todo mundo tenha uma visão perfeita, conforto e a melhor acústica para o nosso papo sem filtros. O mercado do jeito que você nunca&nbsp;viu.
+                    </p>
+                    <div class="mt-8">
+                        <a href="https://www.google.com/maps/search/?api=1&query=Teatro+Dion%C3%ADsio%2C+Rua+Servid%C3%A3o+Safira%2C+148%2C+Ingleses+do+Rio+Vermelho%2C+Florian%C3%B3polis+-+SC%2C+88058-095" target="_blank" rel="noopener" class="inline-flex items-center gap-3 px-6 py-3 border border-zinc-700 hover:border-red-500 text-zinc-300 hover:text-white rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-lg hover:bg-red-500/10 hover:shadow-red-500/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-red-500 shrink-0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            ABRIR NO GOOGLE MAPS
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative w-full h-[300px] md:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-zinc-800 reveal reveal-right delay-200 group">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 pointer-events-none z-10"></div>
+                    <iframe src="https://maps.google.com/maps?q=Teatro%20Dion%C3%ADsio%2C%20Rua%20Servid%C3%A3o%20Safira%2C%20148%2C%20Ingleses%20do%20Rio%20Vermelho%2C%20Florian%C3%B3polis%20-%20SC%2C%2088058-095&z=16&ie=UTF8&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="grayscale invert contrast-125 opacity-70 mix-blend-luminosity hover:mix-blend-normal hover:grayscale-0 hover:opacity-100 hover:invert-0 transition-all duration-700 relative z-0"></iframe>
                 </div>
 
             </div>
@@ -1147,7 +1183,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-chevron"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
                     <div class="faq-body"><div class="faq-inner">
-                        <p class="faq-answer">Será na cidade de Florianópolis, SC. O endereço exato e o nome do espaço serão anunciados em breve e enviados por e-mail para quem garantir o&nbsp;ingresso.</p>
+                        <p class="faq-answer">O evento acontece no Teatro Dionísio, na Rua Servidão Safira, 148, Ingleses do Rio Vermelho, em Florianópolis - SC, CEP&nbsp;88058-095.</p>
                     </div></div>
                 </div>
 
