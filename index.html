@@ -52,7 +52,27 @@
       "performer": {
         "@type": "Person",
         "name": "Investidor Sardinha"
-      }
+      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Público Geral",
+          "price": "150",
+          "priceCurrency": "BRL",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2026-09-14",
+          "url": "https://checkout.auvp.com.br/pay/giro-da-bolsa-florianopolis-geral"
+        },
+        {
+          "@type": "Offer",
+          "name": "Membros AUVP",
+          "price": "100",
+          "priceCurrency": "BRL",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2026-09-14",
+          "url": "https://comunidade.auvp.com.br/topic/47959-%F0%9F%9A%A8-o-giro-da-bolsa-t%C3%A1-chegando-em-florian%C3%B3polis-e-a-comunidade-tem-desconto-especial/"
+        }
+      ]
     }
     </script>
 
@@ -738,96 +758,52 @@
         <div class="max-w-7xl mx-auto px-6 lg:pl-56 xl:pl-64 relative z-10">
 
             <div class="text-center mb-16 reveal">
-                <div class="inline-flex items-center justify-center px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-zinc-400 uppercase bg-zinc-900/80 rounded-full border border-zinc-800 backdrop-blur-sm">
-                    Em Breve
-                </div>
-                <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-zinc-300">Ingressos em Breve</h2>
-                <p class="text-zinc-500 max-w-2xl mx-auto">Os ingressos para a próxima edição, em <span class="text-white font-semibold">Florianópolis</span> · <span class="text-red-500 font-semibold">18 de&nbsp;Setembro</span>, estarão disponíveis em&nbsp;breve.</p>
-                <div class="inline-flex items-center gap-3 mt-6 px-5 py-2.5 rounded-full border border-red-600/50 bg-red-950/40 backdrop-blur-md shadow-xl">
-                    <span class="w-2 h-2 rounded-full animate-pulse bg-red-500 shrink-0"></span>
-                    <span class="text-xs md:text-sm font-bold tracking-widest uppercase text-white">As vendas abrem sexta-feira, 11/09, às&nbsp;12h</span>
-                </div>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-zinc-300">Ingressos Disponíveis</h2>
+                <p class="text-zinc-500 max-w-2xl mx-auto">Garanta sua entrada para o Giro da Bolsa em <span class="text-white font-semibold">Florianópolis</span> · <span class="text-red-500 font-semibold">18 de&nbsp;Setembro</span></p>
             </div>
 
-            <div class="relative max-w-4xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
 
-                <!-- Tarja de Contenção Animada (Aparece com delay junto com o blur) -->
-                <div class="containment-tape-wrapper reveal">
-                    <div class="containment-tape">
-                        <!-- Primeira sequência de palavras -->
-                        <div class="flex items-center">
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                        </div>
-                        <!-- Segunda sequência idêntica (Para loop infinito perfeito no marquee) -->
-                        <div class="flex items-center">
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                            <span class="containment-text">EM BREVE &nbsp;&bull;&nbsp;</span>
-                        </div>
+                <!-- Ingresso 1: Público Geral -->
+                <div class="flex flex-col p-8 lg:p-10 border border-red-600/30 rounded-3xl bg-zinc-900/50 backdrop-blur relative transition-colors reveal reveal-scale hover:border-red-500/50">
+                    <div class="mb-8">
+                        <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-white">Público Geral</h3>
+                        <p class="text-zinc-400 text-sm">A experiência exclusiva de assistir ao Giro da Bolsa ao&nbsp;vivo.</p>
                     </div>
+                    <div class="mb-8 flex items-baseline gap-2">
+                        <span class="text-2xl font-bold text-zinc-300">R$</span>
+                        <span class="text-5xl lg:text-6xl font-black tracking-tighter text-white">150</span>
+                    </div>
+                    <ul class="space-y-4 mb-10 text-zinc-400 text-sm">
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
+                    </ul>
+                    <a href="https://checkout.auvp.com.br/pay/giro-da-bolsa-florianopolis-geral" target="_blank" rel="noopener" class="mt-auto w-full py-4 border border-red-600 bg-red-600/10 text-red-500 hover:bg-red-600/20 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm text-center block transition-colors">
+                        GARANTIR INGRESSO
+                    </a>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-8 pointer-events-none select-none locked-grid reveal">
-
-                    <!-- Ingresso 1: Padrão -->
-                    <div class="flex flex-col p-8 lg:p-10 border border-zinc-800 rounded-3xl bg-zinc-900/50 backdrop-blur transition-colors reveal reveal-scale">
-                        <div class="mb-8">
-                            <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2">Público Geral</h3>
-                            <p class="text-zinc-400 text-sm">A experiência exclusiva de assistir ao Giro da Bolsa ao&nbsp;vivo.</p>
-                        </div>
-                        <div class="mb-8 flex items-baseline gap-2">
-                            <span class="text-3xl lg:text-4xl font-black tracking-tighter text-zinc-500">Em breve</span>
-                        </div>
-                        <ul class="space-y-4 mb-10 text-zinc-500 text-sm">
-                            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-zinc-700 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
-                        </ul>
-                        <button disabled class="mt-auto w-full py-4 border border-zinc-800 bg-zinc-900/50 text-zinc-600 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm text-center block cursor-not-allowed opacity-70">
-                            EM BREVE
-                        </button>
+                <!-- Ingresso 2: Membros AUVP -->
+                <div class="flex flex-col p-8 lg:p-10 border border-red-600/30 rounded-3xl bg-zinc-900/50 backdrop-blur relative transition-colors reveal reveal-scale delay-200 hover:border-red-500/50">
+                    <div class="mb-8">
+                        <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-white">Membros AUVP</h3>
+                        <p class="text-zinc-400 text-sm">Condição exclusiva e benefícios para membros da&nbsp;AUVP.</p>
                     </div>
-
-                    <!-- Ingresso 2: VIP -->
-                    <div class="flex flex-col p-8 lg:p-10 border border-red-900/30 rounded-3xl bg-red-950/10 backdrop-blur relative shadow-[0_0_30px_-12px_rgba(220,38,38,0.1)] transition-shadow duration-300 transform lg:-translate-y-4 reveal reveal-scale delay-200">
-                        <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-800 text-zinc-400 px-4 py-1 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-wider whitespace-nowrap border border-zinc-700">
-                            Exclusivo Membros AUVP
+                    <div class="mb-8 flex items-baseline gap-4">
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-2xl font-bold text-zinc-300">R$</span>
+                            <span class="text-5xl lg:text-6xl font-black tracking-tighter text-white">100</span>
                         </div>
-                        <div class="mb-8">
-                            <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-zinc-300">Membros AUVP</h3>
-                            <p class="text-zinc-500 text-sm">Condição exclusiva e benefícios para membros da&nbsp;AUVP.</p>
-                        </div>
-                        <div class="mb-8 flex items-baseline gap-4">
-                            <span class="text-3xl lg:text-4xl font-black tracking-tighter text-zinc-400">Em breve</span>
-                        </div>
-                        <ul class="space-y-4 mb-10 text-zinc-500 text-sm">
-                            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-zinc-700 w-5 h-5 shrink-0"></i> Valor exclusivo com desconto para quem faz parte da nossa comunidade.</li>
-                            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-zinc-700 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
-                        </ul>
-                        <button disabled class="mt-auto w-full py-4 border border-red-900/30 bg-red-950/20 text-red-500/50 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm text-center block cursor-not-allowed opacity-70">
-                            EM BREVE
-                        </button>
+                        <span class="text-zinc-500 text-sm line-through">R$ 150</span>
                     </div>
-
+                    <ul class="space-y-4 mb-10 text-zinc-400 text-sm">
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Valor exclusivo com desconto para quem faz parte da nossa comunidade.</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-red-500 w-5 h-5 shrink-0"></i> Acesso à gravação do Giro da Bolsa ao vivo</li>
+                    </ul>
+                    <a href="https://comunidade.auvp.com.br/topic/47959-%F0%9F%9A%A8-o-giro-da-bolsa-t%C3%A1-chegando-em-florian%C3%B3polis-e-a-comunidade-tem-desconto-especial/" target="_blank" rel="noopener" class="mt-auto w-full py-4 border border-red-600 bg-red-600/10 text-red-500 hover:bg-red-600/20 rounded-full font-bold uppercase tracking-wider text-xs lg:text-sm text-center block transition-colors">
+                        GARANTIR INGRESSO
+                    </a>
                 </div>
+
             </div>
         </div>
     </section>
@@ -1160,8 +1136,8 @@
                                         Florianópolis
                                     </h4>
                                     <div class="shrink-0 mb-2 lg:mb-4">
-                                        <a href="#ingressos" class="inline-flex px-6 md:px-8 py-3 bg-zinc-800 border border-zinc-700 text-zinc-400 rounded-full font-bold text-xs md:text-sm tracking-wider uppercase items-center gap-3 hover:bg-zinc-700 transition-colors">
-                                            <span class="w-6 h-[1px] bg-zinc-400"></span> QUERO SER AVISADO
+                                        <a href="#ingressos" class="inline-flex px-6 md:px-8 py-3 bg-red-600 text-white rounded-full font-bold text-xs md:text-sm tracking-wider uppercase items-center gap-3 hover:bg-red-700 transition-colors shadow-[0_0_20px_-5px_rgba(220,38,38,0.5)]">
+                                            <span class="w-6 h-[1px] bg-white"></span> GARANTIR MEU LUGAR
                                         </a>
                                     </div>
                                 </div>
