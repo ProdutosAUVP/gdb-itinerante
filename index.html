@@ -637,9 +637,9 @@
         <a href="#hero" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-red-600">
             <span class="w-4 h-[2px] bg-red-600 transition-all duration-300 shadow-md"></span> Início
         </a>
-        <a href="#ingressos" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
+        <!-- <a href="#ingressos" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
             <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Ingressos
-        </a>
+        </a> -->
         <!-- <a href="#local" class="floating-nav-item text-xs font-bold uppercase tracking-widest flex items-center gap-3 transition-colors text-zinc-400 hover:text-red-500">
             <span class="w-0 h-[2px] bg-zinc-400 transition-all duration-300 shadow-md"></span> Local
         </a> -->
@@ -674,17 +674,17 @@
             <header class="relative z-10 w-full pt-8 px-6 md:px-12 flex items-center justify-between text-zinc-100 reveal delay-1000">
                 <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Prancheta%202_12.svg" alt="Giro da Bolsa" class="-ml-2 md:-ml-4 h-10 md:h-14 lg:h-16 w-auto object-contain" loading="eager" fetchpriority="high" />
                 <nav class="hidden md:flex gap-12 text-xs font-medium tracking-widest uppercase text-zinc-300">
-                    <a href="#ingressos" class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Ingressos</a>
+                    <!-- <a href="#ingressos" class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Ingressos</a> -->
                     <!-- <a href="#local"     class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Local</a> -->
                     <a href="#roteiro"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Roteiro</a>
                     <a href="#galeria"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Histórico</a>
                     <a href="#edicoes"   class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">Edições</a>
                     <a href="#faq"       class="top-nav-item hover:text-red-500 transition-colors decoration-red-500 underline-offset-4">FAQ</a>
                 </nav>
-                <a href="#ingressos" class="flex items-center gap-4 text-xs font-medium tracking-widest uppercase hover:text-red-500 transition-colors">
+                <!-- <a href="#ingressos" class="flex items-center gap-4 text-xs font-medium tracking-widest uppercase hover:text-red-500 transition-colors">
                     <span class="hidden md:block w-8 h-[1px] bg-current"></span>
                     Comprar
-                </a>
+                </a> -->
             </header>
 
             <div class="relative z-10 w-full mt-auto pb-8 pt-12 md:pt-16 lg:pt-24 px-6 md:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 lg:gap-8 items-end">
@@ -752,7 +752,9 @@
         </section>
     </div>
 
-    <!-- --- PRICING SECTION --- -->
+    <!-- --- PRICING SECTION (Ocultada — dobra de ingressos fora da visualização.
+         Manter os dados de Florianópolis abaixo para reativação rápida assim que
+         os ingressos puderem voltar ao ar.) ---
     <section id="ingressos" class="py-24 bg-zinc-950 text-white relative overflow-hidden">
         <div class="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-700 via-zinc-950 to-zinc-950"></div>
         <div class="max-w-7xl mx-auto px-6 lg:pl-56 xl:pl-64 relative z-10">
@@ -764,7 +766,6 @@
 
             <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
 
-                <!-- Ingresso 1: Público Geral -->
                 <div class="flex flex-col p-8 lg:p-10 border border-red-600/30 rounded-3xl bg-zinc-900/50 backdrop-blur relative transition-colors reveal reveal-scale hover:border-red-500/50">
                     <div class="mb-8">
                         <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-white">Público Geral</h3>
@@ -782,7 +783,6 @@
                     </a>
                 </div>
 
-                <!-- Ingresso 2: Membros AUVP -->
                 <div class="flex flex-col p-8 lg:p-10 border border-red-600/30 rounded-3xl bg-zinc-900/50 backdrop-blur relative transition-colors reveal reveal-scale delay-200 hover:border-red-500/50">
                     <div class="mb-8">
                         <h3 class="font-serif text-2xl lg:text-3xl font-bold mb-2 text-white">Membros AUVP</h3>
@@ -807,6 +807,7 @@
             </div>
         </div>
     </section>
+    -->
 
     <!-- --- LOCAL SECTION --- -->
     <!-- --- LOCAL SECTION (Ocultada — endereço ainda não divulgado. Manter os dados
@@ -1135,11 +1136,11 @@
                                     <h4 class="font-serif text-[4rem] md:text-[6rem] lg:text-[8rem] leading-none tracking-tighter text-white drop-shadow-lg uppercase">
                                         Florianópolis
                                     </h4>
-                                    <div class="shrink-0 mb-2 lg:mb-4">
+                                    <!-- <div class="shrink-0 mb-2 lg:mb-4">
                                         <a href="#ingressos" class="inline-flex px-6 md:px-8 py-3 bg-red-600 text-white rounded-full font-bold text-xs md:text-sm tracking-wider uppercase items-center gap-3 hover:bg-red-700 transition-colors shadow-[0_0_20px_-5px_rgba(220,38,38,0.5)]">
                                             <span class="w-6 h-[1px] bg-white"></span> GARANTIR MEU LUGAR
                                         </a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
 
