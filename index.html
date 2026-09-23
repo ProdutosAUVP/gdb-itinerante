@@ -461,6 +461,28 @@
             }
         }
 
+        /* Vídeo da edição (YouTube) — 16:9 via padding para resistir aos estilos de iframe do Elementor */
+        #gdb-root .edicao-video {
+            position: relative !important;
+            width: 100% !important;
+            height: 0 !important;
+            padding-bottom: 56.25% !important;
+            margin-bottom: 12px !important;
+            border-radius: 1rem !important;
+            overflow: hidden !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background: #000 !important;
+        }
+        #gdb-root .edicao-video iframe {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: none !important;
+            border: 0 !important;
+            margin: 0 !important;
+        }
+
         /* ── FAIXA DE CONTENÇÃO & BLUR ANIMADO ───────────────────────── */
         #gdb-root .containment-tape-wrapper {
             position: absolute;
@@ -969,7 +991,7 @@
                                 <div class="flex items-center justify-between w-full mb-4">
                                     <div class="flex flex-wrap gap-2 md:gap-4 text-[#88a89b] text-[10px] md:text-xs uppercase tracking-widest items-center">
                                         <span>Goiânia <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
-                                        <span>Goiás <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span>GO <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
                                         <span class="text-greece-yellow">Edição 1</span>
                                     </div>
                                     <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 rounded-full" title="Fechar">
@@ -990,6 +1012,9 @@
                                 </p>
 
                                 <div class="w-full">
+                                    <div class="edicao-video">
+                                        <iframe src="https://www.youtube-nocookie.com/embed/W5J35QOnExI" title="Giro da Bolsa Itinerante — Goiânia" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                    </div>
                                     <div class="photo-strip grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         <div class="photo-strip-item h-64 rounded-2xl overflow-hidden border border-white/10 cursor-pointer" onclick="openLightbox('https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/IMG-20251106-WA0347.jpg.2e9a610eb8b47d988309ff166fead2ec.jpg', 'Goiânia', 'GO')">
                                             <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/Goi%C3%A2nia/IMG-20251106-WA0347.jpg.2e9a610eb8b47d988309ff166fead2ec.jpg" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" loading="lazy" alt="Palco">
@@ -1035,7 +1060,7 @@
                                 <div class="flex items-center justify-between w-full mb-4">
                                     <div class="flex flex-wrap gap-2 md:gap-4 text-[#94a3b8] text-[10px] md:text-xs uppercase tracking-widest items-center">
                                         <span>Belo Horizonte <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
-                                        <span>Minas Gerais <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
+                                        <span>MG <i data-lucide="arrow-right" class="inline w-3 h-3 mx-1"></i></span>
                                         <span class="text-[#38bdf8]">Edição 2</span>
                                     </div>
                                     <button onclick="toggleAccordion(this)" class="focus:outline-none p-2 -mr-2 rounded-full" title="Fechar">
@@ -1056,6 +1081,9 @@
                                 </p>
 
                                 <div class="w-full">
+                                    <div class="edicao-video">
+                                        <iframe src="https://www.youtube-nocookie.com/embed/_260n8m6SLg" title="Giro da Bolsa Itinerante — Belo Horizonte" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                    </div>
                                     <div class="photo-strip grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         <div class="photo-strip-item h-64 rounded-2xl overflow-hidden border border-white/10 cursor-pointer" onclick="openLightbox('https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%202.webp', 'Belo Horizonte', 'MG')">
                                             <img src="https://github.com/ProdutosAUVP/gdb-itinerante/raw/main/bh%20redux%202.webp" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" loading="lazy" alt="Estúdio">
@@ -1118,10 +1146,13 @@
                             <!-- DESCRIÇÃO E FOTOS -->
                             <div class="acc-fade w-full">
                                 <p class="text-[#c4b5fd] text-base md:text-lg leading-relaxed mb-10">
-                                    Nossa última parada foi São Paulo. Desembarcamos por lá em junho para provar que entender o mercado financeiro não exige terno e muito menos coletinho da Faria Lima. Quem esteve presente não participou de mais um evento engessado de bancão, mas viu na prática como nós fazemos as coisas acontecerem. Conhecimento real, sem rodeios e direto ao&nbsp;ponto.
+                                    Desembarcamos em São Paulo para mostrar que conhecer o mercado financeiro não exige terno, nem coletinho da Faria Lima. Quem esteve presente viveu uma experiência única e&nbsp;inesquecível.
                                 </p>
 
                                 <div class="w-full">
+                                    <div class="edicao-video">
+                                        <iframe src="https://www.youtube-nocookie.com/embed/EMU2chjddxI" title="Giro da Bolsa Itinerante — São Paulo" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                    </div>
                                     <div class="photo-strip grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         <div class="photo-strip-item h-64 rounded-2xl overflow-hidden border border-white/10 cursor-pointer" onclick="openLightbox('https://auvpcapital.com.br/wp-content/uploads/2026/07/DSC01389-scaled.jpg', 'São Paulo', 'SP')">
                                             <img src="https://auvpcapital.com.br/wp-content/uploads/2026/07/DSC01389-scaled.jpg" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" loading="lazy" alt="Palco">
@@ -1188,6 +1219,9 @@
                                 </p>
 
                                 <div class="w-full">
+                                    <div class="edicao-video">
+                                        <iframe src="https://www.youtube-nocookie.com/embed/rdHK8pvbao8" title="Giro da Bolsa Itinerante — Florianópolis" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                    </div>
                                     <div class="photo-strip grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         <div class="photo-strip-item h-64 rounded-2xl overflow-hidden border border-white/10 cursor-pointer" onclick="openLightbox('https://cdn.asupernova.com.br/giro%20da%20bolsa%20itinerante/DSC03356.jpg', 'Florianópolis', 'SC')">
                                             <img src="https://cdn.asupernova.com.br/giro%20da%20bolsa%20itinerante/DSC03356.jpg" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-500" loading="lazy" alt="Palco">
@@ -1261,7 +1295,7 @@
                             <!-- DESCRIÇÃO (Fade-in) -->
                             <div class="acc-fade w-full">
                                 <p class="text-[#fca5a5] opacity-90 text-base md:text-lg leading-relaxed mb-6">
-                                    O quinto destino é o Rio de Janeiro. Vamos levar o Giro da Bolsa para a Cidade Maravilhosa e mostrar, mais uma vez, que falar de mercado financeiro pode ser irreverente e muito mais simples do que parece. Data, local e ingressos serão anunciados em&nbsp;breve.
+                                    O quinto destino é o Rio de Janeiro. Vamos levar o Giro da Bolsa à Cidade Maravilhosa para mais um programa ao vivo. Quem estiver presente vai conferir a versão sem cortes, do jeito que ele acontece nos bastidores do estúdio. Data, local e ingressos serão anunciados em&nbsp;breve.
                                 </p>
                             </div>
 
